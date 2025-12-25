@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
+/*
 namespace ThemeMii.Properties {
     using System;
     
@@ -104,3 +104,4 @@ namespace ThemeMii.Properties {
         }
     }
 }
+*/

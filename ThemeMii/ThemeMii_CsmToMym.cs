@@ -20,9 +20,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
 
+/*
 namespace ThemeMii
 {
     public partial class ThemeMii_CsmToMym : Form
@@ -382,3 +383,4 @@ namespace ThemeMii
         }
     }
 }
+*/

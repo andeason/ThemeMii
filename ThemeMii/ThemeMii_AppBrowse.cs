@@ -17,9 +17,10 @@
 
 using System;
 using System.IO;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System.Drawing;
 
+/*
 namespace ThemeMii
 {
     public partial class ThemeMii_AppBrowse : Form
@@ -216,3 +217,4 @@ namespace ThemeMii
         }
     }
 }
+*/

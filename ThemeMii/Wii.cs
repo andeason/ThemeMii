@@ -27,6 +27,8 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 
 namespace Wii
 {
@@ -657,7 +659,9 @@ namespace Wii
         /// <returns></returns>
         public static string[] GetChannelTitles(byte[] wadfile)
         {
-            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\common-key.bin") || File.Exists(System.Windows.Forms.Application.StartupPath + "\\key.bin"))
+            //TODO:  What is this?
+            //if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\common-key.bin") || File.Exists(System.Windows.Forms.Application.StartupPath + "\\key.bin"))
+            if(false)
             {
                 string channeltype = GetChannelType(wadfile, 0);
 
@@ -1275,12 +1279,14 @@ namespace Wii
         {
             byte[] commonkey = new byte[16];
 
+            /*
+             * TODO:  What is this?
             if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"))
             { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"); }
             else if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\key.bin"))
             { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\key.bin"); }
             else { throw new FileNotFoundException("The (common-)key.bin must be in the application directory!"); }
-
+            */
             byte[] encryptedkey = new byte[16];
             byte[] iv = new byte[16];
             int tikpos = 0;
@@ -2309,11 +2315,16 @@ namespace Wii
         {
             byte[] commonkey = new byte[16];
 
-            if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"))
-            { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"); }
-            else if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\key.bin"))
-            { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\key.bin"); }
-            else { throw new FileNotFoundException("The (common-)key.bin must be in the application directory!"); }
+            /*
+             * TODO:  What is this?
+             *
+             *
+                if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"))
+                { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"); }
+                else if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\key.bin"))
+                { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\key.bin"); }
+                else { throw new FileNotFoundException("The (common-)key.bin must be in the application directory!"); }
+             */
 
             Array.Resize(ref titleid, 16);
 
@@ -4358,8 +4369,12 @@ namespace Wii
         /// Converts the Pixel Data into a Png Image
         /// </summary>
         /// <param name="data">Byte array with pixel data</param>
-        public static System.Drawing.Bitmap ConvertPixelToBitmap(byte[] data, int width, int height)
+        public static Bitmap ConvertPixelToBitmap(byte[] data, int width, int height)
         {
+            return null;
+            
+            /*
+             * TODO:  Fix compile errors on this one.
             if (width == 0) width = 1;
             if (height == 0) height = 1;
 
@@ -4371,6 +4386,7 @@ namespace Wii
             System.Runtime.InteropServices.Marshal.Copy(data, 0, bmpData.Scan0, data.Length);
             bmp.UnlockBits(bmpData);
             return bmp;
+            */
         }
 
         /// <summary>
@@ -5203,8 +5219,8 @@ namespace Wii
         /// <returns></returns>
         public static uint[] BitmapToRGBA(Bitmap img)
         {
-            int x = img.Width;
-            int y = img.Height;
+            int x = (int)img.Size.Width;
+            int y = (int)img.Size.Height;
             UInt32[] rgba = new UInt32[x * y];
 
             for (int i = 0; i < y; i += 4)
@@ -5218,8 +5234,11 @@ namespace Wii
                             if (y1 >= y || x1 >= x)
                                 continue;
 
-                            Color color = img.GetPixel(x1, y1);
-                            rgba[x1 + (y1 * x)] = (UInt32)color.ToArgb();
+                            return null;
+                            
+                            //TODO:  No equivalent to GetPixel?
+                            //Color color = img.GetPixel(x1, y1);
+                            //rgba[x1 + (y1 * x)] = (UInt32)color.ToArgb();
                         }
                     }
                 }
@@ -5252,12 +5271,15 @@ namespace Wii
         /// <returns></returns>
         public static void ConvertToTPL(Image img, string destination, int format)
         {
+            return;
+            /*TODO:  Fix Image reference.
             byte[] tpl = ConvertToTPL((Bitmap)img, format);
 
             using (FileStream fs = new FileStream(destination, FileMode.Create))
             {
                 fs.Write(tpl, 0, tpl.Length);
             }
+            */
         }
 
         /// <summary>
@@ -5268,7 +5290,9 @@ namespace Wii
         /// <returns></returns>
         public static byte[] ConvertToTPL(Image img, int format)
         {
-            return ConvertToTPL((Bitmap)img, format);
+            //TODO:  Fix bitmap later.
+            return null;
+            //return ConvertToTPL((Bitmap)img, format);
         }
 
         /// <summary>
@@ -5289,8 +5313,8 @@ namespace Wii
                 UInt32 texheaderoff = 0x14;
                 UInt32 texpaletteoff = 0x0;
 
-                UInt16 texheight = (UInt16)img.Height;
-                UInt16 texwidth = (UInt16)img.Width;
+                UInt16 texheight = (UInt16)img.Size.Height;
+                UInt16 texwidth = (UInt16)img.Size.Width;
                 UInt32 texformat;
                 UInt32 texdataoffset = 0x40;
                 byte[] rest = new byte[] { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 01, 00, 00, 00, 01, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 };
@@ -5373,6 +5397,9 @@ namespace Wii
         /// <returns></returns>
         public static byte[] ToRGBA8(Bitmap img)
         {
+            return null;
+            /*
+             * TODO:  Fix compile errors on this one.
             uint[] pixeldata = BitmapToRGBA(img);
             int w = img.Width;
             int h = img.Height;
@@ -5428,6 +5455,7 @@ namespace Wii
 
 
             return output;
+            */
         }
 
         /// <summary>
@@ -5438,8 +5466,8 @@ namespace Wii
         public static byte[] ToRGB565(Bitmap img)
         {
             uint[] pixeldata = BitmapToRGBA(img);
-            int w = img.Width;
-            int h = img.Height;
+            int w = (int)img.Size.Width;
+            int h = (int)img.Size.Height;
             int z = -1;
             byte[] output = new byte[Tools.AddPadding(w, 4) * Tools.AddPadding(h, 4) * 2];
 
@@ -5489,8 +5517,8 @@ namespace Wii
         public static byte[] ToRGB5A3(Bitmap img)
         {
             uint[] pixeldata = BitmapToRGBA(img);
-            int w = img.Width;
-            int h = img.Height;
+            int w = (int)img.Size.Width;
+            int h = (int)img.Size.Height;
             int z = -1;
             byte[] output = new byte[Tools.AddPadding(w, 4) * Tools.AddPadding(h, 4) * 2];
 
@@ -5571,8 +5599,8 @@ namespace Wii
         public static byte[] ToI4(Bitmap img)
         {
             uint[] pixeldata = BitmapToRGBA(img);
-            int w = img.Width;
-            int h = img.Height;
+            int w = (int)img.Size.Width;
+            int h = (int)img.Size.Height;
             int inp = -1;
             byte[] output = new byte[Tools.AddPadding(w, 8) * Tools.AddPadding(h, 8) / 2];
 
@@ -5628,8 +5656,8 @@ namespace Wii
         public static byte[] ToI8(Bitmap img)
         {
             uint[] pixeldata = BitmapToRGBA(img);
-            int w = img.Width;
-            int h = img.Height;
+            int w = (int)img.Size.Width;
+            int h = (int)img.Size.Height;
             int inp = -1;
             byte[] output = new byte[Tools.AddPadding(w, 8) * Tools.AddPadding(h, 4)];
 
@@ -5675,8 +5703,8 @@ namespace Wii
         public static byte[] ToIA4(Bitmap img)
         {
             uint[] pixeldata = BitmapToRGBA(img);
-            int w = img.Width;
-            int h = img.Height;
+            int w = (int)img.Size.Width;
+            int h = (int)img.Size.Height;
             int inp = -1;
             byte[] output = new byte[Tools.AddPadding(w, 8) * Tools.AddPadding(h, 4)];
 
@@ -5725,8 +5753,8 @@ namespace Wii
         public static byte[] ToIA8(Bitmap img)
         {
             uint[] pixeldata = BitmapToRGBA(img);
-            int w = img.Width;
-            int h = img.Height;
+            int w = (int)img.Size.Width;
+            int h = (int)img.Size.Height;
             int inp = -1;
             byte[] output = new byte[Tools.AddPadding(w, 4) * Tools.AddPadding(h, 4) * 2];
 

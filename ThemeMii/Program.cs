@@ -16,7 +16,7 @@
  */
  
 using System;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System.IO;
 
 namespace ThemeMii
@@ -29,21 +29,25 @@ namespace ThemeMii
         [STAThread]
         static void Main()
         {
+            //TODO:  What is ash.exe?  I don't like that this is just an exe...
             if (!File.Exists("ash.exe"))
             {
-                MessageBox.Show("ASH.exe couldn't be found in the application directory...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //TODO:  Perhaps change to be an actual message?
+                Console.Error.WriteLine("ASH.exe couldn't be found in the application directory...");
                 Environment.Exit(-1);
             }
 
+            //TODO:  The package reference should now include this.  I believe this makes this unneeded.
             if (!File.Exists("ICSharpCode.SharpZipLib.dll"))
             {
-                MessageBox.Show("ICSharpCode.SharpZipLib.dll couldn't be found in the application directory...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.Error.WriteLine(
+                    "\"ICSharpCode.SharpZipLib.dll couldn't be found in the application directory...\", \"Error\"");
                 Environment.Exit(-1);
             }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ThemeMii_Main());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new ThemeMii_Main());
         }
     }
 }

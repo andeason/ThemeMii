@@ -1,154 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F66FBC94-46AE-44DB-8770-12BCB9BA30B1}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ThemeMii</RootNamespace>
-    <AssemblyName>ThemeMii</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <StartupObject>ThemeMii.Program</StartupObject>
-    <ApplicationIcon>Resources\ThemeMii_Icon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="mymini.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThemeMii_About.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_About.Designer.cs">
-      <DependentUpon>ThemeMii_About.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ThemeMii_AppBrowse.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_AppBrowse.Designer.cs">
-      <DependentUpon>ThemeMii_AppBrowse.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ThemeMii_Async.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_ckInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_ckInput.Designer.cs">
-      <DependentUpon>ThemeMii_ckInput.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ThemeMii_CsmToMym.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_CsmToMym.Designer.cs">
-      <DependentUpon>ThemeMii_CsmToMym.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ThemeMii_Help.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_Help.Designer.cs">
-      <DependentUpon>ThemeMii_Help.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ThemeMii_Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_Main.Designer.cs">
-      <DependentUpon>ThemeMii_Main.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ThemeMii_PrivateFunctions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ThemeMii_Struct.cs" />
-    <Compile Include="Wii.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="ThemeMii_About.resx">
-      <DependentUpon>ThemeMii_About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ThemeMii_AppBrowse.resx">
-      <DependentUpon>ThemeMii_AppBrowse.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ThemeMii_ckInput.resx">
-      <DependentUpon>ThemeMii_ckInput.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ThemeMii_CsmToMym.resx">
-      <DependentUpon>ThemeMii_CsmToMym.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ThemeMii_Help.resx">
-      <DependentUpon>ThemeMii_Help.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ThemeMii_Main.resx">
-      <DependentUpon>ThemeMii_Main.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="License.txt" />
-    <Content Include="Readme.txt" />
-    <None Include="Resources\HealthTut.rtf" />
-    <None Include="Resources\ThemeMiiBasics.rtf" />
-    <None Include="Resources\ThemeMii_Icon.ico" />
-    <None Include="Resources\ThemeMiiFull.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+  <ProductVersion>8.0.30703</ProductVersion>
+  <ProjectGuid>{F66FBC94-46AE-44DB-8770-12BCB9BA30B1}</ProjectGuid>
+  <RootNamespace>ThemeMii</RootNamespace>
+  <AssemblyName>ThemeMii</AssemblyName>
+  <OutputType>WinExe</OutputType>
+  <FileAlignment>512</FileAlignment>
+  <StartupObject>ThemeMii.Program</StartupObject>
+  <ApplicationIcon>Resources\ThemeMii_Icon.ico</ApplicationIcon>
+  <TargetFramework>net9.0</TargetFramework>
+  <Nullable>enable</Nullable>
+  <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+</PropertyGroup>
+<ItemGroup>
+  <Content Include="License.txt" />
+  <Content Include="Readme.txt" />
+</ItemGroup>
+<ItemGroup>
+  <PackageReference Include="Avalonia" Version="11.3.10"/>
+  <PackageReference Include="Avalonia.Desktop" Version="11.3.10"/>
+  <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.10"/>
+  <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.10"/>
+  <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+  <PackageReference Include="Avalonia.Diagnostics" Version="11.3.10">
+    <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+    <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+  </PackageReference>
+  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+  <PackageReference Include="SharpZipLib" Version="1.4.2" />
+  <PackageReference Include="System.Resources.Extensions" Version="10.0.1" />
+</ItemGroup>
 </Project>

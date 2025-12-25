@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
 namespace ThemeMii
 {
     partial class ThemeMii_CsmToMym
@@ -190,3 +191,4 @@ namespace ThemeMii
         private System.Windows.Forms.Label lbInfo;
     }
 }
+*/

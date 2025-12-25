@@ -18,8 +18,9 @@
 using System;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 
+/*
 namespace ThemeMii
 {
     public partial class ThemeMii_Main : Form
@@ -778,3 +779,4 @@ namespace ThemeMii
         }
     }
 }
+*/

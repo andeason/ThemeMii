@@ -18,12 +18,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using System.Drawing;
 using System.Net;
 
+/*
 namespace ThemeMii
 {
     partial class ThemeMii_Main
@@ -732,3 +733,4 @@ namespace ThemeMii
         }
     }
 }
+*/
