@@ -1,4 +1,6 @@
-﻿/* This file is part of ThemeMii
+﻿//TODO:  This is getting scrapped entirely once we move everything over to Avalonia
+
+/* This file is part of ThemeMii
  * Copyright (C) 2009 Leathl
  * 
  * ThemeMii is free software: you can redistribute it and/or

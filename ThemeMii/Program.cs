@@ -31,11 +31,13 @@ namespace ThemeMii
         static void Main(string[] args)
         {
             //TODO:  What is ash.exe?  I don't like that this is just an exe...
+            //We 
             if (!File.Exists("ash.exe"))
             {
                 //TODO:  Perhaps change to be an actual message?
                 Console.Error.WriteLine("ASH.exe couldn't be found in the application directory...");
-                Environment.Exit(-1);
+                //For now, we will keep running anyways.
+                //Environment.Exit(-1);
             }
 
             AppBuilder.Configure<App>()

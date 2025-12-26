@@ -23,7 +23,7 @@ using Avalonia.Input;
 
 //using System.Windows.Forms;
 
-/*
+
 namespace ThemeMii
 {
     public partial class ThemeMii_Main : Window
@@ -43,10 +43,12 @@ namespace ThemeMii
         public ThemeMii_Main()
         {
             InitializeComponent();
-            this.Icon = Properties.Resources.ThemeMii_Icon;
-            if (Properties.Settings.Default.firstRun) ShowDisclaimer();
+
+            // TODO: Need equivalent.
+            //if (Properties.Settings.Default.firstRun) ShowDisclaimer();
         }
 
+        /*
         private void ThemeMii_Main_Load(object sender, EventArgs e)
         {
             Thread updateThread = new Thread(new ThreadStart(this._updateCheck));
@@ -780,6 +782,6 @@ namespace ThemeMii
                 msImageSizeFromPng_Click(null, null);
             }
         }
+        */
     }
 }
-*/

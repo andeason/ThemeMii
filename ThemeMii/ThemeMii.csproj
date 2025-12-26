@@ -17,6 +17,7 @@
 <ItemGroup>
   <Content Include="License.txt" />
   <Content Include="Readme.txt" />
+  <AvaloniaResource Include="Resources\**" />
 </ItemGroup>
 <ItemGroup>
   <PackageReference Include="Avalonia" Version="11.3.10"/>
@@ -35,6 +36,9 @@
 <ItemGroup>
   <Compile Update="App.axaml.cs">
     <DependentUpon>app.axaml</DependentUpon>
+  </Compile>
+  <Compile Update="ThemeMii_Main.cs">
+    <DependentUpon>ThemeMii_Main.axaml</DependentUpon>
   </Compile>
 </ItemGroup>
 </Project>
