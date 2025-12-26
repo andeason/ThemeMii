@@ -9,8 +9,112 @@
         Width="800"
         Height="800"
         Loaded="ThemeMii_Main_Load"
-        
         >
-        
-        <TextBox>Theme Mii</TextBox>
+        <DockPanel>
+                <Menu DockPanel.Dock="Top">
+                        <MenuItem Header="File" >
+                                <MenuItem Header="New Ctrl+N" />
+                                <MenuItem Header="Open Ctrl+O" />
+                                <MenuItem Header="Save Ctrl+S" />
+                                <Separator />
+                                <MenuItem Header="Exit" />
+                        </MenuItem>
+                        <MenuItem Header="List" >
+                                <!--TODO:  Add later options -->
+                                <MenuItem Header="Add" />
+                                <MenuItem Header="Remove Del" />
+                                <MenuItem Header="Move Up Ctrl+Up" />
+                                <MenuItem Header="Move Down Ctrl+Down" />
+                                <MenuItem Header="Move To Start Ctrl+Left" />
+                                <MenuItem Header="Move to End Ctrl+Right" />
+                                <Separator />
+                                <MenuItem Header="Remove Missing Statics" />
+                        </MenuItem>
+                        <MenuItem Header="Options">
+                                <!-- TODO:  These all have checkboxes, need to see how to implement. -->
+                                <MenuItem Header="Auto-Source-Manage" />
+                                <MenuItem Header="Auto-Container-Manage" />
+                                <MenuItem Header="Ignore Missing Entries" />
+                                <Separator />
+                                <MenuItem Header="Image Size from TPL" />
+                                <MenuItem Header="Image Size from PNG" />
+                                <Separator />
+                                <MenuItem Header="Lz77 Compress Containers" />
+                                <MenuItem Header="Save NAND Backup Path" />
+                                <MenuItem Header="Keep Extracted Base App" />
+                                <MenuItem Header="Save Prompt when Exiting" />
+                                <Separator />
+                                <MenuItem Header="Standard System Menu" >
+                                        <MenuItem Header="3.2" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.0" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.1" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.2" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.3" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                </MenuItem>
+                                <MenuItem Header="Change NAND Backup Path" />
+                        </MenuItem>
+                        <MenuItem Header="Tools">
+                                <MenuItem Header="csm to mym" />
+                                <MenuItem Header="Browse Base App" />
+                                <MenuItem Header="Install Theme to Nand Backup" />
+                                <Separator />
+                                <MenuItem Header="Download Base App">
+                                        <MenuItem Header="3.2" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.0" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.1" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.2" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                        <MenuItem Header="4.3" >
+                                                <MenuItem Header="Japan" />
+                                                <MenuItem Header="Europe" />
+                                                <MenuItem Header="USA" />
+                                        </MenuItem>
+                                </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="?">
+                                <MenuItem Header="Help F1" />
+                                <MenuItem Header="Health Screen Tutorial" />
+                                <Separator />
+                                <MenuItem Header="About" />
+                        </MenuItem>
+                </Menu>
+                <TextBlock>
+                        WORK IN PROGRESS
+                </TextBlock>
+        </DockPanel>
 </Window>

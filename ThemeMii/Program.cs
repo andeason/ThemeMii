@@ -39,11 +39,16 @@ namespace ThemeMii
                 //For now, we will keep running anyways.
                 //Environment.Exit(-1);
             }
+            
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        }
 
-            AppBuilder.Configure<App>()
-                .LogToTrace()
-                .UsePlatformDetect()
-                .StartWithClassicDesktopLifetime(args);
+        public static AppBuilder BuildAvaloniaApp()
+        {
+            return
+                AppBuilder.Configure<App>()
+                    .LogToTrace()
+                    .UsePlatformDetect();
         }
     }
 }
