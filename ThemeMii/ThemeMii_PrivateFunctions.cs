@@ -21,17 +21,21 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+
 //using System.Windows.Forms;
 
-/*
+
 namespace ThemeMii
 {
     partial class ThemeMii_Main
     {
         private void ShowDisclaimer()
         {
-            MessageBox.Show("Only install themes if you have a proper brickprotection or you might get a brick beyond repair!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //MessageBox.Show("Only install themes if you have a proper brickprotection or you might get a brick beyond repair!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private bool CheckInet()
@@ -50,27 +54,31 @@ namespace ThemeMii
         private void Initialize()
         {
             lastSelected = -1;
-            lbxIniEntries.Items.Clear();
+            //lbxIniEntries.Items.Clear();
             ClearControls(this);
             SetControls(false);
             HidePanels();
-            if (!string.IsNullOrEmpty(tempDir)) ClearTempDir();
+            if (!string.IsNullOrEmpty(tempDir))
+                ClearTempDir();
             GetTempDir();
         }
 
         private void ClearControls(Control parentControl)
         {
+            return;
+            /*
             foreach (Control thisControl in parentControl.Controls)
             {
                 if (thisControl is Panel) ClearControls(thisControl);
                 else if (thisControl is TextBox) ((TextBox)thisControl).Text = string.Empty;
                 else if (thisControl is ComboBox) ((ComboBox)thisControl).SelectedIndex = 0;
             }
+            */
         }
 
         private void GetTempDir()
         {
-            tempDir = Path.GetTempPath() + Guid.NewGuid().ToString() + "\\";
+            tempDir = Path.GetTempPath() + Guid.NewGuid() + "\\";
             appOut = tempDir + "appOut\\";
             mymOut = tempDir + "mymOut\\";
 
@@ -101,16 +109,19 @@ namespace ThemeMii
         {
             MethodInvoker m;
 
+            /*
             if (enable)
                 m = new MethodInvoker(this._setControlsTrue);
             else
                 m = new MethodInvoker(this._setControlsFalse);
 
             this.Invoke(m);
+            */
         }
 
         private void SetControlsRecursive(Control parentCtrl, bool state)
         {
+            /*
             foreach (Control thisControl in parentCtrl.Controls)
             {
                 if (thisControl is Button) ((Button)thisControl).Enabled = state;
@@ -125,19 +136,23 @@ namespace ThemeMii
 
                 if (thisControl.Controls.Count > 0) SetControlsRecursive(thisControl, state);
             }
+            */
         }
 
         private void HidePanels()
         {
+            /*
             panContainer.Visible = false;
             panCustomImage.Visible = false;
             panStaticImage.Visible = false;
             panCustomData.Visible = false;
             panStaticData.Visible = false;
+            */
         }
 
         private void LoadSettings()
         {
+            /*
             settings.savePrompt = Properties.Settings.Default.savePrompt;
             msSavePrompt.Checked = settings.savePrompt;
             settings.lz77Containers = Properties.Settings.Default.lz77Containers;
@@ -205,10 +220,12 @@ namespace ThemeMii
             }
 
             settings.saveWindowChanges = true;
+            */
         }
 
         private void SaveSettings()
         {
+            /*
             Properties.Settings.Default.firstRun = false;
             Properties.Settings.Default.savePrompt = settings.savePrompt;
             Properties.Settings.Default.lz77Containers = settings.lz77Containers;
@@ -228,10 +245,13 @@ namespace ThemeMii
             Properties.Settings.Default.standardMenu = (int)GetBaseApp();
 
             Properties.Settings.Default.Save();
+            */
         }
 
         private BaseApp GetBaseApp()
         {
+            return BaseApp.E32;
+            /*
             if (ms32E.Checked) return BaseApp.E32;
             else if (ms32J.Checked) return BaseApp.J32;
             else if (ms32U.Checked) return BaseApp.U32;
@@ -245,10 +265,12 @@ namespace ThemeMii
             else if (ms42J.Checked) return BaseApp.J42;
             else if (ms42U.Checked) return BaseApp.U42;
             else return (BaseApp)0;
+            */
         }
 
         private void UncheckSysMenus()
         {
+            /*
             ms32E.Checked = false;
             ms32J.Checked = false;
             ms32U.Checked = false;
@@ -264,24 +286,31 @@ namespace ThemeMii
             ms42E.Checked = false;
             ms42J.Checked = false;
             ms42U.Checked = false;
+            */
         }
 
         private void ReportProgress(int progressPercentage, string statusText)
         {
+            /*
             _progressReporter p = new _progressReporter(this._reportProgress);
             this.Invoke(p, new ProgressChangedEventArgs(progressPercentage, (object)statusText));
+            */
         }
 
         private void ErrorBox(string message)
         {
+            /*
             boxInvoker b = new boxInvoker(this._errorBox);
             this.Invoke(b, message);
+            */
         }
 
         private void InfoBox(string message)
         {
+            /*
             boxInvoker b = new boxInvoker(this._infoBox);
             this.Invoke(b, message);
+            */
         }
 
         private void AddEntries()
@@ -292,7 +321,7 @@ namespace ThemeMii
                 for (int i=0;i<ini.Entries.Length;i++)
                 {
                     ReportProgress((i + 1) * 100 / ini.Entries.Length, "Loading entries...");
-                    lbxIniEntries.Items.Add(ini.Entries[i].entry);
+                    //lbxIniEntries.Items.Add(ini.Entries[i].entry);
                 }
                 ReportProgress(100, " ");
                 SetControls(true);
@@ -302,6 +331,7 @@ namespace ThemeMii
 
         private void SwapEntries(int selectedIndex, bool up)
         {
+            /*
             if (selectedIndex > -1)
             {
                 int bIndex = (up) ? selectedIndex - 1 : selectedIndex + 1;
@@ -316,10 +346,12 @@ namespace ThemeMii
                     lbxIniEntries.SelectedIndex = bIndex;
                 }
             }
+            */
         }
 
         private void SaveSelected()
         {
+            /*
             if (lbxIniEntries.SelectedIndex == -1) return;
 
             iniEntry tempEntry = ini.GetEntry(lbxIniEntries.Items[lbxIniEntries.SelectedIndex].ToString());
@@ -436,6 +468,7 @@ namespace ThemeMii
 
                 ini.EditEntry(tempEntry);
             }
+            */
         }
 
         private void AddEntry(iniEntry.EntryType entryType)
@@ -454,8 +487,8 @@ namespace ThemeMii
             newEntry.format = iniEntry.TplFormat.RGB5A3;
 
             ini.EntryList.Add(newEntry);
-            lbxIniEntries.Items.Add(newEntry.entry);
-            lbxIniEntries.SelectedIndex = lbxIniEntries.Items.Count - 1;
+            //lbxIniEntries.Items.Add(newEntry.entry);
+            //lbxIniEntries.SelectedIndex = lbxIniEntries.Items.Count - 1;
         }
 
         private int GetLastEntryNum(iniEntry.EntryType entryType)
@@ -482,8 +515,9 @@ namespace ThemeMii
 
         private void CreateCsm(string appFile, string nandBackupAppPath)
         {
+            /*
             SaveSelected();
-
+            
             if (string.IsNullOrEmpty(nandBackupAppPath))
             {
                 SaveFileDialog sfd = new SaveFileDialog();
@@ -529,10 +563,12 @@ namespace ThemeMii
                 Thread workerThread = new Thread(new ParameterizedThreadStart(this._saveMym));
                 workerThread.Start(cInfo);
             }
+            */
         }
 
         private void SaveMym(bool exitAfter)
         {
+            /*
             if (lbxIniEntries.Items.Count > 0)
             {
                 SaveSelected();
@@ -560,6 +596,7 @@ namespace ThemeMii
                     workerThread.Start(cInfo);
                 }
             }
+            */
         }
 
         private bool CheckEntry(iniEntry entry)
@@ -615,6 +652,7 @@ namespace ThemeMii
 
         private void RemoveEntry(int index)
         {
+            /*
             try
             {
                 string entry = lbxIniEntries.Items[index].ToString();
@@ -628,10 +666,12 @@ namespace ThemeMii
                     lbxIniEntries.SelectedIndex = index - 1;
             }
             catch { }
+            */
         }
 
         private void DeASH(iniEntry mymC, string appOut)
         {
+            /*
             ProcessStartInfo pInfo = new ProcessStartInfo(Application.StartupPath + "\\ASH.exe", string.Format("\"{0}\"", appOut + mymC.file));
             pInfo.UseShellExecute = false;
             //pInfo.RedirectStandardOutput = true;
@@ -641,10 +681,12 @@ namespace ThemeMii
             p.WaitForExit();
 
             //ErrorBox(p.StandardOutput.ReadToEnd() + "\n\n" + mymC.file);
+            */
         }
 
         private void DeASH(string path)
         {
+            /*
             ProcessStartInfo pInfo = new ProcessStartInfo(Application.StartupPath + "\\ASH.exe", string.Format("\"{0}\"", path));
             pInfo.UseShellExecute = false;
             //pInfo.RedirectStandardOutput = true;
@@ -654,16 +696,20 @@ namespace ThemeMii
             p.WaitForExit();
 
             //ErrorBox(p.StandardOutput.ReadToEnd() + "\n\n" + mymC.file);
+            */
         }
 
         private Image ResizeImage(Image img, int x, int y)
         {
+            return null;
+            /*
             Image newimage = new Bitmap(x, y);
             using (Graphics gfx = Graphics.FromImage(newimage))
             {
                 gfx.DrawImage(img, 0, 0, x, y);
             }
             return newimage;
+            */
         }
 
         private bool HashCheck(byte[] newFile, byte[] tmdHash)
@@ -676,6 +722,8 @@ namespace ThemeMii
 
         private bool CommonKeyCheck()
         {
+            return false;
+            /*
             if (!File.Exists(Application.StartupPath + "\\common-key.bin"))
             {
                 ThemeMii_ckInput ib = new ThemeMii_ckInput();
@@ -688,10 +736,13 @@ namespace ThemeMii
                 else return false;
             }
             else return true;
+            */
         }
 
         private BaseApp GetStandardBaseApp()
         {
+            return BaseApp.E32;
+            /*
             if (ms32E.Checked) return BaseApp.E32;
             if (ms32U.Checked) return BaseApp.U32;
             if (ms32J.Checked) return BaseApp.J32;
@@ -705,6 +756,7 @@ namespace ThemeMii
             if (ms42U.Checked) return BaseApp.U42;
             if (ms42J.Checked) return BaseApp.J42;
             return (BaseApp)0;
+            */
         }
 
         private bool EntryExists(iniEntry entry, List<string[]> list)
@@ -724,6 +776,7 @@ namespace ThemeMii
 
         private void AppBrowse()
         {
+            /*
             BaseApp standardApp = GetStandardBaseApp();
             if (standardApp == (BaseApp)0) { ErrorBox("You have to choose a Standard System Menu!"); return; }
 
@@ -745,10 +798,12 @@ namespace ThemeMii
                 workerThread.Start(new object[] { standardApp, browsePath });
             }
             else OpenAppBrowser(browsePath);
+            */
         }
 
         private void OpenAppBrowser(string browsePath)
         {
+            /*
             if (!Directory.Exists(browsePath)) { ErrorBox("An error occured!"); return; }
 
             ThemeMii_AppBrowse appBrowser = new ThemeMii_AppBrowse();
@@ -794,6 +849,7 @@ namespace ThemeMii
                 }
                 else if (panContainer.Visible) tbContainerFile.Text = appBrowser.SelectedPath;
             }
+            */
         }
 
         private bool StringExistsInStringArray(string theString, string[] theStringArray)
@@ -835,4 +891,4 @@ namespace ThemeMii
         }
     }
 }
-*/
+

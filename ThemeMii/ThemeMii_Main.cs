@@ -20,6 +20,7 @@ using System.IO;
 using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 //using System.Windows.Forms;
 
@@ -28,7 +29,6 @@ namespace ThemeMii
 {
     public partial class ThemeMii_Main : Window
     {
-        public const string version = "0.4";
         private mymini ini;
         private string tempDir;
         private string appOut;
@@ -48,16 +48,19 @@ namespace ThemeMii
             //if (Properties.Settings.Default.firstRun) ShowDisclaimer();
         }
 
-        /*
-        private void ThemeMii_Main_Load(object sender, EventArgs e)
+        
+        private void ThemeMii_Main_Load(object? sender, RoutedEventArgs e)
         {
-            Thread updateThread = new Thread(new ThreadStart(this._updateCheck));
-            updateThread.Start();
-
-            this.Text = this.Text.Replace("X", version);
+            //TODO:  This points to the old update site.  Perhaps implement when we have further updated?
+            //Thread updateThread = new Thread(new ThreadStart(this._updateCheck));
+            //updateThread.Start();
+            var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Title = Title!.Replace("X", currentVersion?.ToString() ?? "Unknown");
             Initialize();
             LoadSettings();
         }
+        
+        /*
 
         private void ThemeMii_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
