@@ -18,12 +18,15 @@
 using System;
 using System.IO;
 using System.Threading;
+using Avalonia.Controls;
+using Avalonia.Input;
+
 //using System.Windows.Forms;
 
 /*
 namespace ThemeMii
 {
-    public partial class ThemeMii_Main : Form
+    public partial class ThemeMii_Main : Window
     {
         public const string version = "0.4";
         private mymini ini;

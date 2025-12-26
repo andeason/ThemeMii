@@ -12,6 +12,7 @@
   <TargetFramework>net9.0</TargetFramework>
   <Nullable>enable</Nullable>
   <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 </PropertyGroup>
 <ItemGroup>
   <Content Include="License.txt" />
@@ -30,5 +31,10 @@
   <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
   <PackageReference Include="SharpZipLib" Version="1.4.2" />
   <PackageReference Include="System.Resources.Extensions" Version="10.0.1" />
+</ItemGroup>
+<ItemGroup>
+  <Compile Update="App.axaml.cs">
+    <DependentUpon>app.axaml</DependentUpon>
+  </Compile>
 </ItemGroup>
 </Project>
