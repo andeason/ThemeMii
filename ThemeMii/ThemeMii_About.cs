@@ -19,25 +19,28 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+
 //using System.Windows.Forms;
 
-/*
+
 namespace ThemeMii
 {
-    public partial class ThemeMii_About : Form
+    public partial class ThemeMii_About : Window
     {
         public ThemeMii_About()
         {
             InitializeComponent();
         }
 
-        private void ThemeMii_About_Load(object sender, EventArgs e)
+        private void ThemeMii_About_Load(object? sender, RoutedEventArgs e)
         {
-            lbVersion.Text = lbVersion.Text.Replace("X", ThemeMii_Main.version);
-            CenterToParent();
+            var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            VersionInfo.Text = VersionInfo.Text!.Replace("X", currentVersion?.ToString() ?? "Unknown");
         }
     }
 }
-*/

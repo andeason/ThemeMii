@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+        x:Class="ThemeMii.ThemeMii_About"
+        Title="About"
+        Loaded="ThemeMii_About_Load"
+        Width="400" Height="300">
+        <StackPanel HorizontalAlignment="Center">
+                <Image Width="128" Height="128" Source="/Resources/ThemeMiiFull.png" />
+                <TextBlock Name="VersionInfo" HorizontalAlignment="Center">Version X MOD by Leathl</TextBlock>
+                <TextBlock HorizontalAlignment="Center">Thanks</TextBlock>
+                <TextBlock HorizontalAlignment="Center">icefire/ Xuzz for the original Mymenu</TextBlock>
+                <TextBlock HorizontalAlignment="Center">(and everything related)</TextBlock>
+                <TextBlock HorizontalAlignment="Center">ic#code for #ziplib</TextBlock>
+                <TextBlock HorizontalAlignment="Center">crediar for ash.exe</TextBlock>
+        </StackPanel>
+</Window>

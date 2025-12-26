@@ -40,5 +40,8 @@
   <Compile Update="ThemeMii_Main.cs">
     <DependentUpon>ThemeMii_Main.axaml</DependentUpon>
   </Compile>
+  <Compile Update="ThemeMii_About.cs">
+    <DependentUpon>ThemeMii_About.axaml</DependentUpon>
+  </Compile>
 </ItemGroup>
 </Project>

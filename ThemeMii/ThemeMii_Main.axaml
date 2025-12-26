@@ -110,7 +110,7 @@
                                 <MenuItem Header="Help F1" />
                                 <MenuItem Header="Health Screen Tutorial" />
                                 <Separator />
-                                <MenuItem Header="About" />
+                                <MenuItem Click="msAbout_Click" Header="About" />
                         </MenuItem>
                 </Menu>
                 <TextBlock>

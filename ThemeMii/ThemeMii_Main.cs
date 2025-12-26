@@ -518,11 +518,15 @@ namespace ThemeMii
             }
         }
 
-        private void msAbout_Click(object sender, EventArgs e)
+        */
+        private void msAbout_Click(object sender, RoutedEventArgs e)
         {
-            ThemeMii_About aboutWindow = new ThemeMii_About();
-            aboutWindow.ShowDialog();
+            var windowOwner = this;
+            var aboutWindow = new ThemeMii_About();
+            aboutWindow.ShowDialog(windowOwner);
         }
+        
+        /*
 
         private void DownloadBaseApp_Click(object sender, EventArgs e)
         {
