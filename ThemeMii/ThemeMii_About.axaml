@@ -6,6 +6,7 @@
         x:Class="ThemeMii.ThemeMii_About"
         Title="About"
         Loaded="ThemeMii_About_Load"
+        Icon="Resources/ThemeMii_Icon.ico"
         Width="400" Height="300">
         <StackPanel HorizontalAlignment="Center">
                 <Image Width="128" Height="128" Source="/Resources/ThemeMiiFull.png" />

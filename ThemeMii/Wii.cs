@@ -29,6 +29,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Bitmap = Avalonia.Media.Imaging.Bitmap;
+using Image = Avalonia.Controls.Image;
 
 namespace Wii
 {

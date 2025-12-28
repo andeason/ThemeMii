@@ -107,8 +107,8 @@
                                 </MenuItem>
                         </MenuItem>
                         <MenuItem Header="?">
-                                <MenuItem Header="Help F1" />
-                                <MenuItem Header="Health Screen Tutorial" />
+                                <MenuItem Click="msHelp_Click" Header="Help F1" />
+                                <MenuItem Click="msHealthTutorial_Click" Header="Health Screen Tutorial" />
                                 <Separator />
                                 <MenuItem Click="msAbout_Click" Header="About" />
                         </MenuItem>

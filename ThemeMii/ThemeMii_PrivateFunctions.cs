@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Image = Avalonia.Controls.Image;
 
 //using System.Windows.Forms;
 

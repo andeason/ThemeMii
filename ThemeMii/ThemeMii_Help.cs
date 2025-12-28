@@ -15,30 +15,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//using System.Windows.Forms;
+using System;
+using System.IO;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 
-/*
 namespace ThemeMii
 {
-    public partial class ThemeMii_Help : Form
+    public partial class ThemeMii_Help : Window
     {
-        private bool tutorial = false;
-
-        public bool Tutorial { get { return tutorial; } set { tutorial = value; } }
+        public bool Tutorial { get; set; }
 
         public ThemeMii_Help()
         {
             InitializeComponent();
-            this.Icon = Properties.Resources.ThemeMii_Icon;
         }
 
-        private void ThemeMii_Help_Load(object sender, System.EventArgs e)
+        //TODO:  This is pretty broken without richtext.  Look into a way to resolve?
+        private void ThemeMii_Help_Load(object sender, RoutedEventArgs e)
         {
-            if (tutorial) rtbBasicInstructions.Rtf = Properties.Resources.HealthTut;
-            else rtbBasicInstructions.Rtf = Properties.Resources.ThemeMiiBasics;
-
-            CenterToParent();
+            
+            string rtfInfo = "See help online";
+            try
+            {
+                rtfInfo = Tutorial
+                    ? File.ReadAllText("../../../Resources/HealthTut.rtf")
+                    : File.ReadAllText("../../../Resources/ThemeMiiBasics.rtf");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                Console.Error.WriteLine("Unable to dislay, so falling back.");
+            }
+            
+            HelpInfo.Text = rtfInfo;
+                
         }
     }
 }
-*/

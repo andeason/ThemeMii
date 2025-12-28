@@ -654,13 +654,17 @@ namespace ThemeMii
         {
             settings.lz77Containers = msLz77Containers.Checked;
         }
+        
+        */
 
-        private void msHelp_Click(object sender, EventArgs e)
+        private void msHelp_Click(object? sender, RoutedEventArgs e)
         {
-            ThemeMii_Help help = new ThemeMii_Help();
-            help.Show();
+            var windowOwner = this;
+            var helpWindow = new ThemeMii_Help();
+            helpWindow.ShowDialog(windowOwner);
         }
 
+        /*
         private void msInstallToNandBackup_Click(object sender, EventArgs e)
         {
             if (lbxIniEntries.Items.Count > 0 && pbProgress.Value == 100)
@@ -772,12 +776,16 @@ namespace ThemeMii
             }
         }
 
-        private void msHealthTutorial_Click(object sender, EventArgs e)
+        */
+        private void msHealthTutorial_Click(object? sender, RoutedEventArgs e)
         {
-            ThemeMii_Help help = new ThemeMii_Help();
-            help.Tutorial = true;
-            help.Show();
+            var windowOwner = this;
+            var helpWindow = new ThemeMii_Help();
+            helpWindow.Tutorial = true;
+            helpWindow.ShowDialog(windowOwner);
         }
+        
+        /*
 
         private void msImageSizeFromTpl_Click(object sender, EventArgs e)
         {
