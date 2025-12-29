@@ -610,7 +610,6 @@ namespace ThemeMii
                     bApp = BaseApp.K43;
                     titleVersion = "518";
                     break;
-                //TODO:  Fairly certain 43E is not considered, so i'm going to need to figure out these...
                 default: 
                     return;
             }
