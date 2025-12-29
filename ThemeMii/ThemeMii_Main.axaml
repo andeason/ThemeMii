@@ -103,6 +103,7 @@
                                                 <MenuItem Name="msDownload43J" Header="Japan" />
                                                 <MenuItem Name="msDownload43E" Header="Europe" />
                                                 <MenuItem Name="msDownload43U" Header="USA" />
+                                                <MenuItem Name="msDownload43K" Header="Korea" />
                                         </MenuItem>
                                 </MenuItem>
                         </MenuItem>

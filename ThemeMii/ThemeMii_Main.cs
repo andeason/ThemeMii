@@ -594,6 +594,22 @@ namespace ThemeMii
                     bApp = BaseApp.E42;
                     titleVersion = "482";
                     break;
+                case "msDownload43J":
+                    bApp = BaseApp.J43;
+                    titleVersion = "512";
+                    break;
+                case "msDownload43E":
+                    bApp = BaseApp.E43;
+                    titleVersion = "513";
+                    break;
+                case "msDownload43U":
+                    bApp = BaseApp.U43;
+                    titleVersion = "514";
+                    break;
+                case "msDownload43K":
+                    bApp = BaseApp.K43;
+                    titleVersion = "518";
+                    break;
                 //TODO:  Fairly certain 43E is not considered, so i'm going to need to figure out these...
                 default: 
                     return;

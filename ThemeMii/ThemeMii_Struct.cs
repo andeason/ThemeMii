@@ -63,6 +63,11 @@ namespace ThemeMii
         E41 = 0x7e,
         J42 = 0x84,
         U42 = 0x87,
-        E42 = 0x8a
+        E42 = 0x8a,
+        J43 = 0x94,
+        U43 = 0x9a,
+        E43 = 0x97,
+        K43 = 0x9d,
+        
     }
 }
