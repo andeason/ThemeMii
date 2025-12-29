@@ -46,29 +46,29 @@
                                 <Separator />
                                 <MenuItem Header="Standard System Menu" >
                                         <MenuItem Header="3.2" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="MmsDownload32J" Header="Japan" />
+                                                <MenuItem Name="MmsDownload32E" Header="Europe" />
+                                                <MenuItem Name="MmsDownload32U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.0" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="MmsDownload40J" Header="Japan" />
+                                                <MenuItem Name="MmsDownload40E" Header="Europe" />
+                                                <MenuItem Name="MmsDownload40U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.1" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="MmsDownload41J" Header="Japan" />
+                                                <MenuItem Name="MmsDownload41E" Header="Europe" />
+                                                <MenuItem Name="MmsDownload41U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.2" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="MmsDownload42J" Header="Japan" />
+                                                <MenuItem Name="MmsDownload42E" Header="Europe" />
+                                                <MenuItem Name="MmsDownload42U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.3" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="MmsDownload43J" Header="Japan" />
+                                                <MenuItem Name="MmsDownload43E" Header="Europe" />
+                                                <MenuItem Name="MmsDownload43U" Header="USA" />
                                         </MenuItem>
                                 </MenuItem>
                                 <MenuItem Header="Change NAND Backup Path" />
@@ -78,31 +78,31 @@
                                 <MenuItem Header="Browse Base App" />
                                 <MenuItem Header="Install Theme to Nand Backup" />
                                 <Separator />
-                                <MenuItem Header="Download Base App">
+                                <MenuItem Header="Download Base App" Click="DownloadBaseApp_Click">
                                         <MenuItem Header="3.2" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="msDownload32J" Header="Japan" />
+                                                <MenuItem Name="msDownload32E" Header="Europe" />
+                                                <MenuItem Name="msDownload32U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.0" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="msDownload40J" Header="Japan" />
+                                                <MenuItem Name="msDownload40E" Header="Europe" />
+                                                <MenuItem Name="msDownload40U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.1" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="msDownload41J" Header="Japan" />
+                                                <MenuItem Name="msDownload41E" Header="Europe" />
+                                                <MenuItem Name="msDownload41U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.2" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="msDownload42J" Header="Japan" />
+                                                <MenuItem Name="msDownload42E" Header="Europe" />
+                                                <MenuItem Name="msDownload42U" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.3" >
-                                                <MenuItem Header="Japan" />
-                                                <MenuItem Header="Europe" />
-                                                <MenuItem Header="USA" />
+                                                <MenuItem Name="msDownload43J" Header="Japan" />
+                                                <MenuItem Name="msDownload43E" Header="Europe" />
+                                                <MenuItem Name="msDownload43U" Header="USA" />
                                         </MenuItem>
                                 </MenuItem>
                         </MenuItem>

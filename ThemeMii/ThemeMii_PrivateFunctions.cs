@@ -23,8 +23,10 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using Image = Avalonia.Controls.Image;
 
 //using System.Windows.Forms;
@@ -79,9 +81,9 @@ namespace ThemeMii
 
         private void GetTempDir()
         {
-            tempDir = Path.GetTempPath() + Guid.NewGuid() + "\\";
-            appOut = tempDir + "appOut\\";
-            mymOut = tempDir + "mymOut\\";
+            tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            appOut = Path.Combine(tempDir,"appOut");
+            mymOut = Path.Combine(tempDir,"mymOut");
 
             Directory.CreateDirectory(appOut);
             Directory.CreateDirectory(mymOut);
@@ -721,23 +723,26 @@ namespace ThemeMii
             return Wii.Tools.CompareByteArrays(fileHash, tmdHash);
         }
 
-        private bool CommonKeyCheck()
+        private async Task<bool> CommonKeyCheck(Window currentWindow)
         {
-            return false;
-            /*
-            if (!File.Exists(Application.StartupPath + "\\common-key.bin"))
+            var commonKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "common-key.bin");
+            if (!File.Exists(commonKeyPath))
             {
                 ThemeMii_ckInput ib = new ThemeMii_ckInput();
-
-                if (ib.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                var result = await ib.ShowDialog<string>(currentWindow);
+                
+                if (!string.IsNullOrEmpty(result))
                 {
-                    Wii.Tools.CreateCommonKey(ib.Input, Application.StartupPath);
+                    Wii.Tools.CreateCommonKey(result, commonKeyPath);
                     return true;
                 }
-                else return false;
             }
-            else return true;
-            */
+            else
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private BaseApp GetStandardBaseApp()

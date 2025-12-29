@@ -21,43 +21,43 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-//using System.Windows.Forms;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 
-/*
+
 namespace ThemeMii
 {
-    public partial class ThemeMii_ckInput : Form
+    public partial class ThemeMii_ckInput : Window
     {
-        public string Input { get { return tbInput.Text; } }
+        public string Input { get; set; }
 
         public ThemeMii_ckInput()
         {
             InitializeComponent();
         }
 
-        private void ThemeMii_ckInput_Load(object sender, EventArgs e)
+
+        private void ThemeMii_ckInput_Load(object? sender, RoutedEventArgs e)
         {
-            CenterToParent();
-            tbInput.Select();
+            BoxInput.Focus();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object? sender, RoutedEventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Close();
+            Close(null);
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void btnOK_Click(object? sender, RoutedEventArgs e)
         {
-            if (tbInput.Text != "45e")
+            Input = BoxInput.Text ?? "";
+            if (Input != "45e")
             {
-                tbInput.SelectAll();
+                BoxInput.SelectAll();
                 return;
             }
 
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Close();
+            Close(Input);
         }
+        
     }
 }
-*/

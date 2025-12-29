@@ -23,12 +23,13 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using System.Drawing;
 using System.Net;
+using System.Threading.Tasks;
 
-/*
 namespace ThemeMii
 {
     partial class ThemeMii_Main
     {
+        /*
         private void _updateCheck()
         {
             if (CheckInet() == true)
@@ -146,11 +147,12 @@ namespace ThemeMii
             this.Invoke(b, browsePath);
         }
 
-        private void _downloadBaseApp(object _infos)
+        */
+        private async Task DownloadBaseApp(object _infos)
         {
             string[] infos = _infos as string[];
             string nusUrl = "http://nus.cdn.shop.wii.com/ccs/download";
-            string _tempDir = tempDir + "nusTemp\\";
+            string _tempDir = Path.Combine(tempDir, "nusTemp");
             string titleID = "0000000100000002";
             string fileName = infos[0];
             string titleVersion = infos[1];
@@ -160,7 +162,7 @@ namespace ThemeMii
             WebClient wcDownload = new WebClient();
 
             ReportProgress(0, "Grabbing Ticket...");
-            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}", nusUrl, titleID, "cetk"), _tempDir + "cetk"); }
+            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}", nusUrl, titleID, "cetk"), Path.Combine(_tempDir,"cetk")); }
             catch (Exception ex)
             {
                 Directory.Delete(_tempDir, true);
@@ -170,7 +172,7 @@ namespace ThemeMii
             }
 
             ReportProgress(10, "Grabbing Tmd...");
-            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}{3}", nusUrl, titleID, "tmd.", titleVersion), _tempDir + "tmd"); }
+            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}{3}", nusUrl, titleID, "tmd.", titleVersion), Path.Combine(_tempDir,"tmd")); }
             catch (Exception ex)
             {
                 Directory.Delete(_tempDir, true);
@@ -180,7 +182,7 @@ namespace ThemeMii
             }
 
             ReportProgress(20, "Grabbing Content...");
-            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}", nusUrl, titleID, fileName), _tempDir + fileName); }
+            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}", nusUrl, titleID, fileName), Path.Combine(_tempDir,fileName)); }
             catch (Exception ex)
             {
                 Directory.Delete(_tempDir, true);
@@ -191,12 +193,12 @@ namespace ThemeMii
 
             //Gather information
             ReportProgress(80, "Gathering Data...");
-            byte[] encTitleKey = Wii.Tools.GetPartOfByteArray(File.ReadAllBytes(_tempDir + "cetk"), 447, 16);
-            byte[] commonkey = File.ReadAllBytes(Application.StartupPath + "\\common-key.bin");
+            byte[] encTitleKey = Wii.Tools.GetPartOfByteArray(File.ReadAllBytes(Path.Combine(_tempDir,"cetk")), 447, 16);
+            byte[] commonkey = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(),"common-key.bin"));
             byte[] decTitleKey = Wii.WadEdit.GetTitleKey(encTitleKey, Wii.Tools.HexStringToByteArray(titleID));
 
             int contentIndex = -1;
-            string[,] contInfo = Wii.WadInfo.GetContentInfo(File.ReadAllBytes(_tempDir + "tmd"));
+            string[,] contInfo = Wii.WadInfo.GetContentInfo(File.ReadAllBytes(Path.Combine(_tempDir,"tmd")));
             for (int i = 0; i < contInfo.GetLength(0); i++)
             {
                 if (contInfo[i, 0] == fileName) { contentIndex = i; break; }
@@ -207,7 +209,7 @@ namespace ThemeMii
             //Decrypt appfile
             ReportProgress(85, "Decrypting Content...");
             byte[] decContent = Wii.WadEdit.DecryptContent(
-                File.ReadAllBytes(_tempDir + fileName), File.ReadAllBytes(_tempDir + "tmd"), contentIndex, decTitleKey);
+                File.ReadAllBytes(Path.Combine(_tempDir,fileName)), File.ReadAllBytes(Path.Combine(_tempDir,"tmd")), contentIndex, decTitleKey);
 
             Array.Resize(ref decContent, int.Parse(contInfo[contentIndex, 3]));
 
@@ -230,6 +232,8 @@ namespace ThemeMii
             ReportProgress(100, " ");
             InfoBox(string.Format("Downloaded base app to:\n{0}", infos[2]));
         }
+        
+        /*
 
         private void _createCsm(string savePath, string appPath, string mymPath)
         {
@@ -731,6 +735,6 @@ namespace ThemeMii
             if (lbStatus.Text != (string)e.UserState && !string.IsNullOrEmpty((string)e.UserState))
                 lbStatus.Text = (string)e.UserState;
         }
+        */
     }
 }
-*/

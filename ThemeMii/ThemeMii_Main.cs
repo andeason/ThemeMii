@@ -21,6 +21,7 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 
 //using System.Windows.Forms;
 
@@ -526,18 +527,24 @@ namespace ThemeMii
             aboutWindow.ShowDialog(windowOwner);
         }
         
-        /*
-
-        private void DownloadBaseApp_Click(object sender, EventArgs e)
+        
+        private async void DownloadBaseApp_Click(object sender, RoutedEventArgs e)
         {
-            if (pbProgress.Value < 100) return;
-            if (!CommonKeyCheck()) return;
+            //TODO:  Fairly certain even with this bar, there are probably other ways to do this check...
+            //I'll see if this can be changed later on.
+            //if (pbProgress.Value < 100) return;
+            var commonKeyCreated = await CommonKeyCheck(this);
+            if (!commonKeyCreated)
+                return;
 
-            ToolStripMenuItem cmSender = sender as ToolStripMenuItem;
+            var menuSource = e.Source as MenuItem;
+            if (menuSource == null)
+                return;
+
             string titleVersion;
-            BaseApp bApp = new BaseApp();
+            var bApp = new BaseApp();
 
-            switch (cmSender.Name)
+            switch (menuSource.Name)
             {
                 case "msDownload32J":
                     bApp = BaseApp.J32;
@@ -587,20 +594,22 @@ namespace ThemeMii
                     bApp = BaseApp.E42;
                     titleVersion = "482";
                     break;
+                //TODO:  Fairly certain 43E is not considered, so i'm going to need to figure out these...
                 default: return;
             }
 
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "app|*.app";
-            sfd.FileName = ((int)bApp).ToString("x8");
-
-            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
-                Thread workerThread = new Thread(new ParameterizedThreadStart(this._downloadBaseApp));
-                workerThread.Start(new string[] { ((int)bApp).ToString("x8"), titleVersion, sfd.FileName });
-            }
+                DefaultExtension = "app",
+                SuggestedFileName = ((int)bApp).ToString("x8")
+            });
+
+            if (result != null)
+                await DownloadBaseApp(new string[] { ((int)bApp).ToString("x8"), titleVersion, result.Name });
         }
 
+        /*
         private void msCsmToMym_Click(object sender, EventArgs e)
         {
             if (pbProgress.Value == 100)

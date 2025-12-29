@@ -295,8 +295,8 @@ namespace Wii
         /// Creates the Common Key
         /// </summary>
         /// <param name="fat">Must be "45e"</param>
-        /// <param name="destination">Destination Path</param>
-        public static void CreateCommonKey(string fat, string destinationpath)
+        /// <param name="destination">Destination Path.  Assume that the path has been previously set</param>
+        public static void CreateCommonKey(string fat, string commonKeyDestinationPath)
         {
             //What an effort, lol
             byte[] encryptedwater = new byte[] { 0x4d, 0x89, 0x21, 0x34, 0x62, 0x81, 0xe4, 0x02, 0x37, 0x36, 0xc4, 0xb4, 0xde, 0x40, 0x32, 0xab };
@@ -343,8 +343,7 @@ namespace Wii
             for (int i = 0; i < 32; i += 2)
                 cheese[++count] = byte.Parse(water.Remove(0, i).Remove(2), System.Globalization.NumberStyles.HexNumber);
 
-            if (destinationpath[destinationpath.Length - 1] != '\\') destinationpath = destinationpath + "\\";
-            using (FileStream keystream = new FileStream(destinationpath + "\\common-key.bin", FileMode.Create))
+            using (FileStream keystream = new FileStream(commonKeyDestinationPath, FileMode.Create))
             {
                 keystream.Write(cheese, 0, cheese.Length);
             }

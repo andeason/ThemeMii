@@ -46,5 +46,8 @@
   <Compile Update="ThemeMii_Help.cs">
     <DependentUpon>ThemeMii_Help.axaml</DependentUpon>
   </Compile>
+  <Compile Update="ThemeMii_ckInput.cs">
+    <DependentUpon>ThemeMii_chkInput.axaml</DependentUpon>
+  </Compile>
 </ItemGroup>
 </Project>
