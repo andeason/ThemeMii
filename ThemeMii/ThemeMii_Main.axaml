@@ -113,6 +113,8 @@
                                 <MenuItem Click="msAbout_Click" Header="About" />
                         </MenuItem>
                 </Menu>
+                
+                <ProgressBar  DockPanel.Dock="Bottom" Minimum="0" Maximum ="100" ShowProgressText="True" Name="ActionBar"/>
                 <TextBlock>
                         WORK IN PROGRESS
                 </TextBlock>

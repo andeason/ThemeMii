@@ -148,44 +148,41 @@ namespace ThemeMii
         }
 
         */
-        private async Task DownloadBaseApp(object _infos)
+        private async Task DownloadBaseApp(string fileName, string titleVersion, string destinationName)
         {
-            string[] infos = _infos as string[];
-            string nusUrl = "http://nus.cdn.shop.wii.com/ccs/download";
-            string _tempDir = Path.Combine(tempDir, "nusTemp");
-            string titleID = "0000000100000002";
-            string fileName = infos[0];
-            string titleVersion = infos[1];
+            const string nusUrl = "http://nus.cdn.shop.wii.com/ccs/download";
+            var nusTempDir = Path.Combine(tempDir, "nusTemp");
+            const string titleId = "0000000100000002";
 
             //Grab cetk + appfile
-            Directory.CreateDirectory(_tempDir);
+            Directory.CreateDirectory(nusTempDir);
             WebClient wcDownload = new WebClient();
 
             ReportProgress(0, "Grabbing Ticket...");
-            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}", nusUrl, titleID, "cetk"), Path.Combine(_tempDir,"cetk")); }
+            try { wcDownload.DownloadFile($"{nusUrl}/{titleId}/cetk", Path.Combine(nusTempDir,"cetk")); }
             catch (Exception ex)
             {
-                Directory.Delete(_tempDir, true);
+                Directory.Delete(nusTempDir, true);
                 ErrorBox("Downloading Failed...\n" + ex.Message);
                 ReportProgress(100, " ");
                 return;
             }
 
             ReportProgress(10, "Grabbing Tmd...");
-            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}{3}", nusUrl, titleID, "tmd.", titleVersion), Path.Combine(_tempDir,"tmd")); }
+            try { wcDownload.DownloadFile($"{nusUrl}/{titleId}/tmd.{titleVersion}", Path.Combine(nusTempDir,"tmd")); }
             catch (Exception ex)
             {
-                Directory.Delete(_tempDir, true);
+                Directory.Delete(nusTempDir, true);
                 ErrorBox("Downloading Failed...\n" + ex.Message);
                 ReportProgress(100, " ");
                 return;
             }
 
             ReportProgress(20, "Grabbing Content...");
-            try { wcDownload.DownloadFile(string.Format("{0}/{1}/{2}", nusUrl, titleID, fileName), Path.Combine(_tempDir,fileName)); }
+            try { wcDownload.DownloadFile($"{nusUrl}/{titleId}/{fileName}", Path.Combine(nusTempDir,fileName)); }
             catch (Exception ex)
             {
-                Directory.Delete(_tempDir, true);
+                Directory.Delete(nusTempDir, true);
                 ErrorBox("Downloading Failed...\n" + ex.Message);
                 ReportProgress(100, " ");
                 return;
@@ -193,23 +190,22 @@ namespace ThemeMii
 
             //Gather information
             ReportProgress(80, "Gathering Data...");
-            byte[] encTitleKey = Wii.Tools.GetPartOfByteArray(File.ReadAllBytes(Path.Combine(_tempDir,"cetk")), 447, 16);
-            byte[] commonkey = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(),"common-key.bin"));
-            byte[] decTitleKey = Wii.WadEdit.GetTitleKey(encTitleKey, Wii.Tools.HexStringToByteArray(titleID));
+            var encTitleKey = Wii.Tools.GetPartOfByteArray(File.ReadAllBytes(Path.Combine(nusTempDir,"cetk")), 447, 16);
+            var decTitleKey = Wii.WadEdit.GetTitleKey(encTitleKey, Wii.Tools.HexStringToByteArray(titleId));
 
-            int contentIndex = -1;
-            string[,] contInfo = Wii.WadInfo.GetContentInfo(File.ReadAllBytes(Path.Combine(_tempDir,"tmd")));
+            var contentIndex = -1;
+            var contInfo = Wii.WadInfo.GetContentInfo(File.ReadAllBytes(Path.Combine(nusTempDir,"tmd")));
             for (int i = 0; i < contInfo.GetLength(0); i++)
             {
                 if (contInfo[i, 0] == fileName) { contentIndex = i; break; }
             }
 
-            byte[] tmdHash = Wii.Tools.HexStringToByteArray(contInfo[contentIndex, 4]);
+            var tmdHash = Wii.Tools.HexStringToByteArray(contInfo[contentIndex, 4]);
 
             //Decrypt appfile
             ReportProgress(85, "Decrypting Content...");
-            byte[] decContent = Wii.WadEdit.DecryptContent(
-                File.ReadAllBytes(Path.Combine(_tempDir,fileName)), File.ReadAllBytes(Path.Combine(_tempDir,"tmd")), contentIndex, decTitleKey);
+            var decContent = Wii.WadEdit.DecryptContent(
+                File.ReadAllBytes(Path.Combine(nusTempDir,fileName)), File.ReadAllBytes(Path.Combine(nusTempDir,"tmd")), contentIndex, decTitleKey);
 
             Array.Resize(ref decContent, int.Parse(contInfo[contentIndex, 3]));
 
@@ -218,19 +214,19 @@ namespace ThemeMii
 
             if (!HashCheck(decContent, tmdHash))
             {
-                Directory.Delete(_tempDir, true);
+                Directory.Delete(nusTempDir, true);
                 ErrorBox("Hash check failed!");
                 ReportProgress(100, " ");
                 return;
             }
 
-            File.WriteAllBytes(infos[2], decContent);
+            File.WriteAllBytes(destinationName, decContent);
 
             //Delete Temps
-            Directory.Delete(_tempDir, true);
+            Directory.Delete(nusTempDir, true);
 
-            ReportProgress(100, " ");
-            InfoBox(string.Format("Downloaded base app to:\n{0}", infos[2]));
+            ReportProgress(100, $"Downloaded base app to:\n{destinationName}");
+            InfoBox($"Downloaded base app to:\n{destinationName}");
         }
         
         /*

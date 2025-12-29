@@ -50,7 +50,7 @@ namespace ThemeMii
         public bool closeAfter;
     }
 
-    public enum BaseApp : int
+    public enum BaseApp
     {
         J32 = 0x40,
         U32 = 0x42,

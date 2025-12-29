@@ -294,10 +294,8 @@ namespace ThemeMii
 
         private void ReportProgress(int progressPercentage, string statusText)
         {
-            /*
-            _progressReporter p = new _progressReporter(this._reportProgress);
-            this.Invoke(p, new ProgressChangedEventArgs(progressPercentage, (object)statusText));
-            */
+            ActionBar.ProgressTextFormat = statusText;
+            ActionBar.Value = progressPercentage;
         }
 
         private void ErrorBox(string message)

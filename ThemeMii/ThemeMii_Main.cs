@@ -530,9 +530,9 @@ namespace ThemeMii
         
         private async void DownloadBaseApp_Click(object sender, RoutedEventArgs e)
         {
-            //TODO:  Fairly certain even with this bar, there are probably other ways to do this check...
-            //I'll see if this can be changed later on.
-            //if (pbProgress.Value < 100) return;
+            if (ActionBar.Value != 0 && ActionBar.Value != 100)
+                return;
+            
             var commonKeyCreated = await CommonKeyCheck(this);
             if (!commonKeyCreated)
                 return;
@@ -542,7 +542,7 @@ namespace ThemeMii
                 return;
 
             string titleVersion;
-            var bApp = new BaseApp();
+            BaseApp bApp;
 
             switch (menuSource.Name)
             {
@@ -595,18 +595,23 @@ namespace ThemeMii
                     titleVersion = "482";
                     break;
                 //TODO:  Fairly certain 43E is not considered, so i'm going to need to figure out these...
-                default: return;
+                default: 
+                    return;
             }
 
             var fileStorage = StorageProvider;
             var result = await fileStorage.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
                 DefaultExtension = "app",
+                FileTypeChoices = [new FilePickerFileType("app")
+                {
+                    Patterns = ["*.app"]
+                }],
                 SuggestedFileName = ((int)bApp).ToString("x8")
             });
 
             if (result != null)
-                await DownloadBaseApp(new string[] { ((int)bApp).ToString("x8"), titleVersion, result.Name });
+                await DownloadBaseApp(((int)bApp).ToString("x8"), titleVersion, result.Path.AbsolutePath);
         }
 
         /*

@@ -2306,44 +2306,35 @@ namespace Wii
             Tools.InsertByteArray(tik, newKey, 447);
             return tik;
         }
-
-        /// <summary>
-        /// Returns the decrypted TitleKey
-        /// </summary>
-        /// <param name="wadtik"></param>
-        /// <returns></returns>
-        public static byte[] GetTitleKey(byte[] encryptedkey, byte[] titleid)
+        
+        public static byte[] GetTitleKey(byte[] encryptedKey, byte[] titleId)
         {
-            byte[] commonkey = new byte[16];
+            byte[] commonKey;
+            
+            if (File.Exists( Path.Combine(Directory.GetCurrentDirectory(), "common-key.bin"))) 
+                commonKey = Tools.LoadFileToByteArray(Path.Combine(Directory.GetCurrentDirectory(), "common-key.bin"));
+            else if (File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "key.bin")))
+                commonKey = Tools.LoadFileToByteArray(Path.Combine(Directory.GetCurrentDirectory(), "key.bin"));
+            else
+                throw new FileNotFoundException("The (common-)key.bin must be in the application directory!");
 
-            /*
-             * TODO:  What is this?
-             *
-             *
-                if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"))
-                { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\common-key.bin"); }
-                else if (File.Exists(System.Windows.Forms.Application.StartupPath + "\\key.bin"))
-                { commonkey = Tools.LoadFileToByteArray(System.Windows.Forms.Application.StartupPath + "\\key.bin"); }
-                else { throw new FileNotFoundException("The (common-)key.bin must be in the application directory!"); }
-             */
-
-            Array.Resize(ref titleid, 16);
+            Array.Resize(ref titleId, 16);
 
             RijndaelManaged decrypt = new RijndaelManaged();
             decrypt.Mode = CipherMode.CBC;
             decrypt.Padding = PaddingMode.None;
             decrypt.KeySize = 128;
             decrypt.BlockSize = 128;
-            decrypt.Key = commonkey;
-            decrypt.IV = titleid;
+            decrypt.Key = commonKey;
+            decrypt.IV = titleId;
 
             ICryptoTransform cryptor = decrypt.CreateDecryptor();
 
-            MemoryStream memory = new MemoryStream(encryptedkey);
+            MemoryStream memory = new MemoryStream(encryptedKey);
             CryptoStream crypto = new CryptoStream(memory, cryptor, CryptoStreamMode.Read);
 
             byte[] decryptedkey = new byte[16];
-            crypto.Read(decryptedkey, 0, decryptedkey.Length);
+            crypto.ReadExactly(decryptedkey);
 
             crypto.Close();
             memory.Close();
