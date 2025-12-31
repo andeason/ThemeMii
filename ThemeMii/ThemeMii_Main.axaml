@@ -18,7 +18,7 @@
                                 <MenuItem Header="Open Ctrl+O" />
                                 <MenuItem Header="Save Ctrl+S" />
                                 <Separator />
-                                <MenuItem Header="Exit" />
+                                <MenuItem Header="Exit" Click="msExit_Click"/>
                         </MenuItem>
                         <MenuItem Header="List" >
                                 <!--TODO:  Add later options -->

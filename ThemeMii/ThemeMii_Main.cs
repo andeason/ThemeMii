@@ -26,8 +26,6 @@ using Avalonia.Platform.Storage;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 
-//using System.Windows.Forms;
-
 
 namespace ThemeMii
 {
@@ -222,10 +220,13 @@ namespace ThemeMii
             else HidePanels();
         }
 
-        private void msExit_Click(object sender, EventArgs e)
+        */
+        private void msExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Exit();
+            Close();
         }
+        
+        /*
 
         private void msNew_Click(object sender, EventArgs e)
         {
