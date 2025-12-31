@@ -9,6 +9,7 @@
         Width="800"
         Height="800"
         Loaded="ThemeMii_Main_Load"
+        Closing="ThemeMii_Main_FormClosing"
         >
         <DockPanel>
                 <Menu DockPanel.Dock="Top">
@@ -31,18 +32,17 @@
                                 <MenuItem Header="Remove Missing Statics" />
                         </MenuItem>
                         <MenuItem Header="Options">
-                                <!-- TODO:  These all have checkboxes, need to see how to implement. -->
-                                <MenuItem Header="Auto-Source-Manage" />
-                                <MenuItem Header="Auto-Container-Manage" />
-                                <MenuItem Header="Ignore Missing Entries" />
+                                <MenuItem ToggleType="CheckBox"  Name="SourceManage" IsChecked="True" Header="Auto-Source-Manage"/>
+                                <MenuItem ToggleType="CheckBox"  Name="ContainerManage"  IsChecked="True" Header="Auto-Container-Manage" />
+                                <MenuItem ToggleType="CheckBox"  Name="IgnoreMissing" IsChecked="True" Header="Ignore Missing Entries" />
                                 <Separator />
-                                <MenuItem Header="Image Size from TPL" />
-                                <MenuItem Header="Image Size from PNG" />
+                                <MenuItem ToggleType="CheckBox"  Name="ImageSizeFromTpl" IsChecked="True" Header="Image Size from TPL" />
+                                <MenuItem ToggleType="CheckBox"  IsChecked="False" Header="Image Size from PNG" />
                                 <Separator />
-                                <MenuItem Header="Lz77 Compress Containers" />
-                                <MenuItem Header="Save NAND Backup Path" />
-                                <MenuItem Header="Keep Extracted Base App" />
-                                <MenuItem Header="Save Prompt when Exiting" />
+                                <MenuItem ToggleType="CheckBox"  Name="Lz77Containers" IsChecked="True" Header="Lz77 Compress Containers" />
+                                <MenuItem ToggleType="CheckBox"  Name="SaveNandPath" IsChecked="True" Header="Save NAND Backup Path" />
+                                <MenuItem ToggleType="CheckBox" Name="KeepExtractedApp" IsChecked="True" Header="Keep Extracted Base App" />
+                                <MenuItem ToggleType="CheckBox" Name="SavePrompt" IsChecked="True" Header="Save Prompt when Exiting" />
                                 <Separator />
                                 <MenuItem Header="Standard System Menu" >
                                         <MenuItem Header="3.2" >
@@ -71,7 +71,7 @@
                                                 <MenuItem Name="MmsDownload43U" Header="USA" />
                                         </MenuItem>
                                 </MenuItem>
-                                <MenuItem Header="Change NAND Backup Path" />
+                                <MenuItem IsVisible="True" Name="ChangeNandPath" Header="Change NAND Backup Path" />
                         </MenuItem>
                         <MenuItem Header="Tools">
                                 <MenuItem Header="csm to mym" />

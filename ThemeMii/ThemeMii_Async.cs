@@ -163,7 +163,7 @@ namespace ThemeMii
             catch (Exception ex)
             {
                 Directory.Delete(nusTempDir, true);
-                ErrorBox("Downloading Failed...\n" + ex.Message);
+                DisplayErrorMessage("Downloading Failed...\n" + ex.Message);
                 ReportProgress(100, " ");
                 return;
             }
@@ -173,7 +173,7 @@ namespace ThemeMii
             catch (Exception ex)
             {
                 Directory.Delete(nusTempDir, true);
-                ErrorBox("Downloading Failed...\n" + ex.Message);
+                DisplayErrorMessage("Downloading Failed...\n" + ex.Message);
                 ReportProgress(100, " ");
                 return;
             }
@@ -183,7 +183,7 @@ namespace ThemeMii
             catch (Exception ex)
             {
                 Directory.Delete(nusTempDir, true);
-                ErrorBox("Downloading Failed...\n" + ex.Message);
+                DisplayErrorMessage("Downloading Failed...\n" + ex.Message);
                 ReportProgress(100, " ");
                 return;
             }
@@ -215,8 +215,8 @@ namespace ThemeMii
             if (!HashCheck(decContent, tmdHash))
             {
                 Directory.Delete(nusTempDir, true);
-                ErrorBox("Hash check failed!");
-                ReportProgress(100, " ");
+                DisplayErrorMessage("Hash check failed!");
+                ReportProgress(0, " ");
                 return;
             }
 

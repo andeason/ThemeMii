@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -95,7 +96,7 @@ namespace ThemeMii
             catch { }
         }
 
-        private void ExitApplication()
+        public void ExitApplication()
         {
             SaveSettings();
 
@@ -155,100 +156,88 @@ namespace ThemeMii
 
         private void LoadSettings()
         {
-            /*
-            settings.savePrompt = Properties.Settings.Default.savePrompt;
-            msSavePrompt.Checked = settings.savePrompt;
-            settings.lz77Containers = Properties.Settings.Default.lz77Containers;
-            msLz77Containers.Checked = settings.lz77Containers;
-            settings.keepExtractedApp = Properties.Settings.Default.keepExtractedApp;
-            msKeepExtractedApp.Checked = settings.keepExtractedApp;
-            settings.containerManage = Properties.Settings.Default.containerManage;
-            msContainerManage.Checked = settings.containerManage;
-            settings.sourceManage = Properties.Settings.Default.sourceManage;
-            msSourceManage.Checked = settings.sourceManage;
-            settings.autoImageSize = Properties.Settings.Default.autoImageSize;
-            msImageSizeFromPng.Checked = settings.autoImageSize;
-            settings.ignoreMissing = Properties.Settings.Default.ignoreMissing;
-            msIgnoreMissingEntries.Checked = settings.ignoreMissing;
-            settings.imageSizeFromTpl = Properties.Settings.Default.imageSizeFromTpl;
-            msImageSizeFromTpl.Checked = settings.imageSizeFromTpl;
-
-            settings.saveNandPath = Properties.Settings.Default.saveNandPath;
-            msSaveNandPath.Checked = settings.saveNandPath;
-            msChangeNandPath.Visible = settings.saveNandPath;
-            settings.nandBackupPath = Properties.Settings.Default.nandBackupPath;
-
-
-
-            if (!Properties.Settings.Default.firstRun)
+            if (File.Exists("Settings.json"))
             {
-                this.Size = Properties.Settings.Default.windowSize;
-
-                if (Properties.Settings.Default.windowLocation.X < 1 &&
-                    Properties.Settings.Default.windowLocation.Y < 0) CenterToScreen();
-                else this.Location = Properties.Settings.Default.windowLocation;
-
-                this.WindowState = (Properties.Settings.Default.windowMaximized) ? FormWindowState.Maximized : FormWindowState.Normal;
-            }
-            else CenterToScreen();
-
-            lastExtracted = (BaseApp)Properties.Settings.Default.lastExtracted;
-
-            BaseApp bApp = (BaseApp)Properties.Settings.Default.standardMenu;
-            UncheckSysMenus();
-            if (bApp == BaseApp.E32) ms32E.Checked = true;
-            else if (bApp == BaseApp.E40) ms40E.Checked = true;
-            else if (bApp == BaseApp.E41) ms41E.Checked = true;
-            else if (bApp == BaseApp.E42) ms42E.Checked = true;
-            else if (bApp == BaseApp.J32) ms32J.Checked = true;
-            else if (bApp == BaseApp.J40) ms40J.Checked = true;
-            else if (bApp == BaseApp.J41) ms41J.Checked = true;
-            else if (bApp == BaseApp.J42) ms42J.Checked = true;
-            else if (bApp == BaseApp.U32) ms32U.Checked = true;
-            else if (bApp == BaseApp.U40) ms40U.Checked = true;
-            else if (bApp == BaseApp.U41) ms41U.Checked = true;
-            else if (bApp == BaseApp.U42) ms42U.Checked = true;
-
-            if (settings.sourceManage)
-            {
-                tbStaticDataSource.Enabled = false;
-                tbStaticImageSource.Enabled = false;
-            }
-            if (settings.autoImageSize)
-            {
-                tbStaticImageWidth.Enabled = false;
-                tbStaticImageHeight.Enabled = false;
-                tbCustomImageWidth.Enabled = false;
-                tbCustomImageHeight.Enabled = false;
+                try
+                {
+                    using StreamReader sr = new StreamReader("Settings.json");
+                    settings = JsonSerializer.Deserialize<ThemeMiiSettings>(sr.ReadToEnd()) ?? null;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine(e);
+                }
             }
 
-            settings.saveWindowChanges = true;
-            */
+            settings ??= new ThemeMiiSettings();
+            
+            SavePrompt.IsChecked = settings.savePrompt;
+            Lz77Containers.IsChecked = settings.lz77Containers;
+            KeepExtractedApp.IsChecked = settings.keepExtractedApp;
+            ContainerManage.IsChecked = settings.containerManage;
+            SourceManage.IsChecked = settings.sourceManage;
+            //TODO:  Where does this exactly go?
+            IgnoreMissing.IsChecked = settings.ignoreMissing;
+            ImageSizeFromTpl.IsChecked = settings.imageSizeFromTpl;
+            SaveNandPath.IsChecked = settings.saveNandPath;
+            ChangeNandPath.IsVisible = SaveNandPath.IsChecked;
+            
+            //TODO:  add little popup from the settings.
+            if (settings == null)
+            {
+                //TODO:  add little popup from the settings.
+            }
+
+            //TODO:  Another one I don't have an idea yet....
+            //lastExtracted = (BaseApp)Properties.Settings.Default.lastExtracted;
+            //BaseApp bApp = (BaseApp)Properties.Settings.Default.standardMenu;
+            //UncheckSysMenus();
+            //if (bApp == BaseApp.E32) ms32E.Checked = true;
+            //else if (bApp == BaseApp.E40) ms40E.Checked = true;
+            //else if (bApp == BaseApp.E41) ms41E.Checked = true;
+            //else if (bApp == BaseApp.E42) ms42E.Checked = true;
+            //else if (bApp == BaseApp.J32) ms32J.Checked = true;
+            //else if (bApp == BaseApp.J40) ms40J.Checked = true;
+            //else if (bApp == BaseApp.J41) ms41J.Checked = true;
+            //else if (bApp == BaseApp.J42) ms42J.Checked = true;
+            //else if (bApp == BaseApp.U32) ms32U.Checked = true;
+            //else if (bApp == BaseApp.U40) ms40U.Checked = true;
+            //else if (bApp == BaseApp.U41) ms41U.Checked = true;
+            //else if (bApp == BaseApp.U42) ms42U.Checked = true;
+
+            if (settings?.sourceManage ?? false)
+            {
+                //tbStaticDataSource.Enabled = false;
+                //tbStaticImageSource.Enabled = false;
+            }
+            if (settings?.autoImageSize ?? false)
+            {
+                //tbStaticImageWidth.Enabled = false;
+                //tbStaticImageHeight.Enabled = false;
+                //tbCustomImageWidth.Enabled = false;
+                //tbCustomImageHeight.Enabled = false;
+            }
         }
 
         private void SaveSettings()
         {
-            /*
-            Properties.Settings.Default.firstRun = false;
-            Properties.Settings.Default.savePrompt = settings.savePrompt;
-            Properties.Settings.Default.lz77Containers = settings.lz77Containers;
-            Properties.Settings.Default.keepExtractedApp = settings.keepExtractedApp;
-            Properties.Settings.Default.containerManage = settings.containerManage;
-            Properties.Settings.Default.sourceManage = settings.sourceManage;
-            Properties.Settings.Default.autoImageSize = settings.autoImageSize;
-            Properties.Settings.Default.ignoreMissing = settings.ignoreMissing;
-            Properties.Settings.Default.saveNandPath = settings.saveNandPath;
-            Properties.Settings.Default.nandBackupPath = settings.nandBackupPath;
-            Properties.Settings.Default.imageSizeFromTpl = settings.imageSizeFromTpl;
-
-            Properties.Settings.Default.windowMaximized = this.WindowState == FormWindowState.Maximized;
-
-            Properties.Settings.Default.lastExtracted = (int)lastExtracted;
-
-            Properties.Settings.Default.standardMenu = (int)GetBaseApp();
-
-            Properties.Settings.Default.Save();
-            */
+            var settingsToSave = new ThemeMiiSettings
+            {
+                savePrompt = SavePrompt.IsChecked,
+                lz77Containers = Lz77Containers.IsChecked,
+                keepExtractedApp = KeepExtractedApp.IsChecked,
+                containerManage = ContainerManage.IsChecked,
+                sourceManage = SourceManage.IsChecked,
+                ignoreMissing = IgnoreMissing.IsChecked,
+                imageSizeFromTpl = ImageSizeFromTpl.IsChecked,
+                saveNandPath = SaveNandPath.IsChecked
+            };
+            
+            using var writer = new StreamWriter("Settings.json");
+            writer.Write(JsonSerializer.Serialize(settingsToSave, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            })); 
         }
 
         private BaseApp GetBaseApp()
@@ -298,7 +287,7 @@ namespace ThemeMii
             ActionBar.Value = progressPercentage;
         }
 
-        private void ErrorBox(string message)
+        private void DisplayErrorMessage(string message)
         {
             /*
             boxInvoker b = new boxInvoker(this._errorBox);
@@ -327,7 +316,7 @@ namespace ThemeMii
                 ReportProgress(100, " ");
                 SetControls(true);
             }
-            catch (Exception ex) { ErrorBox(ex.Message); }
+            catch (Exception ex) { DisplayErrorMessage(ex.Message); }
         }
 
         private void SwapEntries(int selectedIndex, bool up)
@@ -605,47 +594,47 @@ namespace ThemeMii
             if (entry.entryType == iniEntry.EntryType.Container)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (!settings.sourceManage)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (!settings.sourceManage)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.ignoreMissing) ErrorBox(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
             }
 
             return true;

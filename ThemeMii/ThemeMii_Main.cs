@@ -36,7 +36,7 @@ namespace ThemeMii
         private string mymOut;
         private int lastSelected = -1;
         private string lastSelectedEntry;
-        private ThemeMiiSettings settings;
+        private ThemeMiiSettings? settings;
         private BaseApp lastExtracted = (BaseApp)1;
         private AppBrowseInfo browseInfo;
         private string openedMym;
@@ -61,11 +61,11 @@ namespace ThemeMii
             LoadSettings();
         }
         
-        /*
-
-        private void ThemeMii_Main_FormClosing(object sender, FormClosingEventArgs e)
+        private void ThemeMii_Main_FormClosing(object? sender, WindowClosingEventArgs e)
         {
-            if (btnCreateCsm.Enabled && settings.savePrompt)
+            /*
+             TODO:  More work...
+            if (btnCreateCsm.Enabled && settings?.savePrompt)
             {
                 DialogResult dlg = MessageBox.Show("Do you want to save your mym before closing?",
                     "Save?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
@@ -79,6 +79,7 @@ namespace ThemeMii
                 }
                 else if (dlg == System.Windows.Forms.DialogResult.Cancel) { e.Cancel = true; return; }
             }
+            */
 
             SaveSettings();
 
@@ -86,10 +87,14 @@ namespace ThemeMii
             {
                 Directory.Delete(tempDir, true);
             }
-            catch { }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+            }
 
             Environment.Exit(0);
         }
+        /*
 
         void ini_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
@@ -112,6 +117,7 @@ namespace ThemeMii
                 }
             }
         }
+        
 
         private void lbxIniEntrys_SelectedIndexChanged(object sender, EventArgs e)
         {
