@@ -226,7 +226,6 @@ namespace ThemeMii
             Directory.Delete(nusTempDir, true);
 
             ReportProgress(100, $"Downloaded base app to:\n{destinationName}");
-            InfoBox($"Downloaded base app to:\n{destinationName}");
         }
         
         /*

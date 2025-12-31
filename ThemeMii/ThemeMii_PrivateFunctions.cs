@@ -291,20 +291,18 @@ namespace ThemeMii
             ActionBar.Value = progressPercentage;
         }
 
-        private void DisplayErrorMessage(string message)
+        private async Task DisplayErrorMessage(string message)
         {
-            /*
-            boxInvoker b = new boxInvoker(this._errorBox);
-            this.Invoke(b, message);
-            */
+            var errorMessage = MessageBoxManager.GetMessageBoxStandard("Error", message, ButtonEnum.Ok,
+                MsBox.Avalonia.Enums.Icon.Error);
+            await errorMessage.ShowAsync();
         }
 
-        private void InfoBox(string message)
+        private async Task InfoBox(string message)
         {
-            /*
-            boxInvoker b = new boxInvoker(this._infoBox);
-            this.Invoke(b, message);
-            */
+            var infoMessage =
+                MessageBoxManager.GetMessageBoxStandard("Info", message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Info);
+            await infoMessage.ShowAsync();
         }
 
         private void AddEntries()
