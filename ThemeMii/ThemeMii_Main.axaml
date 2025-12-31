@@ -46,29 +46,31 @@
                                 <Separator />
                                 <MenuItem Header="Standard System Menu" >
                                         <MenuItem Header="3.2" >
-                                                <MenuItem Name="MmsDownload32J" Header="Japan" />
-                                                <MenuItem Name="MmsDownload32E" Header="Europe" />
-                                                <MenuItem Name="MmsDownload32U" Header="USA" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload32JCheck" Header="Japan" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload32ECheck" Header="Europe" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload32UCheck" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.0" >
-                                                <MenuItem Name="MmsDownload40J" Header="Japan" />
-                                                <MenuItem Name="MmsDownload40E" Header="Europe" />
-                                                <MenuItem Name="MmsDownload40U" Header="USA" />
+                                                <MenuItem ToggleType="CheckBox" Name="MmsDownload40JCheck" Header="Japan" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload40ECheck" Header="Europe" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload40UCheck" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.1" >
-                                                <MenuItem Name="MmsDownload41J" Header="Japan" />
-                                                <MenuItem Name="MmsDownload41E" Header="Europe" />
-                                                <MenuItem Name="MmsDownload41U" Header="USA" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload41JCheck" Header="Japan" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload41ECheck" Header="Europe" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload41UCheck" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.2" >
-                                                <MenuItem Name="MmsDownload42J" Header="Japan" />
-                                                <MenuItem Name="MmsDownload42E" Header="Europe" />
-                                                <MenuItem Name="MmsDownload42U" Header="USA" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload42JCheck" Header="Japan" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload42ECheck" Header="Europe" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload42UCheck" Header="USA" />
                                         </MenuItem>
                                         <MenuItem Header="4.3" >
-                                                <MenuItem Name="MmsDownload43J" Header="Japan" />
-                                                <MenuItem Name="MmsDownload43E" Header="Europe" />
-                                                <MenuItem Name="MmsDownload43U" Header="USA" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload43JCheck" Header="Japan" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload43ECheck" Header="Europe" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload43UCheck" Header="USA" />
+                                                <MenuItem ToggleType="CheckBox" Name="msDownload43KCheck" Header="Korea" />
+
                                         </MenuItem>
                                 </MenuItem>
                                 <MenuItem IsVisible="True" Name="ChangeNandPath" Header="Change NAND Backup Path" />

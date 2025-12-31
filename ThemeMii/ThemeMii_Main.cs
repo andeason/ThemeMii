@@ -50,7 +50,7 @@ namespace ThemeMii
         }
 
         
-        private void ThemeMii_Main_Load(object? sender, RoutedEventArgs e)
+        private async void ThemeMii_Main_Load(object? sender, RoutedEventArgs e)
         {
             //TODO:  This points to the old update site.  Perhaps implement when we have further updated?
             //Thread updateThread = new Thread(new ThreadStart(this._updateCheck));

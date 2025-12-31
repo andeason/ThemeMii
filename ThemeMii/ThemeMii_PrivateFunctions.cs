@@ -28,6 +28,8 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel.__Internals;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using Image = Avalonia.Controls.Image;
 
 //using System.Windows.Forms;
@@ -37,9 +39,12 @@ namespace ThemeMii
 {
     partial class ThemeMii_Main
     {
-        private void ShowDisclaimer()
+        private async void ShowDisclaimer()
         {
-            //MessageBox.Show("Only install themes if you have a proper brickprotection or you might get a brick beyond repair!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            var disclaimerBox = MessageBoxManager.GetMessageBoxStandard("Warning",
+                "Only install themes if you have a proper brickprotection or you might get a brick beyond repair!",
+                ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Warning);
+            await disclaimerBox.ShowAsync();
         }
 
         private bool CheckInet()
@@ -168,6 +173,11 @@ namespace ThemeMii
                     Console.Error.WriteLine(e);
                 }
             }
+            
+            if (settings == null)
+            {
+                ShowDisclaimer();
+            }
 
             settings ??= new ThemeMiiSettings();
             
@@ -181,12 +191,6 @@ namespace ThemeMii
             ImageSizeFromTpl.IsChecked = settings.imageSizeFromTpl;
             SaveNandPath.IsChecked = settings.saveNandPath;
             ChangeNandPath.IsVisible = SaveNandPath.IsChecked;
-            
-            //TODO:  add little popup from the settings.
-            if (settings == null)
-            {
-                //TODO:  add little popup from the settings.
-            }
 
             //TODO:  Another one I don't have an idea yet....
             //lastExtracted = (BaseApp)Properties.Settings.Default.lastExtracted;
