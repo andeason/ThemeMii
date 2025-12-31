@@ -117,9 +117,22 @@
                         </MenuItem>
                 </Menu>
                 
-                <ProgressBar  DockPanel.Dock="Bottom" Minimum="0" Maximum ="100" ShowProgressText="True" Name="ActionBar"/>
+                <StackPanel DockPanel.Dock="Bottom">
+                        <StackPanel Orientation="Horizontal" Spacing="10" Margin="10">
+                                <Button IsEnabled="False" Width="100" Name="btnSaveMym">
+                                        Save mym
+                                </Button>
+                                
+                                <Button IsEnabled="False" Width="100" Name="btnCreateCsm">
+                                        Create csm
+                                </Button>
+                        </StackPanel>
+                        <ProgressBar  DockPanel.Dock="Bottom" Minimum="0" Maximum ="100" ShowProgressText="True" Name="ActionBar"/>
+                </StackPanel>
+                
                 <TextBlock>
                         WORK IN PROGRESS
                 </TextBlock>
+                
         </DockPanel>
 </Window>

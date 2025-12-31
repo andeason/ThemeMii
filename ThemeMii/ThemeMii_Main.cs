@@ -23,6 +23,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 //using System.Windows.Forms;
 
@@ -50,6 +52,7 @@ namespace ThemeMii
             //if (Properties.Settings.Default.firstRun) ShowDisclaimer();
         }
 
+        private bool saveCheckPassed;
         
         private async void ThemeMii_Main_Load(object? sender, RoutedEventArgs e)
         {
@@ -62,26 +65,29 @@ namespace ThemeMii
             LoadSettings();
         }
         
-        private void ThemeMii_Main_FormClosing(object? sender, WindowClosingEventArgs e)
+        private async void ThemeMii_Main_FormClosing(object? sender, WindowClosingEventArgs e)
         {
-            /*
-             TODO:  More work...
-            if (btnCreateCsm.Enabled && settings?.savePrompt)
+            if (btnCreateCsm.IsEnabled && (settings?.SavePrompt ?? false) && !saveCheckPassed)
             {
-                DialogResult dlg = MessageBox.Show("Do you want to save your mym before closing?",
-                    "Save?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                e.Cancel = true;
                 
-                if (dlg == System.Windows.Forms.DialogResult.Yes)
-                {
+                var disclaimerBox = MessageBoxManager.GetMessageBoxStandard("Question",
+                    "Do you want to save your mym before closing?",
+                    ButtonEnum.YesNoCancel, MsBox.Avalonia.Enums.Icon.Question);
+                var result = await disclaimerBox.ShowAsync();
+
+                if (result != ButtonResult.Yes && result != ButtonResult.No)
+                    return; 
+                
+                if (result == ButtonResult.Yes)
                     SaveMym(true);
-
-                    e.Cancel = true;
-                    return;
-                }
-                else if (dlg == System.Windows.Forms.DialogResult.Cancel) { e.Cancel = true; return; }
+                
+                //Forces a call to this event a second time.  We should bypass and save as normally.  
+                saveCheckPassed = true;
+                Close();
+                return;
             }
-            */
-
+            
             SaveSettings();
 
             try
@@ -93,7 +99,6 @@ namespace ThemeMii
                 Console.Error.WriteLine(ex);
             }
 
-            Environment.Exit(0);
         }
         /*
 
