@@ -3617,7 +3617,7 @@ namespace Wii
         /// <param name="unpackpath"></param>
         public static void UnpackU8(string u8archive, string unpackpath)
         {
-            byte[] u8 = Wii.Tools.LoadFileToByteArray(u8archive);
+            byte[] u8 = Tools.LoadFileToByteArray(u8archive);
             UnpackU8(u8, unpackpath);
         }
 

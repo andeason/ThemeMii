@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -647,33 +648,44 @@ namespace ThemeMii
             }
         }
 
-        private void btnBrowseFile_Click(object sender, EventArgs e)
+        */
+        private async void btnBrowseFile_Click(object? sender, RoutedEventArgs e)
         {
-            if (pbProgress.Value == 100)
+            if (ActionBar.Value != 0 && ActionBar.Value != 100)
+                return;
+
+            browseInfo.viewOnly = sender!.Equals(msBrowseBaseApp);
+            //browseInfo.containerBrowse = (menuItemSender.Name == btnContainerBrowseFile);
+
+            /*
+             * TODO:  Investigate what this logic was for.  
+            if (sender != msBrowseBaseApp)
             {
-                if (sender == msBrowseBaseApp) browseInfo.viewOnly = true;
-                else browseInfo.viewOnly = false;
-
-                if (sender == btnContainerBrowseFile) browseInfo.containerBrowse = true;
-                else browseInfo.containerBrowse = false;
-
-                if (sender != msBrowseBaseApp)
-                {
-                    if (panContainer.Visible) browseInfo.selectedNode = tbContainerFile.Text;
-                    else if (panCustomImage.Visible) browseInfo.selectedNode = tbCustomImageFile.Text;
-                    else if (panCustomData.Visible) browseInfo.selectedNode = tbCustomDataFile.Text;
-                    else if (panStaticImage.Visible) browseInfo.selectedNode = tbStaticImageFile.Text;
-                    else if (panStaticData.Visible) browseInfo.selectedNode = tbStaticDataFile.Text;
-                    else browseInfo.selectedNode = string.Empty;
-
-                    if (panStaticImage.Visible || panCustomImage.Visible) browseInfo.onlyTpls = true;
-                    else browseInfo.onlyTpls = false;
-                }
+                if (panContainer.Visible) 
+                    browseInfo.selectedNode = tbContainerFile.Text;
+                else if (panCustomImage.Visible) 
+                    browseInfo.selectedNode = tbCustomImageFile.Text;
+                else if (panCustomData.Visible)
+                    browseInfo.selectedNode = tbCustomDataFile.Text;
+                else if (panStaticImage.Visible) 
+                    browseInfo.selectedNode = tbStaticImageFile.Text;
+                else if (panStaticData.Visible)
+                    browseInfo.selectedNode = tbStaticDataFile.Text;
                 else browseInfo.selectedNode = string.Empty;
 
-                AppBrowse();
+                if (panStaticImage.Visible || panCustomImage.Visible) 
+                    browseInfo.onlyTpls = true;
+                else 
+                    browseInfo.onlyTpls = false;
             }
+            else
+                browseInfo.selectedNode = string.Empty;
+            */
+
+            await AppBrowse();
         }
+        
+        /*
 
         private void msContainerManage_Click(object sender, EventArgs e)
         {

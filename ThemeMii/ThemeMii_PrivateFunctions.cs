@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading;
@@ -675,20 +676,23 @@ namespace ThemeMii
             //ErrorBox(p.StandardOutput.ReadToEnd() + "\n\n" + mymC.file);
             */
         }
-
-        private void DeASH(string path)
+        
+        private void  DeASH(string path)
         {
-            /*
-            ProcessStartInfo pInfo = new ProcessStartInfo(Application.StartupPath + "\\ASH.exe", string.Format("\"{0}\"", path));
-            pInfo.UseShellExecute = false;
-            //pInfo.RedirectStandardOutput = true;
-            pInfo.CreateNoWindow = true;
+            //TODO:  This is a major roadblock, ASH.exe relies on an actual exe.
+            //I don't even like using this weird separate file.  We probably should see if we can implement this ourselves....
+            var ashExePath = Path.Combine(Directory.GetCurrentDirectory(), "ASH.exe");
+            ProcessStartInfo pInfo = new ProcessStartInfo(ashExePath, $"\"{path}\"")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-            Process p = Process.Start(pInfo);
+            var p = Process.Start(pInfo);
+            if (p == null)
+                throw new Exception("Ash.exe did not start.  Aborting...");
+            
             p.WaitForExit();
-
-            //ErrorBox(p.StandardOutput.ReadToEnd() + "\n\n" + mymC.file);
-            */
         }
 
         private Image ResizeImage(Image img, int x, int y)
@@ -733,25 +737,41 @@ namespace ThemeMii
 
             return false;
         }
-
+        
         private BaseApp GetStandardBaseApp()
         {
-            return BaseApp.E32;
-            /*
-            if (ms32E.Checked) return BaseApp.E32;
-            if (ms32U.Checked) return BaseApp.U32;
-            if (ms32J.Checked) return BaseApp.J32;
-            if (ms40E.Checked) return BaseApp.E40;
-            if (ms40U.Checked) return BaseApp.U40;
-            if (ms40J.Checked) return BaseApp.J40;
-            if (ms41E.Checked) return BaseApp.E41;
-            if (ms41U.Checked) return BaseApp.U41;
-            if (ms41J.Checked) return BaseApp.J41;
-            if (ms42E.Checked) return BaseApp.E42;
-            if (ms42U.Checked) return BaseApp.U42;
-            if (ms42J.Checked) return BaseApp.J42;
-            return (BaseApp)0;
-            */
+            if (ms32E.IsChecked)
+                return BaseApp.E32;
+            if (ms32U.IsChecked)
+                return BaseApp.U32;
+            if (ms32J.IsChecked)
+                return BaseApp.J32;
+            if (ms40E.IsChecked)
+                return BaseApp.E40;
+            if (ms40U.IsChecked)
+                return BaseApp.U40;
+            if (ms40J.IsChecked)
+                return BaseApp.J40;
+            if (ms41E.IsChecked)
+                return BaseApp.E41;
+            if (ms41U.IsChecked)
+                return BaseApp.U41;
+            if (ms41J.IsChecked)
+                return BaseApp.J41;
+            if (ms42E.IsChecked)
+                return BaseApp.E42;
+            if (ms42U.IsChecked)
+                return BaseApp.U42;
+            if (ms42J.IsChecked)
+                return BaseApp.J42;
+            if(ms43J.IsChecked)
+                return BaseApp.J43;
+            if(ms43E.IsChecked)
+                return BaseApp.E43;
+            if(ms43U.IsChecked)
+                return BaseApp.U43;
+
+            return 0;
         }
 
         private bool EntryExists(iniEntry entry, List<string[]> list)
@@ -769,38 +789,57 @@ namespace ThemeMii
             return false;
         }
 
-        private void AppBrowse()
+        private async Task AppBrowse()
         {
-            /*
+            
             BaseApp standardApp = GetStandardBaseApp();
-            if (standardApp == (BaseApp)0) { ErrorBox("You have to choose a Standard System Menu!"); return; }
-
-            string browsePath;
-            string altPath;
-            if (!settings.keepExtractedApp) { browsePath = tempDir + "appBrowse\\"; altPath = Application.StartupPath + "\\ExtractedBaseApp\\"; }
-            else { browsePath = Application.StartupPath + "\\ExtractedBaseApp\\"; altPath = tempDir + "appBrowse\\"; }
+            if (standardApp == 0)
+            {
+                await DisplayErrorMessage("You have to choose a Standard System Menu!");
+                return;
+            }
+            
+            var browsePath = KeepExtractedApp.IsChecked
+                ? Path.Combine(tempDir, "appBrowse")
+                : Path.Combine(Directory.GetCurrentDirectory(), "ExtractedBaseApp");
+            var altPath = KeepExtractedApp.IsChecked 
+                ? Path.Combine(tempDir, "appBrowse") 
+                : Path.Combine(Directory.GetCurrentDirectory(), "ExtractedBaseApp");
 
             if (standardApp != lastExtracted || !Directory.Exists(browsePath))
             {
                 //Extract app
-                if (!File.Exists(Application.StartupPath + "\\" + ((int)standardApp).ToString("x8") + ".app"))
-                { ErrorBox("app file wasn't found!"); return; }
+                if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),((int)standardApp).ToString("x8") + ".app")))
+                {
+                    await DisplayErrorMessage("app file wasn't found!"); 
+                    return;
+                }
 
-                if (Directory.Exists(browsePath)) Directory.Delete(browsePath, true);
-                if (Directory.Exists(altPath)) Directory.Delete(altPath, true);
+                if (Directory.Exists(browsePath)) 
+                    Directory.Delete(browsePath, true);
+                
+                if (Directory.Exists(altPath)) 
+                    Directory.Delete(altPath, true);
 
-                Thread workerThread = new Thread(new ParameterizedThreadStart(this._extractAppForBrowsing));
-                workerThread.Start(new object[] { standardApp, browsePath });
+                await _extractAppForBrowsing(standardApp, browsePath);
+                
+                
             }
-            else OpenAppBrowser(browsePath);
-            */
+            else
+                OpenAppBrowser(browsePath);
+            
         }
 
-        private void OpenAppBrowser(string browsePath)
+        private async Task OpenAppBrowser(string browsePath)
         {
-            /*
-            if (!Directory.Exists(browsePath)) { ErrorBox("An error occured!"); return; }
 
+            if (!Directory.Exists(browsePath))
+            {
+                await DisplayErrorMessage("The browse path does not exist!");
+                return;
+            }
+
+            /*
             ThemeMii_AppBrowse appBrowser = new ThemeMii_AppBrowse();
             appBrowser.RootPath = browsePath;
             appBrowser.ViewOnly = browseInfo.viewOnly;

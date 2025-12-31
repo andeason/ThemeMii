@@ -58,33 +58,38 @@ namespace ThemeMii
             }
         }
 
-        private void _extractAppForBrowsing(object infos)
+        */
+        
+        private async Task _extractAppForBrowsing(BaseApp standardApp, string browsePath)
         {
-            BaseApp standardApp = (BaseApp)(((object[])infos)[0]);
-            string browsePath = (string)(((object[])infos)[1]);
-
             Directory.CreateDirectory(browsePath);
 
-            Wii.U8.UnpackU8(Application.StartupPath + "\\" + ((int)standardApp).ToString("x8") + ".app", browsePath);
+            Wii.U8.UnpackU8(
+                Path.Combine(Directory.GetCurrentDirectory(), $"{((int)standardApp).ToString("x8")}.app"),
+                browsePath
+                );
 
-            string[] allFiles = Directory.GetFiles(browsePath, "*", SearchOption.AllDirectories);
-            int counter = 0;
+            var allFiles = Directory.GetFiles(browsePath, "*", SearchOption.AllDirectories);
+            var counter = 0;
 
-            foreach (string thisFile in allFiles)
+            foreach (var thisFile in allFiles)
             {
                 ReportProgress(++counter * 100 / allFiles.Length, "Extracting App...");
 
-                bool extracted = false;
+                var extracted = false;
 
                 while (!extracted)
                 {
-                    byte[] fourBytes = Wii.Tools.LoadFileToByteArray(thisFile, 0, 4);
+                    var fourBytes = Wii.Tools.LoadFileToByteArray(thisFile, 0, 4);
 
                     if (fourBytes[0] == 'A' && fourBytes[1] == 'S' &&
                             fourBytes[2] == 'H' && fourBytes[3] == '0') //ASH0
                     {
                         try
                         {
+                            if (!File.Exists("ash.exe"))
+                                throw new Exception("Ash.exe does not exist.  Unable to extract.");
+                            
                             DeASH(thisFile);
 
                             File.Delete(thisFile);
@@ -94,7 +99,7 @@ namespace ThemeMii
                         catch (Exception ex)
                         {
                             SetControls(true);
-                            ErrorBox(ex.Message);
+                            await DisplayErrorMessage(ex.Message);
                             return;
                         }
                     }
@@ -111,7 +116,7 @@ namespace ThemeMii
                         catch (Exception ex)
                         {
                             SetControls(true);
-                            ErrorBox(ex.Message);
+                            await DisplayErrorMessage(ex.Message);
                             return;
                         }
                     }
@@ -126,13 +131,15 @@ namespace ThemeMii
                     {
                         try
                         {
-                            Wii.U8.UnpackU8(thisFile, Path.GetDirectoryName(thisFile) + "\\" + Path.GetFileName(thisFile).Replace(".", "_") + "_out");
+                            var unpackPath = Path.Combine(Directory.GetCurrentDirectory(),
+                                Path.GetFileName(thisFile).Replace(".", "_") + "_out");
+                            Wii.U8.UnpackU8(thisFile, unpackPath);
                             extracted = true;
                         }
                         catch (Exception ex)
                         {
                             SetControls(true);
-                            ErrorBox(ex.Message);
+                            await DisplayErrorMessage(ex.Message);
                             return;
                         }
                     }
@@ -143,11 +150,9 @@ namespace ThemeMii
             lastExtracted = standardApp;
             ReportProgress(100, " ");
 
-            boxInvoker b = new boxInvoker(this.OpenAppBrowser);
-            this.Invoke(b, browsePath);
+            OpenAppBrowser(browsePath);
         }
-
-        */
+        
         private async Task DownloadBaseApp(string fileName, string titleVersion, string destinationName)
         {
             const string nusUrl = "http://nus.cdn.shop.wii.com/ccs/download";
