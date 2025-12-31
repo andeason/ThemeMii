@@ -181,15 +181,15 @@ namespace ThemeMii
 
             settings ??= new ThemeMiiSettings();
             
-            SavePrompt.IsChecked = settings.savePrompt;
-            Lz77Containers.IsChecked = settings.lz77Containers;
-            KeepExtractedApp.IsChecked = settings.keepExtractedApp;
-            ContainerManage.IsChecked = settings.containerManage;
-            SourceManage.IsChecked = settings.sourceManage;
+            SavePrompt.IsChecked = settings.SavePrompt;
+            Lz77Containers.IsChecked = settings.Lz77Containers;
+            KeepExtractedApp.IsChecked = settings.KeepExtractedApp;
+            ContainerManage.IsChecked = settings.ContainerManage;
+            SourceManage.IsChecked = settings.SourceManage;
             //TODO:  Where does this exactly go?
-            IgnoreMissing.IsChecked = settings.ignoreMissing;
-            ImageSizeFromTpl.IsChecked = settings.imageSizeFromTpl;
-            SaveNandPath.IsChecked = settings.saveNandPath;
+            IgnoreMissing.IsChecked = settings.IgnoreMissing;
+            ImageSizeFromTpl.IsChecked = settings.ImageSizeFromTpl;
+            SaveNandPath.IsChecked = settings.SaveNandPath;
             ChangeNandPath.IsVisible = SaveNandPath.IsChecked;
 
             //TODO:  Another one I don't have an idea yet....
@@ -209,12 +209,12 @@ namespace ThemeMii
             //else if (bApp == BaseApp.U41) ms41U.Checked = true;
             //else if (bApp == BaseApp.U42) ms42U.Checked = true;
 
-            if (settings?.sourceManage ?? false)
+            if (settings?.SourceManage ?? false)
             {
                 //tbStaticDataSource.Enabled = false;
                 //tbStaticImageSource.Enabled = false;
             }
-            if (settings?.autoImageSize ?? false)
+            if (settings?.AutoImageSize ?? false)
             {
                 //tbStaticImageWidth.Enabled = false;
                 //tbStaticImageHeight.Enabled = false;
@@ -227,14 +227,14 @@ namespace ThemeMii
         {
             var settingsToSave = new ThemeMiiSettings
             {
-                savePrompt = SavePrompt.IsChecked,
-                lz77Containers = Lz77Containers.IsChecked,
-                keepExtractedApp = KeepExtractedApp.IsChecked,
-                containerManage = ContainerManage.IsChecked,
-                sourceManage = SourceManage.IsChecked,
-                ignoreMissing = IgnoreMissing.IsChecked,
-                imageSizeFromTpl = ImageSizeFromTpl.IsChecked,
-                saveNandPath = SaveNandPath.IsChecked
+                SavePrompt = SavePrompt.IsChecked,
+                Lz77Containers = Lz77Containers.IsChecked,
+                KeepExtractedApp = KeepExtractedApp.IsChecked,
+                ContainerManage = ContainerManage.IsChecked,
+                SourceManage = SourceManage.IsChecked,
+                IgnoreMissing = IgnoreMissing.IsChecked,
+                ImageSizeFromTpl = ImageSizeFromTpl.IsChecked,
+                SaveNandPath = SaveNandPath.IsChecked
             };
             
             using var writer = new StreamWriter("Settings.json");
@@ -596,47 +596,47 @@ namespace ThemeMii
             if (entry.entryType == iniEntry.EntryType.Container)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
-                if (!settings.sourceManage)
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                if (!settings.SourceManage)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
-                if (!settings.sourceManage)
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                if (!settings.SourceManage)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.ignoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
             }
 
             return true;

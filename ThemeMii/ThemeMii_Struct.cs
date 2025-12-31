@@ -17,21 +17,6 @@
 
 namespace ThemeMii
 {
-    public class ThemeMiiSettings
-    {
-        public bool ignoreMissing { get; set; } = true;
-        public bool sourceManage  {get; set;}= true;
-        public bool containerManage  {get; set; } = true;
-        public bool autoImageSize {get; set; } = true;
-        public bool keepExtractedApp {get; set; } = true;
-        public bool lz77Containers {get; set; } = true;
-        public bool savePrompt {get; set; } = true;
-        public string? nandBackupPath {get; set; }
-        public bool saveNandPath {get; set; } = true;
-        public bool saveWindowChanges {get; set; } = true;
-        public bool imageSizeFromTpl {get; set; }= true;
-    }
-
     public struct AppBrowseInfo
     {
         public bool viewOnly;
