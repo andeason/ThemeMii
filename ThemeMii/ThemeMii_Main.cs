@@ -221,16 +221,15 @@ namespace ThemeMii
         }
 
         */
-        private void msExit_Click(object sender, RoutedEventArgs e)
+        private void msExit_Click(object? sender, RoutedEventArgs e)
         {
             Close();
         }
         
-        /*
-
-        private void msNew_Click(object sender, EventArgs e)
+        
+        private void msNew_Click(object? sender, RoutedEventArgs e)
         {
-            if (pbProgress.Value == 100)
+            if (ActionBar.Value == 0 || ActionBar.Value == 100)
             {
                 Initialize();
                 SetControls(true);
@@ -238,6 +237,8 @@ namespace ThemeMii
                 openedMym = string.Empty;
             }
         }
+        
+        /*
 
         private void msSave_Click(object sender, EventArgs e)
         {
