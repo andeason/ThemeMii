@@ -285,25 +285,27 @@ namespace ThemeMii
                 await MessageBoxHelper.DisplayErrorMessage(ex.Message);
             }
         }
-
+        
         private void SwapEntries(int selectedIndex, bool up)
         {
-            /*
             if (selectedIndex > -1)
             {
-                int bIndex = (up) ? selectedIndex - 1 : selectedIndex + 1;
+                int bIndex = up ? selectedIndex - 1 : selectedIndex + 1;
 
                 if (bIndex > -1 && bIndex < lbxIniEntries.Items.Count)
                 {
                     SaveSelected();
-                    object selectedObject = lbxIniEntries.Items[selectedIndex];
-                    lbxIniEntries.Items[selectedIndex] = lbxIniEntries.Items[bIndex];
-                    lbxIniEntries.Items[bIndex] = selectedObject;
+                    //TODO: Yet another scuffed thing...
+                    var list = lbxIniEntries.ItemsSource!.Cast<string>().ToList();
+                    var selectedObject = list[selectedIndex];
+                    list[selectedIndex] = list[bIndex];
+                    list[bIndex] = selectedObject!;
 
+                    lbxIniEntries.ItemsSource = list;
                     lbxIniEntries.SelectedIndex = bIndex;
                 }
             }
-            */
+            
         }
 
         private void SaveSelected()

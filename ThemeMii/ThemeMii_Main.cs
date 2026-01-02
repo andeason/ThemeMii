@@ -17,6 +17,7 @@
  
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -257,41 +258,51 @@ namespace ThemeMii
             e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != '\b';
         }
 
-        private void SwapEntryUp(object sender, EventArgs e)
+        */
+        private void SwapEntryUp(object? sender, RoutedEventArgs e)
         {
             SwapEntries(lbxIniEntries.SelectedIndex, true);
         }
+        
+        
 
-        private void SwapEntryDown(object sender, EventArgs e)
+        private void SwapEntryDown(object? sender, RoutedEventArgs e)
         {
             SwapEntries(lbxIniEntries.SelectedIndex, false);
         }
+        
+        
 
-        private void msMoveStart_Click(object sender, EventArgs e)
+        private void msMoveStart_Click(object? sender, RoutedEventArgs e)
         {
             if (lbxIniEntries.SelectedIndex > -1)
             {
                 SaveSelected();
-                object temp = lbxIniEntries.Items[lbxIniEntries.SelectedIndex];
-                lbxIniEntries.Items.RemoveAt(lbxIniEntries.SelectedIndex);
-                lbxIniEntries.Items.Insert(0, temp);
+                var list = lbxIniEntries.ItemsSource!.Cast<string>().ToList();
+                var temp = list[lbxIniEntries.SelectedIndex];
+                list.RemoveAt(lbxIniEntries.SelectedIndex);
+                list.Insert(0, temp);
+                lbxIniEntries.ItemsSource = list;
                 lbxIniEntries.SelectedIndex = 0;
             }
         }
-
-        private void msMoveEnd_Click(object sender, EventArgs e)
+        
+        
+        private void msMoveEnd_Click(object sender, RoutedEventArgs e)
         {
             if (lbxIniEntries.SelectedIndex > -1)
             {
                 SaveSelected();
-                object temp = lbxIniEntries.Items[lbxIniEntries.SelectedIndex];
-                lbxIniEntries.Items.RemoveAt(lbxIniEntries.SelectedIndex);
-                lbxIniEntries.Items.Add(temp);
+                var list = lbxIniEntries.ItemsSource!.Cast<string>().ToList();
+                var temp = list[lbxIniEntries.SelectedIndex];
+                list.RemoveAt(lbxIniEntries.SelectedIndex);
+                list.Add(temp);
+                lbxIniEntries.ItemsSource = list;
                 lbxIniEntries.SelectedIndex = lbxIniEntries.Items.Count - 1;
             }
         }
 
-        */
+        
         private async void btnMinus_Click(object? sender, RoutedEventArgs e)
         {
             RemoveEntry(lbxIniEntries.SelectedIndex);

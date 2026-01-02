@@ -29,10 +29,10 @@
                                         <MenuItem Name="msAddCustomData" Header="Custom Data" Click="msAddCustomData_Click"/>
                                 </MenuItem>
                                 <MenuItem Header="Remove Del" Name="msRemove" Click="btnMinus_Click"/>
-                                <MenuItem Header="Move Up Ctrl+Up" />
-                                <MenuItem Header="Move Down Ctrl+Down" />
-                                <MenuItem Header="Move To Start Ctrl+Left" />
-                                <MenuItem Header="Move to End Ctrl+Right" />
+                                <MenuItem Header="Move Up Ctrl+Up" Name="msMoveUp" Click="SwapEntryUp"/>
+                                <MenuItem Header="Move Down Ctrl+Down" Name="msMoveDown" Click="SwapEntryDown"/>
+                                <MenuItem Header="Move To Start Ctrl+Left" Name="msMoveStart" Click="msMoveStart_Click"/>
+                                <MenuItem Header="Move to End Ctrl+Right" Name="msMoveEnd" Click="msMoveEnd_Click"/>
                                 <Separator />
                                 <MenuItem Header="Remove Missing Statics" />
                         </MenuItem>
@@ -138,10 +138,10 @@
                                 <Button Name="btnMinus" Click="btnMinus_Click">
                                         -
                                 </Button>
-                                <Button>
+                                <Button Name="btnUp" Click="SwapEntryUp">
                                         ↑
                                 </Button>
-                                <Button>
+                                <Button Name="btnDown" Click="SwapEntryDown">
                                         ↓
                                 </Button>
                         </StackPanel>
