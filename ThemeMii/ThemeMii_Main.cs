@@ -643,19 +643,19 @@ namespace ThemeMii
                 await DownloadBaseApp(((int)bApp).ToString("x8"), titleVersion, result.Path.AbsolutePath);
         }
 
-        /*
-        private void msCsmToMym_Click(object sender, EventArgs e)
+        
+        private void msCsmToMym_Click(object sender, RoutedEventArgs e)
         {
-            if (pbProgress.Value == 100)
+            if (ActionBar.Value == 0 || ActionBar.Value == 100)
             {
                 ThemeMii_CsmToMym ctm = new ThemeMii_CsmToMym();
                 ctm.tempDir = tempDir + "compare";
-
-                ctm.ShowDialog();
+                var windowOwner = this;
+                ctm.ShowDialog(windowOwner);
             }
         }
 
-        */
+        
         private async void btnBrowseFile_Click(object? sender, RoutedEventArgs e)
         {
             if (ActionBar.Value != 0 && ActionBar.Value != 100)

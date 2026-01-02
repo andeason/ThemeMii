@@ -265,7 +265,8 @@ namespace Wii
                     return filearray;
                 }
             }
-            else throw new FileNotFoundException("File couldn't be found:\r\n" + sourcefile);
+            
+            throw new FileNotFoundException("File couldn't be found:\r\n" + sourcefile);
         }
 
         /// <summary>

@@ -76,7 +76,7 @@
                                 <MenuItem IsVisible="True" Name="ChangeNandPath" Header="Change NAND Backup Path" />
                         </MenuItem>
                         <MenuItem Header="Tools">
-                                <MenuItem Header="csm to mym" />
+                                <MenuItem Header="csm to mym" Click="msCsmToMym_Click"/>
                                 <MenuItem Name="msBrowseBaseApp" Click="btnBrowseFile_Click" Header="Browse Base App" />
                                 <MenuItem Header="Install Theme to Nand Backup" />
                                 <Separator />

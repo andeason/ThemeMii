@@ -1,0 +1,45 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="425" d:DesignHeight="300"
+        x:Class="ThemeMii.ThemeMii_CsmToMym"
+        Title="ThemeMii_CsmToMym"
+        Icon="Resources/ThemeMii_Icon.ico"
+        Loaded="ThemeMii_CsmToMym_Load"
+        Width="425"
+        Height="300">
+    <StackPanel HorizontalAlignment="Center">
+        <TextBlock Name="lbInfo" xml:space="preserve">
+            Be sure to use the same app as the csm was built with.
+            If the csm is for 4.2U, use the 4.2U base app
+        </TextBlock>
+        
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="10">
+                Csm: 
+            </TextBlock>
+            <TextBox Name="CsmPath" Width="250"/>
+            <Button Name="CsmBrowse" Click="btnCsmBrowse_Click" Margin="5">
+                Browse...
+            </Button>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="10">
+                app:
+            </TextBlock>
+            <TextBox Name="AppPath" Width="250"/>
+            <Button Name="AppBrowse" Click="btnAppBrowse_Click" Margin="5">
+                Browse...
+            </Button>
+        </StackPanel>
+        
+        <CheckBox ToolTip.Tip="Don't uncheck this unless you're facing problems!" Name="IntensiveAlgorithm">Intensive Algorithm (Smaller mym)</CheckBox>
+        
+        <Button Name="ConvertButton" Click="btnConvert_Click" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="400">
+            Convert
+        </Button>
+        <ProgressBar Name="pbProgress" Minimum="0" Maximum="100"  ShowProgressText="True" Margin="0 10 0  0"/>
+    </StackPanel>
+</Window>

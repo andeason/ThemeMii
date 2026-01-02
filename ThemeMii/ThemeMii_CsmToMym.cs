@@ -19,14 +19,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 //using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
-/*
+
 namespace ThemeMii
 {
-    public partial class ThemeMii_CsmToMym : Form
+    public partial class ThemeMii_CsmToMym : Window
     {
         public string tempDir;
         private string saveFile;
@@ -35,62 +42,89 @@ namespace ThemeMii
         public ThemeMii_CsmToMym()
         {
             InitializeComponent();
-            this.Icon = Properties.Resources.ThemeMii_Icon;
         }
 
-        private void ThemeMii_CsmToMym_Load(object sender, EventArgs e)
+        private void ThemeMii_CsmToMym_Load(object? sender, RoutedEventArgs e)
         {
-            CenterToParent();
-            ToolTip tTip = new ToolTip();
-            tTip.SetToolTip(cbIntensiveAlgorithm, "Don't uncheck this unless you're facing problems!");
+            //CenterToParent();
         }
 
-        private void btnCsmBrowse_Click(object sender, EventArgs e)
+        private async void btnCsmBrowse_Click(object? sender, RoutedEventArgs e)
         {
-            if (pbProgress.Value == 100)
+            if (pbProgress.Value == 0 || pbProgress.Value == 100)
             {
-                OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Filter = "csm|*.csm";
-
-                if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    tbCsm.Text = ofd.FileName;
-            }
-        }
-
-        private void btnAppBrowse_Click(object sender, EventArgs e)
-        {
-            if (pbProgress.Value == 100)
-            {
-                OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Filter = "app|*.app";
-
-                if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    tbApp.Text = ofd.FileName;
-            }
-        }
-
-        private void btnConvert_Click(object sender, EventArgs e)
-        {
-            if (File.Exists(tbCsm.Text) && File.Exists(tbApp.Text))
-            {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "mym|*.mym";
-                sfd.FileName = Path.GetFileNameWithoutExtension(tbCsm.Text);
-
-                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                var fileStorage = StorageProvider;
+                var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
-                    saveFile = sfd.FileName;
-                    pbProgress.Value = 0;
-                    btnConvert.Visible = false;
-                    intensiveAlgorithm = cbIntensiveAlgorithm.Checked;
+                    FileTypeFilter =
+                    [
+                        new FilePickerFileType("csm files")
+                        {
+                            Patterns = ["*.csm"]
+                        }
+                    ]
+                });
 
-                    Thread workerThread = new Thread(new ThreadStart(this._convertCsm));
-                    workerThread.Start();
-                }
+                CsmPath.Text = result.Count > 0 ? result[0].Path.AbsolutePath : string.Empty;
+
             }
         }
 
-        private void _convertCsm()
+        private async void btnAppBrowse_Click(object? sender, RoutedEventArgs e)
+        {
+            if (pbProgress.Value == 0 || pbProgress.Value == 100)
+            {
+                var fileStorage = StorageProvider;
+                var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions
+                {
+                    FileTypeFilter =
+                    [
+                        new FilePickerFileType("app files")
+                        {
+                            Patterns = ["*.app"]
+                        }
+                    ]
+                });
+
+                AppPath.Text = result.Count > 0 ? result[0].Path.AbsolutePath : string.Empty;
+            }
+            
+        }
+
+        private async void btnConvert_Click(object? sender, RoutedEventArgs e)
+        {
+            
+            if (File.Exists(CsmPath.Text) && File.Exists(AppPath.Text))
+            {
+                var fileStorage = StorageProvider;
+                var result = await fileStorage.SaveFilePickerAsync(new FilePickerSaveOptions()
+                    {
+                        DefaultExtension = "mym",
+                        FileTypeChoices = [new FilePickerFileType("mym")
+                        {
+                            Patterns = ["*.mym"]
+                        }],
+                        SuggestedFileName = Path.GetFileNameWithoutExtension(CsmPath.Text)
+                    });
+
+                if (result == null)
+                    return;
+                
+                saveFile = result.Name;
+                pbProgress.Value = 0;
+                ConvertButton.IsVisible = false;
+                intensiveAlgorithm = IntensiveAlgorithm.IsChecked ?? false;
+
+                await _convertCsm();
+            }
+            else
+            {
+                await MessageBoxHelper.DisplayErrorMessage("Please give a valid path for the App/CSM path before running.");
+            }
+            
+        }
+
+        private async Task _convertCsm()
         {
             string appDir = tempDir + "\\appOut\\";
             string csmDir = tempDir + "\\csmOut\\";
@@ -102,8 +136,8 @@ namespace ThemeMii
 
             List<iniEntry> entryList = new List<iniEntry>();
 
-            Wii.U8.UnpackU8(tbCsm.Text, csmDir);
-            Wii.U8.UnpackU8(tbApp.Text, appDir);
+            Wii.U8.UnpackU8(CsmPath.Text, csmDir);
+            Wii.U8.UnpackU8(AppPath.Text, appDir);
 
             string[] csmFiles = Directory.GetFiles(csmDir, "*", SearchOption.AllDirectories);
 
@@ -114,7 +148,8 @@ namespace ThemeMii
                     ReportProgress((i * 100 / csmFiles.Length) / 2);
 
                     byte[] temp = Wii.Tools.LoadFileToByteArray(csmFiles[i], 0, 4);
-                    if (temp[0] == 'Y' && temp[1] == 'a' && temp[2] == 'z' && temp[3] == '0') continue;
+                    if (temp[0] == 'Y' && temp[1] == 'a' && temp[2] == 'z' && temp[3] == '0')
+                        continue;
 
                     bool extracted = false;
 
@@ -135,7 +170,7 @@ namespace ThemeMii
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
                                 return;
                             }
                         }
@@ -151,7 +186,7 @@ namespace ThemeMii
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
                                 return;
                             }
                         }
@@ -172,7 +207,7 @@ namespace ThemeMii
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
                                 return;
                             }
                         }
@@ -198,7 +233,7 @@ namespace ThemeMii
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
                                 return;
                             }
                         }
@@ -214,7 +249,7 @@ namespace ThemeMii
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
                                 return;
                             }
                         }
@@ -235,7 +270,7 @@ namespace ThemeMii
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
                                 return;
                             }
                         }
@@ -348,20 +383,26 @@ namespace ThemeMii
             if (Directory.Exists(mymDir)) Directory.Delete(mymDir, true);
 
             ReportProgress(100);
-            MessageBox.Show("Saved mym to:\n" + saveFile, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            await MessageBoxHelper.DisplayInfoBox("Saved mym to:\n" + saveFile);
         }
 
+        //This also just appears to be duplicated?
         private void DeASH(string file)
         {
-            ProcessStartInfo pInfo = new ProcessStartInfo(Application.StartupPath + "\\ASH.exe", string.Format("\"{0}\"", file));
-            pInfo.UseShellExecute = false;
-            //pInfo.RedirectStandardOutput = true;
-            pInfo.CreateNoWindow = true;
+            //TODO:  This is a major roadblock, ASH.exe relies on an actual exe.
+            //I don't even like using this weird separate file.  We probably should see if we can implement this ourselves....
+            var ashExePath = Path.Combine(Directory.GetCurrentDirectory(), "ASH.exe");
+            ProcessStartInfo pInfo = new ProcessStartInfo(ashExePath, $"\"{file}\"")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-            Process p = Process.Start(pInfo);
+            var p = Process.Start(pInfo);
+            if (p == null)
+                throw new Exception("Ash.exe did not start.  Aborting...");
+            
             p.WaitForExit();
-
-            //ErrorBox(p.StandardOutput.ReadToEnd() + "\n\n" + mymC.file);
         }
 
         private bool StringExistsInStringArray(string theString, string[] theStringArray)
@@ -371,16 +412,9 @@ namespace ThemeMii
 
         private void ReportProgress(int progressPercentage)
         {
-            SetProgress sp = new SetProgress(this._setProgress);
-            this.Invoke(sp, progressPercentage);
-        }
-
-        private delegate void SetProgress(int progressPercentage);
-        private void _setProgress(int progressPercentage)
-        {
             pbProgress.Value = progressPercentage;
-            if (pbProgress.Value == 100) btnConvert.Visible = true;
+            if (pbProgress.Value == 100 || pbProgress.Value == 0)
+                ConvertButton.IsVisible = true;
         }
     }
 }
-*/

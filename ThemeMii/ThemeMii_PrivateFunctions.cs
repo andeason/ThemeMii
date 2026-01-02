@@ -292,20 +292,6 @@ namespace ThemeMii
             ActionBar.Value = progressPercentage;
         }
 
-        private async Task DisplayErrorMessage(string message)
-        {
-            var errorMessage = MessageBoxManager.GetMessageBoxStandard("Error", message, ButtonEnum.Ok,
-                MsBox.Avalonia.Enums.Icon.Error);
-            await errorMessage.ShowAsync();
-        }
-
-        private async Task InfoBox(string message)
-        {
-            var infoMessage =
-                MessageBoxManager.GetMessageBoxStandard("Info", message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Info);
-            await infoMessage.ShowAsync();
-        }
-
         private void AddEntries()
         {
             try
@@ -319,7 +305,7 @@ namespace ThemeMii
                 ReportProgress(100, " ");
                 SetControls(true);
             }
-            catch (Exception ex) { DisplayErrorMessage(ex.Message); }
+            catch (Exception ex) { MessageBoxHelper.DisplayErrorMessage(ex.Message); }
         }
 
         private void SwapEntries(int selectedIndex, bool up)
@@ -597,47 +583,47 @@ namespace ThemeMii
             if (entry.entryType == iniEntry.EntryType.Container)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (!settings.SourceManage)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
                 if (!settings.SourceManage)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.IgnoreMissing) DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
             }
 
             return true;
@@ -795,7 +781,7 @@ namespace ThemeMii
             BaseApp standardApp = GetStandardBaseApp();
             if (standardApp == 0)
             {
-                await DisplayErrorMessage("You have to choose a Standard System Menu!");
+                await MessageBoxHelper.DisplayErrorMessage("You have to choose a Standard System Menu!");
                 return;
             }
             
@@ -811,7 +797,7 @@ namespace ThemeMii
                 //Extract app
                 if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),((int)standardApp).ToString("x8") + ".app")))
                 {
-                    await DisplayErrorMessage("app file wasn't found!"); 
+                    await MessageBoxHelper.DisplayErrorMessage("app file wasn't found!"); 
                     return;
                 }
 
@@ -835,7 +821,7 @@ namespace ThemeMii
 
             if (!Directory.Exists(browsePath))
             {
-                await DisplayErrorMessage("The browse path does not exist!");
+                await MessageBoxHelper.DisplayErrorMessage("The browse path does not exist!");
                 return;
             }
 
