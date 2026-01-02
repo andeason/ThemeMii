@@ -431,21 +431,29 @@ namespace ThemeMii
         private void AddEntry(iniEntry.EntryType entryType)
         {
             int newIndex = GetLastEntryNum(entryType) + 1;
-
+            
             string type = "[cont";
-            if (entryType == iniEntry.EntryType.CustomImage) type = "[cimg";
-            else if (entryType == iniEntry.EntryType.StaticImage) type = "[simg";
-            else if (entryType == iniEntry.EntryType.CustomData) type = "[cdta";
-            else if (entryType == iniEntry.EntryType.StaticData) type = "[sdta";
+            if (entryType == iniEntry.EntryType.CustomImage) 
+                type = "[cimg";
+            else if (entryType == iniEntry.EntryType.StaticImage) 
+                type = "[simg";
+            else if (entryType == iniEntry.EntryType.CustomData) 
+                type = "[cdta";
+            else if (entryType == iniEntry.EntryType.StaticData)
+                type = "[sdta";
 
             iniEntry newEntry = new iniEntry();
             newEntry.entryType = entryType;
-            newEntry.entry = type + newIndex.ToString() + "]";
+            newEntry.entry = type + newIndex + "]";
             newEntry.format = iniEntry.TplFormat.RGB5A3;
 
             ini.EntryList.Add(newEntry);
-            //lbxIniEntries.Items.Add(newEntry.entry);
-            //lbxIniEntries.SelectedIndex = lbxIniEntries.Items.Count - 1;
+            
+            //TODO:  Scuffed.  Is there a way to do this without essentially remaking the entire thing?
+            var list = lbxIniEntries.ItemsSource?.Cast<string>().ToList() ?? [];
+            list.Add(newEntry.entry);
+            lbxIniEntries.ItemsSource = list;
+            lbxIniEntries.SelectedIndex = list.Count - 1;
         }
 
         private int GetLastEntryNum(iniEntry.EntryType entryType)

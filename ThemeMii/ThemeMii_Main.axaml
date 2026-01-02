@@ -22,11 +22,11 @@
                         </MenuItem>
                         <MenuItem Header="List" >
                                 <MenuItem Header="Add" Name="AddListMenus">
-                                        <MenuItem Header="Container" />
-                                        <MenuItem Header="Static Image" />
-                                        <MenuItem Header="Static Data" />
-                                        <MenuItem Header="Custom Image" />
-                                        <MenuItem Header="Custom Data" />
+                                        <MenuItem Name="msAddContainer" Header="Container" Click="msAddContainer_Click"/>
+                                        <MenuItem Name="msAddStaticImage" Header="Static Image" Click="msAddStaticImage_Click"/>
+                                        <MenuItem Name="msAddStaticData" Header="Static Data" Click="msAddStaticData_Click"/>
+                                        <MenuItem Name="msAddCustomImage" Header="Custom Image" Click="msAddCustomImage_Click"/>
+                                        <MenuItem Name="msAddCustomData" Header="Custom Data" Click="msAddCustomData_Click"/>
                                 </MenuItem>
                                 <MenuItem Header="Remove Del" />
                                 <MenuItem Header="Move Up Ctrl+Up" />
@@ -127,11 +127,11 @@
                                         +
                                         <Button.Flyout>
                                                 <MenuFlyout>
-                                                        <MenuItem Header="Container" />
-                                                        <MenuItem Header="Static Image" />
-                                                        <MenuItem Header="Static Data" />
-                                                        <MenuItem Header="Custom Image" />
-                                                        <MenuItem Header="Custom Data" />
+                                                        <MenuItem Name="cmAddContainer" Header="Container" Click="msAddContainer_Click"/>
+                                                        <MenuItem Name="cmAddStaticImage" Header="Static Image" Click="msAddStaticImage_Click"/>
+                                                        <MenuItem Name="cmAddStaticData" Header="Static Data"  Click="msAddStaticData_Click"/>
+                                                        <MenuItem Name="cmAddCustomImage" Header="Custom Image" Click="msAddCustomImage_Click"/>
+                                                        <MenuItem Name="cmAddCustomData" Header="Custom Data" Click="msAddCustomData_Click"/>
                                                 </MenuFlyout>
                                         </Button.Flyout>
                                 </Button>
@@ -157,7 +157,6 @@
                         <ProgressBar  DockPanel.Dock="Bottom" Minimum="0" Maximum ="100" ShowProgressText="True" Name="ActionBar"/>
                 </StackPanel>
                 <Grid RowDefinitions="100*" ColumnDefinitions="150,400" Margin="10">
-                        <!-- Has problems when scaling.-->
                         <Border  BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5"> 
                                 <ScrollViewer MaxHeight="420" VerticalScrollBarVisibility="Visible" MaxWidth="150">
                                         <ListBox Name="lbxIniEntries">

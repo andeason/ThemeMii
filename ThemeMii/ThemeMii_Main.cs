@@ -304,30 +304,33 @@ namespace ThemeMii
             cmAdd.Show(MousePosition);
         }
 
-        private void msAddContainer_Click(object sender, EventArgs e)
+        */
+        private void msAddContainer_Click(object? sender, RoutedEventArgs e)
         {
             AddEntry(iniEntry.EntryType.Container);
         }
 
-        private void msAddStaticImage_Click(object sender, EventArgs e)
+        private void msAddStaticImage_Click(object? sender, RoutedEventArgs e)
         {
             AddEntry(iniEntry.EntryType.StaticImage);
         }
-
-        private void msAddStaticData_Click(object sender, EventArgs e)
+        
+        private void msAddStaticData_Click(object? sender, RoutedEventArgs e)
         {
             AddEntry(iniEntry.EntryType.StaticData);
         }
-
-        private void msAddCustomImage_Click(object sender, EventArgs e)
+        
+        private void msAddCustomImage_Click(object? sender, RoutedEventArgs e)
         {
             AddEntry(iniEntry.EntryType.CustomImage);
         }
-
-        private void msAddCustomData_Click(object sender, EventArgs e)
+        
+        private void msAddCustomData_Click(object? sender, RoutedEventArgs e)
         {
             AddEntry(iniEntry.EntryType.CustomData);
         }
+        
+        /*
 
         private void btnStaticDataBrowse_Click(object sender, EventArgs e)
         {
