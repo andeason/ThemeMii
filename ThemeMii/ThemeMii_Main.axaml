@@ -14,15 +14,20 @@
         <DockPanel>
                 <Menu DockPanel.Dock="Top">
                         <MenuItem Header="File" >
-                                <MenuItem Header="New Ctrl+N" Click="msNew_Click" />
+                                <MenuItem Header="New Ctrl+N" Click="msNew_Click"/>
                                 <MenuItem Header="Open Ctrl+O" />
-                                <MenuItem Header="Save Ctrl+S" />
+                                <MenuItem Name="msSave" Header="Save Ctrl+S" />
                                 <Separator />
                                 <MenuItem Header="Exit" Click="msExit_Click"/>
                         </MenuItem>
                         <MenuItem Header="List" >
-                                <!--TODO:  Add later options -->
-                                <MenuItem Header="Add" />
+                                <MenuItem Header="Add" Name="AddListMenus">
+                                        <MenuItem Header="Container" />
+                                        <MenuItem Header="Static Image" />
+                                        <MenuItem Header="Static Data" />
+                                        <MenuItem Header="Custom Image" />
+                                        <MenuItem Header="Custom Data" />
+                                </MenuItem>
                                 <MenuItem Header="Remove Del" />
                                 <MenuItem Header="Move Up Ctrl+Up" />
                                 <MenuItem Header="Move Down Ctrl+Down" />
@@ -78,7 +83,7 @@
                         <MenuItem Header="Tools">
                                 <MenuItem Header="csm to mym" Click="msCsmToMym_Click"/>
                                 <MenuItem Name="msBrowseBaseApp" Click="btnBrowseFile_Click" Header="Browse Base App" />
-                                <MenuItem Header="Install Theme to Nand Backup" />
+                                <MenuItem Name="msInstallToNandBackup" Header="Install Theme to Nand Backup" />
                                 <Separator />
                                 <MenuItem Header="Download Base App" Click="DownloadBaseApp_Click">
                                         <MenuItem Header="3.2" >
@@ -117,7 +122,7 @@
                         </MenuItem>
                 </Menu>
                 <StackPanel DockPanel.Dock="Bottom">
-                        <StackPanel Orientation="Horizontal" Margin="10" >
+                        <StackPanel Orientation="Horizontal" Margin="10" Name="PanelButtons">
                                 <Button>
                                         +
                                         <Button.Flyout>

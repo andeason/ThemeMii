@@ -117,37 +117,9 @@ namespace ThemeMii
 
         private void SetControls(bool enable)
         {
-            MethodInvoker m;
-
-            /*
-            if (enable)
-                m = new MethodInvoker(this._setControlsTrue);
-            else
-                m = new MethodInvoker(this._setControlsFalse);
-
-            this.Invoke(m);
-            */
+            ChangeControls(enable);
         }
-
-        private void SetControlsRecursive(Control parentCtrl, bool state)
-        {
-            /*
-            foreach (Control thisControl in parentCtrl.Controls)
-            {
-                if (thisControl is Button) ((Button)thisControl).Enabled = state;
-                else if (thisControl is TextBox)
-                {
-                    TextBox tb = (TextBox)thisControl;
-                    if (tb.Name.ToLower().Contains("source") && settings.sourceManage) continue;
-                    else if ((tb.Name.ToLower().Contains("width") || tb.Name.ToLower().Contains("height")) && settings.autoImageSize) continue;
-
-                    tb.Enabled = state;
-                }
-
-                if (thisControl.Controls.Count > 0) SetControlsRecursive(thisControl, state);
-            }
-            */
-        }
+        
 
         private void HidePanels()
         {

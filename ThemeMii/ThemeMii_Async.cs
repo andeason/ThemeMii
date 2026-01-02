@@ -701,31 +701,18 @@ namespace ThemeMii
             MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void _setControlsFalse()
+        */
+        private void ChangeControls(bool enable)
         {
-            SetControlsRecursive(this, false);
-
-            foreach (object tsItem in msList.DropDownItems)
-            {
-                if (tsItem is ToolStripMenuItem) ((ToolStripMenuItem)tsItem).Enabled = false;
-            }
-
-            msSave.Enabled = false;
-            msInstallToNandBackup.Enabled = false;
+            msSave.IsEnabled = enable;
+            btnCreateCsm.IsEnabled = enable;
+            btnSaveMym.IsEnabled = enable;
+            msInstallToNandBackup.IsEnabled = enable;
+            AddListMenus.IsEnabled = enable;
+            PanelButtons.IsEnabled = enable;
         }
-
-        private void _setControlsTrue()
-        {
-            SetControlsRecursive(this, true);
-
-            foreach (object tsItem in msList.DropDownItems)
-            {
-                if (tsItem is ToolStripMenuItem) ((ToolStripMenuItem)tsItem).Enabled = true;
-            }
-
-            msSave.Enabled = true;
-            msInstallToNandBackup.Enabled = true;
-        }
+        
+        /*
 
         private delegate void _progressReporter(ProgressChangedEventArgs e);
         private void _reportProgress(ProgressChangedEventArgs e)
