@@ -45,9 +45,6 @@ namespace ThemeMii
         public ThemeMii_Main()
         {
             InitializeComponent();
-
-            // TODO: Need equivalent.
-            //if (Properties.Settings.Default.firstRun) ShowDisclaimer();
         }
 
         private bool saveCheckPassed;
