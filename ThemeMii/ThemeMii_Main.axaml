@@ -2,12 +2,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
         x:Class="ThemeMii.ThemeMii_Main"
         Icon="Resources/ThemeMii_Icon.ico"
         Title="ThemeMii by Leathl X MOD"
-        Width="800"
-        Height="800"
+        Width="600"
+        Height="600"
         Loaded="ThemeMii_Main_Load"
         Closing="ThemeMii_Main_FormClosing"
         >
@@ -116,8 +116,30 @@
                                 <MenuItem Click="msAbout_Click" Header="About" />
                         </MenuItem>
                 </Menu>
-                
                 <StackPanel DockPanel.Dock="Bottom">
+                        <StackPanel Orientation="Horizontal" Margin="10" >
+                                <Button>
+                                        +
+                                        <Button.Flyout>
+                                                <MenuFlyout>
+                                                        <MenuItem Header="Container" />
+                                                        <MenuItem Header="Static Image" />
+                                                        <MenuItem Header="Static Data" />
+                                                        <MenuItem Header="Custom Image" />
+                                                        <MenuItem Header="Custom Data" />
+                                                </MenuFlyout>
+                                        </Button.Flyout>
+                                </Button>
+                                <Button>
+                                        -
+                                </Button>
+                                <Button>
+                                        ↑
+                                </Button>
+                                <Button>
+                                        ↓
+                                </Button>
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="10" Margin="10">
                                 <Button IsEnabled="False" Width="100" Name="btnSaveMym">
                                         Save mym
@@ -129,10 +151,20 @@
                         </StackPanel>
                         <ProgressBar  DockPanel.Dock="Bottom" Minimum="0" Maximum ="100" ShowProgressText="True" Name="ActionBar"/>
                 </StackPanel>
-                
-                <TextBlock>
-                        WORK IN PROGRESS
-                </TextBlock>
-                
+                <Grid RowDefinitions="100*" ColumnDefinitions="150,400" Margin="10">
+                        <!-- Has problems when scaling.-->
+                        <Border  BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5"> 
+                                <ScrollViewer MaxHeight="420" VerticalScrollBarVisibility="Visible" MaxWidth="150">
+                                        <StackPanel>
+                                                <TextBlock>Test</TextBlock>
+                                        </StackPanel>
+                                </ScrollViewer>
+                        </Border>
+                        <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
+                                <StackPanel>
+                                        <TextBlock>WORK IN PROGRESS</TextBlock>
+                                </StackPanel> 
+                        </Border>
+                </Grid>
         </DockPanel>
 </Window>
