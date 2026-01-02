@@ -34,7 +34,7 @@
                                 <MenuItem Header="Move To Start Ctrl+Left" Name="msMoveStart" Click="msMoveStart_Click"/>
                                 <MenuItem Header="Move to End Ctrl+Right" Name="msMoveEnd" Click="msMoveEnd_Click"/>
                                 <Separator />
-                                <MenuItem Header="Remove Missing Statics" />
+                                <MenuItem Header="Remove Missing Statics" Name="msRemoveMissingStatics" Click="msRemoveMissingStatics_Click"/>
                         </MenuItem>
                         <MenuItem Header="Options">
                                 <MenuItem ToggleType="CheckBox"  Name="SourceManage" IsChecked="True" Header="Auto-Source-Manage"/>

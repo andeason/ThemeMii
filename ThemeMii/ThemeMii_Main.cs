@@ -358,19 +358,24 @@ namespace ThemeMii
                 tbStaticImageFilepath.Text = ofd.FileName;
             }
         }
+        
+        */
 
-        private void msRemoveMissingStatics_Click(object sender, EventArgs e)
+        private async void msRemoveMissingStatics_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = lbxIniEntries.Items.Count - 1; i > -1; i--)
+            var list = lbxIniEntries.SelectedItems.Cast<string>().ToList();
+            for (int i = list.Count - 1; i > -1; i--)
             {
-                if (lbxIniEntries.Items[i].ToString().StartsWith("[s"))
+                if (list[i].StartsWith("[s"))
                 {
-                    iniEntry tempEntry = ini.GetEntry(lbxIniEntries.Items[i].ToString());
+                    iniEntry tempEntry = ini.GetEntry(list[i]);
                     if (!File.Exists(tempEntry.filepath))
-                        RemoveEntry(i);
+                        await RemoveEntry(i);
                 }
             }
         }
+        
+        /*
 
         private void msIgnoreMissingEntries_Click(object sender, EventArgs e)
         {
