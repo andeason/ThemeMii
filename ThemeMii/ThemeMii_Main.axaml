@@ -28,7 +28,7 @@
                                         <MenuItem Name="msAddCustomImage" Header="Custom Image" Click="msAddCustomImage_Click"/>
                                         <MenuItem Name="msAddCustomData" Header="Custom Data" Click="msAddCustomData_Click"/>
                                 </MenuItem>
-                                <MenuItem Header="Remove Del" />
+                                <MenuItem Header="Remove Del" Name="msRemove" Click="btnMinus_Click"/>
                                 <MenuItem Header="Move Up Ctrl+Up" />
                                 <MenuItem Header="Move Down Ctrl+Down" />
                                 <MenuItem Header="Move To Start Ctrl+Left" />
@@ -135,7 +135,7 @@
                                                 </MenuFlyout>
                                         </Button.Flyout>
                                 </Button>
-                                <Button>
+                                <Button Name="btnMinus" Click="btnMinus_Click">
                                         -
                                 </Button>
                                 <Button>

@@ -615,14 +615,19 @@ namespace ThemeMii
             return true;
         }
 
-        private void RemoveEntry(int index)
+        private async Task RemoveEntry(int index)
         {
-            /*
+            if (index == -1 || (lbxIniEntries.SelectedItems?.Count ?? 0) - 1 < index)
+                return; 
+            
             try
             {
+                //TODO:  Scuffed again....
                 string entry = lbxIniEntries.Items[index].ToString();
-                lbxIniEntries.Items.RemoveAt(index);
-
+                var list = lbxIniEntries.ItemsSource?.Cast<string>().ToList() ?? [];
+                list.RemoveAt(index);
+                lbxIniEntries.ItemsSource = list;
+                
                 ini.EntryList.Remove(ini.GetEntry(entry));
 
                 if (lbxIniEntries.Items.Count > index)
@@ -630,8 +635,11 @@ namespace ThemeMii
                 else
                     lbxIniEntries.SelectedIndex = index - 1;
             }
-            catch { }
-            */
+            catch
+            {
+                await MessageBoxHelper.DisplayErrorMessage("Unable to delete.  ");
+            }
+            
         }
 
         private void DeASH(iniEntry mymC, string appOut)

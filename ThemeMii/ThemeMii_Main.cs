@@ -291,17 +291,13 @@ namespace ThemeMii
             }
         }
 
-        private void btnMinus_Click(object sender, EventArgs e)
+        */
+        private async void btnMinus_Click(object? sender, RoutedEventArgs e)
         {
             RemoveEntry(lbxIniEntries.SelectedIndex);
         }
-
-        private void btnPlus_Click(object sender, EventArgs e)
-        {
-            cmAdd.Show(MousePosition);
-        }
-
-        */
+        
+        
         private void msAddContainer_Click(object? sender, RoutedEventArgs e)
         {
             AddEntry(iniEntry.EntryType.Container);
