@@ -15,7 +15,7 @@
                 <Menu DockPanel.Dock="Top">
                         <MenuItem Header="File" >
                                 <MenuItem Header="New Ctrl+N" Click="msNew_Click"/>
-                                <MenuItem Header="Open Ctrl+O" />
+                                <MenuItem Header="Open Ctrl+O" Click="msOpen_Click" />
                                 <MenuItem Name="msSave" Header="Save Ctrl+S" />
                                 <Separator />
                                 <MenuItem Header="Exit" Click="msExit_Click"/>
@@ -160,9 +160,8 @@
                         <!-- Has problems when scaling.-->
                         <Border  BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5"> 
                                 <ScrollViewer MaxHeight="420" VerticalScrollBarVisibility="Visible" MaxWidth="150">
-                                        <StackPanel>
-                                                <TextBlock>Test</TextBlock>
-                                        </StackPanel>
+                                        <ListBox Name="lbxIniEntries">
+                                        </ListBox>
                                 </ScrollViewer>
                         </Border>
                         <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">

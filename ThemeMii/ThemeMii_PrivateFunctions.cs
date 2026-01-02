@@ -264,20 +264,26 @@ namespace ThemeMii
             ActionBar.Value = progressPercentage;
         }
 
-        private void AddEntries()
+        private async Task AddEntries()
         {
+            List<string> entriesList = new List<string>();
             try
             {
-
-                for (int i=0;i<ini.Entries.Length;i++)
+                for (int i = 0; i < ini.Entries.Length; i++)
                 {
                     ReportProgress((i + 1) * 100 / ini.Entries.Length, "Loading entries...");
-                    //lbxIniEntries.Items.Add(ini.Entries[i].entry);
+                    entriesList.Add(ini.Entries[i].entry);
                 }
-                ReportProgress(100, " ");
+
+                lbxIniEntries.ItemsSource = entriesList;
+
+                ReportProgress(100, "Entries from mym have been loaded.");
                 SetControls(true);
             }
-            catch (Exception ex) { MessageBoxHelper.DisplayErrorMessage(ex.Message); }
+            catch (Exception ex)
+            {
+                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
+            }
         }
 
         private void SwapEntries(int selectedIndex, bool up)

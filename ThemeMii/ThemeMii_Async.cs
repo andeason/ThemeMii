@@ -660,35 +660,44 @@ namespace ThemeMii
 
             _createCsm(cInfo.savePath, cInfo.appFile, tempDir + "temp.mym");
         }
+        
+        */
 
-        private void _loadMym(object mymFile)
+        private async Task _loadMym(string mymFilePath)
         {
             //Unzip mym file
             try
             {
                 ReportProgress(0, "Unpacking mym...");
                 FastZip fZip = new FastZip();
-                fZip.ExtractZip((string)mymFile, mymOut, "");
+                fZip.ExtractZip(mymFilePath, mymOut, "");
                 ReportProgress(100, " ");
             }
-            catch (Exception ex) { ErrorBox(ex.Message); return; }
+            catch (Exception ex)
+            {
+                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
+                return;
+            }
 
             //Parse ini
             try
             {
                 ini = new mymini();
-                ini.ProgressChanged += new EventHandler<System.ComponentModel.ProgressChangedEventArgs>(ini_ProgressChanged);
-                ini.Load(mymOut + "mym.ini");
+                ini.Load(Path.Combine(mymOut,"mym.ini"));
                 ReportProgress(100, " ");
             }
-            catch (Exception ex) { ErrorBox(ex.Message); return; }
+            catch (Exception ex)
+            {
+                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
+                return;
+            }
 
-            openedMym = Path.GetFileNameWithoutExtension((string)mymFile);
+            openedMym = Path.GetFileNameWithoutExtension(mymFilePath);
 
-            //Add entries
-            MethodInvoker m = new MethodInvoker(this.AddEntries);
-            this.Invoke(m);
+            await AddEntries();
         }
+        
+        /*
 
         private delegate void boxInvoker(string message);
         private void _errorBox(string message)

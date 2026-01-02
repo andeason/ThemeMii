@@ -105,23 +105,32 @@ namespace ThemeMii
             ReportProgress(e.ProgressPercentage, (string)e.UserState);
         }
 
-        private void msOpen_Click(object sender, EventArgs e)
+        */
+        private async void msOpen_Click(object? sender, RoutedEventArgs e)
         {
-            if (pbProgress.Value == 100)
+            if (ActionBar.Value == 0 || ActionBar.Value == 100)
             {
-                OpenFileDialog ofd = new OpenFileDialog();
-                ofd.Filter = "mym files|*.mym";
-
-                if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                var fileStorage = StorageProvider;
+                var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions
                 {
-                    Initialize();
+                    FileTypeFilter =
+                    [
+                        new FilePickerFileType("mym files")
+                        {
+                            Patterns = ["*.mym"]
+                        }
+                    ]
+                });
 
-                    Thread workThread = new Thread(new ParameterizedThreadStart(this._loadMym));
-                    workThread.Start(ofd.FileName);
-                }
+                if (result.Count <= 0) 
+                    return;
+                
+                Initialize();
+                await _loadMym(result[0].Path.AbsolutePath);
             }
         }
         
+        /*
 
         private void lbxIniEntrys_SelectedIndexChanged(object sender, EventArgs e)
         {
