@@ -121,8 +121,6 @@ namespace ThemeMii
             }
         }
         
-        
-
         private void lbxIniEntrys_SelectedIndexChanged(object? sender, RoutedEventArgs e)
         {
             SaveLastSelected();
@@ -398,33 +396,28 @@ namespace ThemeMii
             }
         }
         
-        /*
 
-        private void msAutoManage_Click(object sender, EventArgs e)
+        private void msAutoManage_Click(object? sender, RoutedEventArgs e)
         {
-            if (!msSourceManage.Checked)
+            if (!SourceManage.IsChecked)
             {
-                settings.sourceManage = false;
+                if (StaticImageStack.IsVisible && lbxIniEntries.SelectedItem != null)
+                    tbStaticImageSource.Text = ini.GetEntry(lbxIniEntries.SelectedItem.ToString()!).source;
+                else if (StaticDataStack.IsVisible && lbxIniEntries.SelectedItem != null)
+                    tbStaticDataSource.Text = ini.GetEntry(lbxIniEntries.SelectedItem.ToString()!).source;
 
-                if (panStaticImage.Visible)
-                { tbStaticImageSource.Text = ini.GetEntry(lbxIniEntries.SelectedItem.ToString()).source; }
-                else if (panStaticData.Visible)
-                { tbStaticDataSource.Text = ini.GetEntry(lbxIniEntries.SelectedItem.ToString()).source; }
-
-                tbStaticDataSource.Enabled = true;
-                tbStaticImageSource.Enabled = true;
+                tbStaticDataSource.IsEnabled = true;
+                tbStaticImageSource.IsEnabled = true;
             }
             else
             {
-                settings.sourceManage = true;
                 tbStaticDataSource.Text = string.Empty;
                 tbStaticImageSource.Text = string.Empty;
-                tbStaticDataSource.Enabled = false;
-                tbStaticImageSource.Enabled = false;
+                tbStaticDataSource.IsEnabled = false;
+                tbStaticImageSource.IsEnabled = false;
             }
         }
         
-        */
 
         private async void msImageSizeFromPng_Click(object? sender, RoutedEventArgs e)
         {

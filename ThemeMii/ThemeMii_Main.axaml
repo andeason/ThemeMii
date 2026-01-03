@@ -37,7 +37,7 @@
                                 <MenuItem Header="Remove Missing Statics" Name="msRemoveMissingStatics" Click="msRemoveMissingStatics_Click"/>
                         </MenuItem>
                         <MenuItem Header="Options">
-                                <MenuItem ToggleType="CheckBox"  Name="SourceManage" IsChecked="True" Header="Auto-Source-Manage"/>
+                                <MenuItem ToggleType="CheckBox"  Name="SourceManage" Click="msAutoManage_Click" IsChecked="True" Header="Auto-Source-Manage"/>
                                 <MenuItem ToggleType="CheckBox"  Name="ContainerManage"  IsChecked="True" Header="Auto-Container-Manage" />
                                 <MenuItem ToggleType="CheckBox"  Name="IgnoreMissing" IsChecked="True" Header="Ignore Missing Entries" />
                                 <Separator />
