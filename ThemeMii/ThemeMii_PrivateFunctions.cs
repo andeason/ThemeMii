@@ -124,13 +124,11 @@ namespace ThemeMii
 
         private void HidePanels()
         {
-            /*
-            panContainer.Visible = false;
-            panCustomImage.Visible = false;
-            panStaticImage.Visible = false;
-            panCustomData.Visible = false;
-            panStaticData.Visible = false;
-            */
+            ContainerStack.IsVisible = false;
+            CustomImageStack.IsVisible = false;
+            StaticImageStack.IsVisible = false;
+            CustomDataStack.IsVisible = false;
+            StaticDataStack.IsVisible = false;
         }
 
         private void LoadSettings()

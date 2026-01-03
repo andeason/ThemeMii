@@ -159,7 +159,7 @@
                 <Grid RowDefinitions="100*" ColumnDefinitions="150,400" Margin="10">
                         <Border  BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5"> 
                                 <ScrollViewer MaxHeight="420" VerticalScrollBarVisibility="Visible" MaxWidth="150">
-                                        <ListBox Name="lbxIniEntries">
+                                        <ListBox Name="lbxIniEntries" SelectionChanged="lbxIniEntrys_SelectedIndexChanged">
                                         </ListBox>
                                 </ScrollViewer>
                         </Border>
@@ -167,7 +167,7 @@
                                 <StackPanel>
                                         
                                         <StackPanel Name="ContainerStack" IsVisible="False" Spacing="10">
-                                                <TextBlock HorizontalAlignment="Center">TEST</TextBlock>
+                                                <TextBlock HorizontalAlignment="Center" Name="lbCont">TEST</TextBlock>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbContainerFile" Width="300" />
@@ -189,7 +189,7 @@
                                         
                                         
                                         <StackPanel Name="StaticImageStack" IsVisible="False" Spacing="10">
-                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                                <TextBlock HorizontalAlignment="Center" Name="lbSimg">Test</TextBlock>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbStaticImageFile" Width="300" />
@@ -232,8 +232,8 @@
                                                 </StackPanel>
                                         </StackPanel>
                                         
-                                        <StackPanel Name="StackDataStack" IsVisible="False" Spacing="10">
-                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                        <StackPanel Name="StaticDataStack" IsVisible="False" Spacing="10">
+                                                <TextBlock HorizontalAlignment="Center" Name="lbSdta">Test</TextBlock>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbStaticDataFile" Width="300" />
@@ -253,7 +253,7 @@
                                         </StackPanel>
                                         
                                         <StackPanel Name="CustomImageStack" Spacing="10" IsVisible="False">
-                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                                <TextBlock HorizontalAlignment="Center" Name="lbCimg">Test</TextBlock>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbCustomImageFile" Width="300" />
@@ -289,8 +289,8 @@
                                                 </StackPanel>
                                         </StackPanel>
                                         
-                                        <StackPanel Name="CustomDataFile" Spacing="10" IsVisible="False">
-                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                        <StackPanel Name="CustomDataStack" Spacing="10" IsVisible="False">
+                                                <TextBlock HorizontalAlignment="Center" Name="lbCdta">Test</TextBlock>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbCustomDataFile" Width="300" />

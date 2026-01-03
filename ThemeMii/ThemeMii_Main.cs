@@ -128,9 +128,9 @@ namespace ThemeMii
             }
         }
         
-        /*
+        
 
-        private void lbxIniEntrys_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbxIniEntrys_SelectedIndexChanged(object? sender, RoutedEventArgs e)
         {
             SaveLastSelected();
 
@@ -146,10 +146,10 @@ namespace ThemeMii
                     tbContainerFile.Text = tempEntry.file;
                     cmbContainerFormat.SelectedIndex = (tempEntry.type == iniEntry.ContainerType.ASH) ? 0 : 1;
 
-                    if (!panContainer.Visible)
+                    if (!ContainerStack.IsVisible)
                     {
                         HidePanels();
-                        panContainer.Visible = true;
+                        ContainerStack.IsVisible = true;
                     }
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.CustomImage)
@@ -157,44 +157,67 @@ namespace ThemeMii
                     lbCimg.Text = tempEntry.entry;
                     tbCustomImageFile.Text = tempEntry.file;
                     tbCustomImageName.Text = tempEntry.name;
-                    if (!settings.autoImageSize) tbCustomImageWidth.Text = tempEntry.width.ToString();
-                    if (!settings.autoImageSize) tbCustomImageHeight.Text = tempEntry.height.ToString();
+                    //TODO:  I really need to figure out what this was linked to....
+                    if (!ImageSizeFromTpl.IsChecked)
+                    {
+                        tbCustomImageWidth.Text = tempEntry.width.ToString();
+                        tbCustomImageHeight.Text = tempEntry.height.ToString();
+                    }
 
-                    if (tempEntry.format == iniEntry.TplFormat.RGB5A3) cmbCustomImageFormat.SelectedIndex = 0;
-                    else if (tempEntry.format == iniEntry.TplFormat.RGBA8) cmbCustomImageFormat.SelectedIndex = 1;
-                    else if (tempEntry.format == iniEntry.TplFormat.RGB565) cmbCustomImageFormat.SelectedIndex = 2;
-                    else if (tempEntry.format == iniEntry.TplFormat.I4) cmbCustomImageFormat.SelectedIndex = 3;
-                    else if (tempEntry.format == iniEntry.TplFormat.I8) cmbCustomImageFormat.SelectedIndex = 4;
-                    else if (tempEntry.format == iniEntry.TplFormat.IA4) cmbCustomImageFormat.SelectedIndex = 5;
-                    else if (tempEntry.format == iniEntry.TplFormat.IA8) cmbCustomImageFormat.SelectedIndex = 6;
+                    if (tempEntry.format == iniEntry.TplFormat.RGB5A3)
+                        cmbCustomImageFormat.SelectedIndex = 0;
+                    else if (tempEntry.format == iniEntry.TplFormat.RGBA8)
+                        cmbCustomImageFormat.SelectedIndex = 1;
+                    else if (tempEntry.format == iniEntry.TplFormat.RGB565)
+                        cmbCustomImageFormat.SelectedIndex = 2;
+                    else if (tempEntry.format == iniEntry.TplFormat.I4) 
+                        cmbCustomImageFormat.SelectedIndex = 3;
+                    else if (tempEntry.format == iniEntry.TplFormat.I8)
+                        cmbCustomImageFormat.SelectedIndex = 4;
+                    else if (tempEntry.format == iniEntry.TplFormat.IA4)
+                        cmbCustomImageFormat.SelectedIndex = 5;
+                    else if (tempEntry.format == iniEntry.TplFormat.IA8) 
+                        cmbCustomImageFormat.SelectedIndex = 6;
 
-                    if (!panCustomImage.Visible)
+                    if (!CustomImageStack.IsVisible)
                     {
                         HidePanels();
-                        panCustomImage.Visible = true;
+                        CustomImageStack.IsVisible = true;
                     }
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.StaticImage)
                 {
                     lbSimg.Text = tempEntry.entry;
                     tbStaticImageFile.Text = tempEntry.file;
-                    if (!settings.sourceManage) tbStaticImageSource.Text = tempEntry.source;
-                    if (!settings.autoImageSize) tbStaticImageWidth.Text = tempEntry.width.ToString();
-                    if (!settings.autoImageSize) tbStaticImageHeight.Text = tempEntry.height.ToString();
+                    if (!SourceManage.IsChecked) 
+                        tbStaticImageSource.Text = tempEntry.source;
+                    //TODO:  I really need to figure out what this was linked to....
+                    if (!ImageSizeFromTpl.IsChecked)
+                    {
+                        tbCustomImageWidth.Text = tempEntry.width.ToString();
+                        tbCustomImageHeight.Text = tempEntry.height.ToString();
+                    }
 
-                    if (tempEntry.format == iniEntry.TplFormat.RGB5A3) cmbStaticImageFormat.SelectedIndex = 0;
-                    else if (tempEntry.format == iniEntry.TplFormat.RGBA8) cmbStaticImageFormat.SelectedIndex = 1;
-                    else if (tempEntry.format == iniEntry.TplFormat.RGB565) cmbStaticImageFormat.SelectedIndex = 2;
-                    else if (tempEntry.format == iniEntry.TplFormat.I4) cmbStaticImageFormat.SelectedIndex = 3;
-                    else if (tempEntry.format == iniEntry.TplFormat.I8) cmbStaticImageFormat.SelectedIndex = 4;
-                    else if (tempEntry.format == iniEntry.TplFormat.IA4) cmbStaticImageFormat.SelectedIndex = 5;
-                    else if (tempEntry.format == iniEntry.TplFormat.IA8) cmbStaticImageFormat.SelectedIndex = 6;
+                    if (tempEntry.format == iniEntry.TplFormat.RGB5A3) 
+                        cmbStaticImageFormat.SelectedIndex = 0;
+                    else if (tempEntry.format == iniEntry.TplFormat.RGBA8) 
+                        cmbStaticImageFormat.SelectedIndex = 1;
+                    else if (tempEntry.format == iniEntry.TplFormat.RGB565) 
+                        cmbStaticImageFormat.SelectedIndex = 2;
+                    else if (tempEntry.format == iniEntry.TplFormat.I4) 
+                        cmbStaticImageFormat.SelectedIndex = 3;
+                    else if (tempEntry.format == iniEntry.TplFormat.I8)
+                        cmbStaticImageFormat.SelectedIndex = 4;
+                    else if (tempEntry.format == iniEntry.TplFormat.IA4)
+                        cmbStaticImageFormat.SelectedIndex = 5;
+                    else if (tempEntry.format == iniEntry.TplFormat.IA8)
+                        cmbStaticImageFormat.SelectedIndex = 6;
                     tbStaticImageFilepath.Text = tempEntry.filepath;
 
-                    if (!panStaticImage.Visible)
+                    if (!StaticImageStack.IsVisible)
                     {
                         HidePanels();
-                        panStaticImage.Visible = true;
+                        StaticImageStack.IsVisible = true;
                     }
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.CustomData)
@@ -203,31 +226,31 @@ namespace ThemeMii
                     tbCustomDataFile.Text = tempEntry.file;
                     tbCustomDataName.Text = tempEntry.name;
 
-                    if (!panCustomData.Visible)
+                    if (!CustomDataStack.IsVisible)
                     {
                         HidePanels();
-                        panCustomData.Visible = true;
+                        CustomDataStack.IsVisible = true;
                     }
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.StaticData)
                 {
                     lbSdta.Text = tempEntry.entry;
                     tbStaticDataFile.Text = tempEntry.file;
-                    if (!settings.sourceManage) tbStaticDataSource.Text = tempEntry.source;
+                    if (!SourceManage.IsChecked)
+                        tbStaticDataSource.Text = tempEntry.source;
 
                     tbStaticDataFilepath.Text = tempEntry.filepath;
 
-                    if (!panStaticData.Visible)
+                    if (!StaticDataStack.IsVisible)
                     {
                         HidePanels();
-                        panStaticData.Visible = true;
+                        StaticDataStack.IsVisible = true;
                     }
                 }
             }
             else HidePanels();
         }
-
-        */
+        
         private void msExit_Click(object? sender, RoutedEventArgs e)
         {
             Close();
