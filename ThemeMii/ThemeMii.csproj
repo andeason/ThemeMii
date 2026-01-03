@@ -53,5 +53,8 @@
   <Compile Update="ThemeMii_CsmToMym.cs">
     <DependentUpon>ThemeMii_CsmToMym.axaml</DependentUpon>
   </Compile>
+  <Compile Update="ThemeMii_AppBrowse.cs">
+    <DependentUpon>ThemeMii_AppBrowse.axaml</DependentUpon>
+  </Compile>
 </ItemGroup>
 </Project>

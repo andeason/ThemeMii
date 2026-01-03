@@ -922,14 +922,12 @@ namespace ThemeMii
 
         private async Task OpenAppBrowser(string browsePath)
         {
-
             if (!Directory.Exists(browsePath))
             {
                 await MessageBoxHelper.DisplayErrorMessage("The browse path does not exist!");
                 return;
             }
-
-            /*
+            
             ThemeMii_AppBrowse appBrowser = new ThemeMii_AppBrowse();
             appBrowser.RootPath = browsePath;
             appBrowser.ViewOnly = browseInfo.viewOnly;
@@ -937,14 +935,16 @@ namespace ThemeMii
             appBrowser.SelectedPath = browseInfo.selectedNode;
             appBrowser.OnlyTpls = browseInfo.onlyTpls;
 
-            if (appBrowser.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var result = await appBrowser.ShowDialog<string>(this);
+            if (result != null)
             {
-                if (panStaticData.Visible) tbStaticDataFile.Text = appBrowser.SelectedPath;
-                else if (panStaticImage.Visible)
+                if (StaticDataStack.IsVisible) 
+                    tbStaticDataFile.Text = appBrowser.SelectedPath;
+                else if (StaticImageStack.IsVisible)
                 {
                     tbStaticImageFile.Text = appBrowser.SelectedPath;
 
-                    if (settings.imageSizeFromTpl)
+                    if (ImageSizeFromTpl.IsChecked)
                     {
                         try
                         {
@@ -955,12 +955,13 @@ namespace ThemeMii
                         catch { }
                     }
                 }
-                else if (panCustomData.Visible) tbCustomDataFile.Text = appBrowser.SelectedPath;
-                else if (panCustomImage.Visible)
+                else if (CustomDataStack.IsVisible) 
+                    tbCustomDataFile.Text = appBrowser.SelectedPath;
+                else if (CustomImageStack.IsVisible)
                 {
                     tbCustomImageFile.Text = appBrowser.SelectedPath;
 
-                    if (settings.imageSizeFromTpl)
+                    if (ImageSizeFromTpl.IsChecked)
                     {
                         try
                         {
@@ -971,9 +972,9 @@ namespace ThemeMii
                         catch { }
                     }
                 }
-                else if (panContainer.Visible) tbContainerFile.Text = appBrowser.SelectedPath;
+                else if (ContainerStack.IsVisible) 
+                    tbContainerFile.Text = appBrowser.SelectedPath;
             }
-            */
         }
 
         private bool StringExistsInStringArray(string theString, string[] theStringArray)

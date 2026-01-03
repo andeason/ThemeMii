@@ -19,37 +19,63 @@ using System;
 using System.IO;
 //using System.Windows.Forms;
 using System.Drawing;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 
-/*
+
 namespace ThemeMii
 {
-    public partial class ThemeMii_AppBrowse : Form
+    public partial class ThemeMii_AppBrowse : Window
     {
         private string rootPath;
         private string selectedPath = string.Empty;
-        private bool viewOnly = false;
-        private bool containerBrowse = false;
-        private bool onlyTpls = false;
+        private bool viewOnly;
+        private bool containerBrowse;
+        private bool onlyTpls;
 
-        public string RootPath { get { return rootPath; } set { rootPath = value; } }
-        public string SelectedPath { get { return selectedPath; } set { selectedPath = value; } }
-        public string FullPath { get { return rootPath + selectedPath; } }
-        public bool ViewOnly { get { return viewOnly; } set { viewOnly = value; } }
-        public bool ContainerBrowse { get { return containerBrowse; } set { containerBrowse = value; } }
-        public bool OnlyTpls { get { return onlyTpls; } set { onlyTpls = value; } }
+        public string RootPath 
+        { 
+            get => rootPath;
+            set => rootPath = value;
+        }
+        
+        public string SelectedPath 
+        { 
+            get => selectedPath;
+            set => selectedPath = value;
+        }
+
+        public string FullPath => rootPath + selectedPath;
+
+        public bool ViewOnly
+        {
+            get => viewOnly;
+            set => viewOnly = value;
+        }
+
+        public bool ContainerBrowse
+        {
+            get =>  containerBrowse;
+            set => containerBrowse = value; 
+        } 
+        
+        public bool OnlyTpls { 
+            get => onlyTpls;
+            set => onlyTpls = value;
+        }
 
         public ThemeMii_AppBrowse()
         {
             InitializeComponent();
-            this.Icon = Properties.Resources.ThemeMii_Icon;
         }
 
         private void ThemeMii_AppBrowse_Load(object sender, EventArgs e)
         {
-            CenterToParent();
-            if (viewOnly) SwitchToViewOnly();
+            if (viewOnly) 
+                SwitchToViewOnly();
             FillTreeView();
 
+            /*
             if (!string.IsNullOrEmpty(this.selectedPath))
             {
                 try
@@ -64,26 +90,30 @@ namespace ThemeMii
                 }
                 catch { }
             }
+            */
         }
 
         private void SwitchToViewOnly()
         {
+            /*
             btnOK.Visible = false;
             this.AcceptButton = null;
 
             btnCancel.Text = "Close";
             btnCancel.Location = new System.Drawing.Point(0, btnCancel.Location.Y);
             btnCancel.Size = new System.Drawing.Size(446, btnCancel.Size.Height);
+            */
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Close();
+            //this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            //this.Close();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            /*
             if (tvBrowse.SelectedNode.Nodes.Count > 0) { tvBrowse.Select(); return; }
 
             if (onlyTpls && !tvBrowse.SelectedNode.Name.ToLower().EndsWith(".tpl"))
@@ -96,10 +126,12 @@ namespace ThemeMii
             else selectedPath = tvBrowse.SelectedNode.FullPath.Remove(0, 4);
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
+            */
         }
 
         private void FillTreeView()
         {
+            /*
             TreeNode rootNode = new TreeNode("Root");
             rootNode.ImageIndex = 0; rootNode.SelectedImageIndex = 0;
             rootNode.Name = rootNode.Text;
@@ -108,10 +140,12 @@ namespace ThemeMii
             rootNode.Expand();
 
             tvBrowse.Nodes.Add(rootNode);
+            */
         }
 
-        private void FillRecursive(string path, TreeNode node)
+        private void FillRecursive(string path, object node)
         {
+            /*
             DirectoryInfo dInfo = new DirectoryInfo(path);
 
             foreach (DirectoryInfo thisInfo in dInfo.GetDirectories())
@@ -137,10 +171,12 @@ namespace ThemeMii
 
                 node.Nodes.Add(newNode);
             }
+            */
         }
 
-        private void tvBrowse_AfterSelect(object sender, TreeViewEventArgs e)
+        private void tvBrowse_AfterSelect(object sender, RoutedEventArgs e)
         {
+            /*
             if (tvBrowse.SelectedNode.ImageIndex == 1)
             {
                 btnExtract.Enabled = true;
@@ -157,10 +193,12 @@ namespace ThemeMii
                 btnExtract.Enabled = false;
                 btnPreview.Enabled = false;
             }
+            */
         }
 
         private void btnExtract_Click(object sender, EventArgs e)
         {
+            /*
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.FileName = tvBrowse.SelectedNode.Text;
 
@@ -169,10 +207,12 @@ namespace ThemeMii
                 File.Copy(rootPath + "\\" + tvBrowse.SelectedNode.FullPath.Remove(0, 4), sfd.FileName, true);
                 MessageBox.Show("Extracted file to:\n" + sfd.FileName, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            */
         }
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
+            /*
             try
             {
                 string nodePath = rootPath + "\\" + tvBrowse.SelectedNode.FullPath.Remove(0, 4);
@@ -214,7 +254,7 @@ namespace ThemeMii
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            */
         }
     }
 }
-*/
