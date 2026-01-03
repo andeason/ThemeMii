@@ -66,26 +66,11 @@ namespace ThemeMii
         private void Initialize()
         {
             lastSelected = -1;
-            //lbxIniEntries.Items.Clear();
-            ClearControls(this);
             SetControls(false);
             HidePanels();
             if (!string.IsNullOrEmpty(tempDir))
                 ClearTempDir();
             GetTempDir();
-        }
-
-        private void ClearControls(Control parentControl)
-        {
-            return;
-            /*
-            foreach (Control thisControl in parentControl.Controls)
-            {
-                if (thisControl is Panel) ClearControls(thisControl);
-                else if (thisControl is TextBox) ((TextBox)thisControl).Text = string.Empty;
-                else if (thisControl is ComboBox) ((ComboBox)thisControl).SelectedIndex = 0;
-            }
-            */
         }
 
         private void GetTempDir()

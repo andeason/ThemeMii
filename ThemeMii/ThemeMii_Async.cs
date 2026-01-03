@@ -745,20 +745,6 @@ namespace ThemeMii
             await AddEntries();
         }
         
-        /*
-
-        private delegate void boxInvoker(string message);
-        private void _errorBox(string message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void _infoBox(string message)
-        {
-            MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        */
         private void ChangeControls(bool enable)
         {
             msSave.IsEnabled = enable;
@@ -769,16 +755,5 @@ namespace ThemeMii
             PanelButtons.IsEnabled = enable;
         }
         
-        /*
-
-        private delegate void _progressReporter(ProgressChangedEventArgs e);
-        private void _reportProgress(ProgressChangedEventArgs e)
-        {
-            if (pbProgress.Value != e.ProgressPercentage)
-                pbProgress.Value = e.ProgressPercentage;
-            if (lbStatus.Text != (string)e.UserState && !string.IsNullOrEmpty((string)e.UserState))
-                lbStatus.Text = (string)e.UserState;
-        }
-        */
     }
 }
