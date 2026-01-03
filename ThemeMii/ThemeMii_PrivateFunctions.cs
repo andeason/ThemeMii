@@ -814,6 +814,7 @@ namespace ThemeMii
             if (!File.Exists(commonKeyPath))
             {
                 ThemeMii_ckInput ib = new ThemeMii_ckInput();
+                ib.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 var result = await ib.ShowDialog<string>(currentWindow);
                 
                 if (!string.IsNullOrEmpty(result))

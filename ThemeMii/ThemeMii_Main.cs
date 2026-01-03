@@ -594,6 +594,7 @@ namespace ThemeMii
         {
             var windowOwner = this;
             var aboutWindow = new ThemeMii_About();
+            aboutWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             aboutWindow.ShowDialog(windowOwner);
         }
         
@@ -707,6 +708,7 @@ namespace ThemeMii
                 ThemeMii_CsmToMym ctm = new ThemeMii_CsmToMym();
                 ctm.tempDir = tempDir + "compare";
                 var windowOwner = this;
+                ctm.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 ctm.ShowDialog(windowOwner);
             }
         }
@@ -747,6 +749,7 @@ namespace ThemeMii
         {
             var windowOwner = this;
             var helpWindow = new ThemeMii_Help();
+            helpWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             helpWindow.ShowDialog(windowOwner);
         }
         
@@ -881,6 +884,7 @@ namespace ThemeMii
             var windowOwner = this;
             var helpWindow = new ThemeMii_Help();
             helpWindow.Tutorial = true;
+            helpWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             helpWindow.ShowDialog(windowOwner);
         }
         
