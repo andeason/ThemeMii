@@ -23,4 +23,6 @@ public class ThemeMiiSettings
     public int LastLocationX { get; set; }
     public int LastLocationY { get; set; }
     public WindowState LastWindowState { get; set; } = WindowState.Normal;
+    public BaseApp LastExtracted { get; set; } = 0;
+    public BaseApp StandardMenu { get; set; } = 0;
 }

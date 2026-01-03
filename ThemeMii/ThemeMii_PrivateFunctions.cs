@@ -150,36 +150,54 @@ namespace ThemeMii
             ChangeNandPath.IsVisible = SaveNandPath.IsChecked;
             Position = new PixelPoint(settings.LastLocationX, settings.LastLocationY);
             WindowState = settings.LastWindowState;
-
-
-            //TODO:  Another one I don't have an idea yet....
-            //lastExtracted = (BaseApp)Properties.Settings.Default.lastExtracted;
-            //BaseApp bApp = (BaseApp)Properties.Settings.Default.standardMenu;
-            //UncheckSysMenus();
-            //if (bApp == BaseApp.E32) ms32E.Checked = true;
-            //else if (bApp == BaseApp.E40) ms40E.Checked = true;
-            //else if (bApp == BaseApp.E41) ms41E.Checked = true;
-            //else if (bApp == BaseApp.E42) ms42E.Checked = true;
-            //else if (bApp == BaseApp.J32) ms32J.Checked = true;
-            //else if (bApp == BaseApp.J40) ms40J.Checked = true;
-            //else if (bApp == BaseApp.J41) ms41J.Checked = true;
-            //else if (bApp == BaseApp.J42) ms42J.Checked = true;
-            //else if (bApp == BaseApp.U32) ms32U.Checked = true;
-            //else if (bApp == BaseApp.U40) ms40U.Checked = true;
-            //else if (bApp == BaseApp.U41) ms41U.Checked = true;
-            //else if (bApp == BaseApp.U42) ms42U.Checked = true;
+            
+            lastExtracted = settings.LastExtracted;
+            var bApp = settings.StandardMenu;
+            UncheckSysMenus();
+            if (bApp == BaseApp.E32) 
+                ms32E.IsChecked = true;
+            else if (bApp == BaseApp.E40)
+                ms40E.IsChecked = true;
+            else if (bApp == BaseApp.E41) 
+                ms41E.IsChecked = true;
+            else if (bApp == BaseApp.E42)
+                ms42E.IsChecked = true;
+            else if (bApp == BaseApp.E43)
+                ms43E.IsChecked = true;
+            else if (bApp == BaseApp.J32) 
+                ms32J.IsChecked = true;
+            else if (bApp == BaseApp.J40) 
+                ms40J.IsChecked = true;
+            else if (bApp == BaseApp.J41) 
+                ms41J.IsChecked = true;
+            else if (bApp == BaseApp.J42) 
+                ms42J.IsChecked = true;
+            else if (bApp == BaseApp.J43) 
+                ms43J.IsChecked = true;
+            else if (bApp == BaseApp.U32) 
+                ms32U.IsChecked = true;
+            else if (bApp == BaseApp.U40) 
+                ms40U.IsChecked = true;
+            else if (bApp == BaseApp.U41) 
+                ms41U.IsChecked = true;
+            else if (bApp == BaseApp.U42) 
+                ms42U.IsChecked = true;
+            else if (bApp == BaseApp.U43) 
+                ms43U.IsChecked = true;
+            else if (bApp == BaseApp.K43) 
+                ms43K.IsChecked = true;
 
             if (settings?.SourceManage ?? false)
             {
-                //tbStaticDataSource.Enabled = false;
-                //tbStaticImageSource.Enabled = false;
+                tbStaticDataSource.IsEnabled = false;
+                tbStaticImageSource.IsEnabled = false;
             }
             if (settings?.AutoImageSize ?? false)
             {
-                //tbStaticImageWidth.Enabled = false;
-                //tbStaticImageHeight.Enabled = false;
-                //tbCustomImageWidth.Enabled = false;
-                //tbCustomImageHeight.Enabled = false;
+                tbStaticImageWidth.IsEnabled = false;
+                tbStaticImageHeight.IsEnabled = false;
+                tbCustomImageWidth.IsEnabled = false;
+                tbCustomImageHeight.IsEnabled = false;
             }
         }
 
@@ -200,7 +218,9 @@ namespace ThemeMii
                 NandBackupPath = settings?.NandBackupPath ?? "",
                 LastLocationX = Position.X,
                 LastLocationY =  Position.Y,
-                LastWindowState = WindowState
+                LastWindowState = WindowState,
+                LastExtracted = lastExtracted,
+                StandardMenu = GetStandardBaseApp()
             };
             
             using var writer = new StreamWriter("Settings.json");
