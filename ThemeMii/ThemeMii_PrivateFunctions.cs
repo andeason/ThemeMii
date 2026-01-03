@@ -28,6 +28,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -310,58 +311,86 @@ namespace ThemeMii
 
         private void SaveSelected()
         {
-            /*
             if (lbxIniEntries.SelectedIndex == -1) return;
 
             iniEntry tempEntry = ini.GetEntry(lbxIniEntries.Items[lbxIniEntries.SelectedIndex].ToString());
 
             if (tempEntry.entryType == iniEntry.EntryType.Container)
             {
-                tempEntry.file = (tbContainerFile.Text.StartsWith("\\")) ? tbContainerFile.Text : tbContainerFile.Text.Insert(0, "\\");
-                tempEntry.type = (cmbContainerFormat.SelectedIndex == 0) ? iniEntry.ContainerType.ASH : iniEntry.ContainerType.U8;
+                tempEntry.file = tbContainerFile.Text.StartsWith("\\")
+                    ? tbContainerFile.Text :
+                    tbContainerFile.Text.Insert(0, "\\");
+                tempEntry.type = cmbContainerFormat.SelectedIndex == 0 ? 
+                    iniEntry.ContainerType.ASH : 
+                    iniEntry.ContainerType.U8;
             }
             else if (tempEntry.entryType == iniEntry.EntryType.CustomImage)
             {
                 tempEntry.file = (tbCustomImageFile.Text.StartsWith("\\")) ? tbCustomImageFile.Text : tbCustomImageFile.Text.Insert(0, "\\");
                 tempEntry.name = tbCustomImageName.Text;
-                if (!settings.autoImageSize) tempEntry.width = int.Parse(tbCustomImageWidth.Text);
-                if (!settings.autoImageSize) tempEntry.height = int.Parse(tbCustomImageHeight.Text);
+                //TODO:  Again WTF IS AUTO IMAGE SIZE
+                if (!ImageSizeFromTpl.IsChecked)
+                {
+                    tempEntry.width = int.Parse(tbCustomImageWidth.Text);
+                    tempEntry.height = int.Parse(tbCustomImageHeight.Text);
+                } 
 
-                if (cmbCustomImageFormat.SelectedIndex == 0) tempEntry.format = iniEntry.TplFormat.RGB5A3;
-                else if (cmbCustomImageFormat.SelectedIndex == 1) tempEntry.format = iniEntry.TplFormat.RGBA8;
-                else if (cmbCustomImageFormat.SelectedIndex == 2) tempEntry.format = iniEntry.TplFormat.RGB565;
-                else if (cmbCustomImageFormat.SelectedIndex == 3) tempEntry.format = iniEntry.TplFormat.I4;
-                else if (cmbCustomImageFormat.SelectedIndex == 4) tempEntry.format = iniEntry.TplFormat.I8;
-                else if (cmbCustomImageFormat.SelectedIndex == 5) tempEntry.format = iniEntry.TplFormat.IA4;
-                else if (cmbCustomImageFormat.SelectedIndex == 6) tempEntry.format = iniEntry.TplFormat.IA8;
+                if (cmbCustomImageFormat.SelectedIndex == 0) 
+                    tempEntry.format = iniEntry.TplFormat.RGB5A3;
+                else if (cmbCustomImageFormat.SelectedIndex == 1) 
+                    tempEntry.format = iniEntry.TplFormat.RGBA8;
+                else if (cmbCustomImageFormat.SelectedIndex == 2)
+                    tempEntry.format = iniEntry.TplFormat.RGB565;
+                else if (cmbCustomImageFormat.SelectedIndex == 3) 
+                    tempEntry.format = iniEntry.TplFormat.I4;
+                else if (cmbCustomImageFormat.SelectedIndex == 4) 
+                    tempEntry.format = iniEntry.TplFormat.I8;
+                else if (cmbCustomImageFormat.SelectedIndex == 5) 
+                    tempEntry.format = iniEntry.TplFormat.IA4;
+                else if (cmbCustomImageFormat.SelectedIndex == 6) 
+                    tempEntry.format = iniEntry.TplFormat.IA8;
 
             }
             else if (tempEntry.entryType == iniEntry.EntryType.StaticImage)
             {
-                tempEntry.file = (tbStaticImageFile.Text.StartsWith("\\")) ? tbStaticImageFile.Text : tbStaticImageFile.Text.Insert(0, "\\");
-                if (!settings.sourceManage) tempEntry.source = (tbStaticImageSource.Text.StartsWith("\\")) ? tbStaticImageSource.Text : tbStaticImageSource.Text.Insert(0, "\\");
-                if (!settings.autoImageSize) tempEntry.width = int.Parse(tbStaticImageWidth.Text);
-                if (!settings.autoImageSize) tempEntry.height = int.Parse(tbStaticImageHeight.Text);
+                tempEntry.file = tbStaticImageFile.Text.StartsWith("\\") ? tbStaticImageFile.Text : tbStaticImageFile.Text.Insert(0, "\\");
+                
+                if (SourceManage.IsChecked) 
+                    tempEntry.source = tbStaticImageSource.Text.StartsWith("\\") ? tbStaticImageSource.Text : tbStaticImageSource.Text.Insert(0, "\\");
+                if (!ImageSizeFromTpl.IsChecked)
+                {
+                    tempEntry.width = int.Parse(tbStaticImageWidth.Text);
+                    tempEntry.height = int.Parse(tbStaticImageHeight.Text);
 
-                if (cmbStaticImageFormat.SelectedIndex == 0) tempEntry.format = iniEntry.TplFormat.RGB5A3;
-                else if (cmbStaticImageFormat.SelectedIndex == 1) tempEntry.format = iniEntry.TplFormat.RGBA8;
-                else if (cmbStaticImageFormat.SelectedIndex == 2) tempEntry.format = iniEntry.TplFormat.RGB565;
-                else if (cmbStaticImageFormat.SelectedIndex == 3) tempEntry.format = iniEntry.TplFormat.I4;
-                else if (cmbStaticImageFormat.SelectedIndex == 4) tempEntry.format = iniEntry.TplFormat.I8;
-                else if (cmbStaticImageFormat.SelectedIndex == 5) tempEntry.format = iniEntry.TplFormat.IA4;
-                else if (cmbStaticImageFormat.SelectedIndex == 6) tempEntry.format = iniEntry.TplFormat.IA8;
+                }
+
+                if (cmbStaticImageFormat.SelectedIndex == 0) 
+                    tempEntry.format = iniEntry.TplFormat.RGB5A3;
+                else if (cmbStaticImageFormat.SelectedIndex == 1)
+                    tempEntry.format = iniEntry.TplFormat.RGBA8;
+                else if (cmbStaticImageFormat.SelectedIndex == 2) 
+                    tempEntry.format = iniEntry.TplFormat.RGB565;
+                else if (cmbStaticImageFormat.SelectedIndex == 3) 
+                    tempEntry.format = iniEntry.TplFormat.I4;
+                else if (cmbStaticImageFormat.SelectedIndex == 4) 
+                    tempEntry.format = iniEntry.TplFormat.I8;
+                else if (cmbStaticImageFormat.SelectedIndex == 5) 
+                    tempEntry.format = iniEntry.TplFormat.IA4;
+                else if (cmbStaticImageFormat.SelectedIndex == 6) 
+                    tempEntry.format = iniEntry.TplFormat.IA8;
 
                 tempEntry.filepath = tbStaticImageFilepath.Text;
             }
             else if (tempEntry.entryType == iniEntry.EntryType.CustomData)
             {
-                tempEntry.file = (tbCustomDataFile.Text.StartsWith("\\")) ? tbCustomDataFile.Text : tbCustomDataFile.Text.Insert(0, "\\");
+                tempEntry.file = tbCustomDataFile.Text.StartsWith("\\") ? tbCustomDataFile.Text : tbCustomDataFile.Text.Insert(0, "\\");
                 tempEntry.name = tbCustomDataName.Text;
             }
             else if (tempEntry.entryType == iniEntry.EntryType.StaticData)
             {
-                tempEntry.file = (tbStaticDataFile.Text.StartsWith("\\")) ? tbStaticDataFile.Text : tbStaticDataFile.Text.Insert(0, "\\");
-                if (!settings.sourceManage) tempEntry.source = (tbStaticDataSource.Text.StartsWith("\\")) ? tbStaticDataSource.Text : tbStaticDataSource.Text.Insert(0, "\\");
+                tempEntry.file = tbStaticDataFile.Text.StartsWith("\\") ? tbStaticDataFile.Text : tbStaticDataFile.Text.Insert(0, "\\");
+                if (!SourceManage.IsChecked) 
+                    tempEntry.source = (tbStaticDataSource.Text.StartsWith("\\")) ? tbStaticDataSource.Text : tbStaticDataSource.Text.Insert(0, "\\");
 
                 tempEntry.filepath = tbStaticDataFilepath.Text;
             }
@@ -384,50 +413,72 @@ namespace ThemeMii
                 {
                     tempEntry.file = (tbCustomImageFile.Text.StartsWith("\\")) ? tbCustomImageFile.Text : tbCustomImageFile.Text.Insert(0, "\\");
                     tempEntry.name = tbCustomImageName.Text;
-                    if (!settings.autoImageSize) tempEntry.width = int.Parse(tbCustomImageWidth.Text);
-                    if (!settings.autoImageSize) tempEntry.height = int.Parse(tbCustomImageHeight.Text);
+                    //TODO:  Again WTF IS AUTO IMAGE SIZE
+                    if (!ImageSizeFromTpl.IsChecked)
+                    {
+                        tempEntry.width = int.Parse(tbCustomImageWidth.Text);
+                        tempEntry.height = int.Parse(tbCustomImageHeight.Text);
+                    }
 
-                    if (cmbCustomImageFormat.SelectedIndex == 0) tempEntry.format = iniEntry.TplFormat.RGB5A3;
-                    else if (cmbCustomImageFormat.SelectedIndex == 1) tempEntry.format = iniEntry.TplFormat.RGBA8;
-                    else if (cmbCustomImageFormat.SelectedIndex == 2) tempEntry.format = iniEntry.TplFormat.RGB565;
-                    else if (cmbCustomImageFormat.SelectedIndex == 3) tempEntry.format = iniEntry.TplFormat.I4;
-                    else if (cmbCustomImageFormat.SelectedIndex == 4) tempEntry.format = iniEntry.TplFormat.I8;
-                    else if (cmbCustomImageFormat.SelectedIndex == 5) tempEntry.format = iniEntry.TplFormat.IA4;
-                    else if (cmbCustomImageFormat.SelectedIndex == 6) tempEntry.format = iniEntry.TplFormat.IA8;
+                    if (cmbCustomImageFormat.SelectedIndex == 0) 
+                        tempEntry.format = iniEntry.TplFormat.RGB5A3;
+                    else if (cmbCustomImageFormat.SelectedIndex == 1) 
+                        tempEntry.format = iniEntry.TplFormat.RGBA8;
+                    else if (cmbCustomImageFormat.SelectedIndex == 2) 
+                        tempEntry.format = iniEntry.TplFormat.RGB565;
+                    else if (cmbCustomImageFormat.SelectedIndex == 3) 
+                        tempEntry.format = iniEntry.TplFormat.I4;
+                    else if (cmbCustomImageFormat.SelectedIndex == 4) 
+                        tempEntry.format = iniEntry.TplFormat.I8;
+                    else if (cmbCustomImageFormat.SelectedIndex == 5) 
+                        tempEntry.format = iniEntry.TplFormat.IA4;
+                    else if (cmbCustomImageFormat.SelectedIndex == 6) 
+                        tempEntry.format = iniEntry.TplFormat.IA8;
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.StaticImage)
                 {
-                    tempEntry.file = (tbStaticImageFile.Text.StartsWith("\\")) ? tbStaticImageFile.Text : tbStaticImageFile.Text.Insert(0, "\\");
-                    if (!settings.sourceManage) tempEntry.source = (tbStaticImageSource.Text.StartsWith("\\")) ? tbStaticImageSource.Text : tbStaticImageSource.Text.Insert(0, "\\");
-                    if (!settings.autoImageSize) tempEntry.width = int.Parse(tbStaticImageWidth.Text);
-                    if (!settings.autoImageSize) tempEntry.height = int.Parse(tbStaticImageHeight.Text);
+                    tempEntry.file = tbStaticImageFile.Text.StartsWith("\\") ? tbStaticImageFile.Text : tbStaticImageFile.Text.Insert(0, "\\");
+                    if (!SourceManage.IsChecked) 
+                        tempEntry.source = tbStaticImageSource.Text.StartsWith("\\") ? tbStaticImageSource.Text : tbStaticImageSource.Text.Insert(0, "\\");
+                    if (!ImageSizeFromTpl.IsChecked)
+                    {
+                        tempEntry.width = int.Parse(tbStaticImageWidth.Text);
+                        tempEntry.height = int.Parse(tbStaticImageHeight.Text);
+                    }
 
-                    if (cmbStaticImageFormat.SelectedIndex == 0) tempEntry.format = iniEntry.TplFormat.RGB5A3;
-                    else if (cmbStaticImageFormat.SelectedIndex == 1) tempEntry.format = iniEntry.TplFormat.RGBA8;
-                    else if (cmbStaticImageFormat.SelectedIndex == 2) tempEntry.format = iniEntry.TplFormat.RGB565;
-                    else if (cmbStaticImageFormat.SelectedIndex == 3) tempEntry.format = iniEntry.TplFormat.I4;
-                    else if (cmbStaticImageFormat.SelectedIndex == 4) tempEntry.format = iniEntry.TplFormat.I8;
-                    else if (cmbStaticImageFormat.SelectedIndex == 5) tempEntry.format = iniEntry.TplFormat.IA4;
-                    else if (cmbStaticImageFormat.SelectedIndex == 6) tempEntry.format = iniEntry.TplFormat.IA8;
+                    if (cmbStaticImageFormat.SelectedIndex == 0) 
+                        tempEntry.format = iniEntry.TplFormat.RGB5A3;
+                    else if (cmbStaticImageFormat.SelectedIndex == 1) 
+                        tempEntry.format = iniEntry.TplFormat.RGBA8;
+                    else if (cmbStaticImageFormat.SelectedIndex == 2) 
+                        tempEntry.format = iniEntry.TplFormat.RGB565;
+                    else if (cmbStaticImageFormat.SelectedIndex == 3) 
+                        tempEntry.format = iniEntry.TplFormat.I4;
+                    else if (cmbStaticImageFormat.SelectedIndex == 4) 
+                        tempEntry.format = iniEntry.TplFormat.I8;
+                    else if (cmbStaticImageFormat.SelectedIndex == 5) 
+                        tempEntry.format = iniEntry.TplFormat.IA4;
+                    else if (cmbStaticImageFormat.SelectedIndex == 6) 
+                        tempEntry.format = iniEntry.TplFormat.IA8;
 
                     tempEntry.filepath = tbStaticImageFilepath.Text;
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.CustomData)
                 {
-                    tempEntry.file = (tbCustomDataFile.Text.StartsWith("\\")) ? tbCustomDataFile.Text : tbCustomDataFile.Text.Insert(0, "\\");
+                    tempEntry.file = tbCustomDataFile.Text.StartsWith("\\") ? tbCustomDataFile.Text : tbCustomDataFile.Text.Insert(0, "\\");
                     tempEntry.name = tbCustomDataName.Text;
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.StaticData)
                 {
-                    tempEntry.file = (tbStaticDataFile.Text.StartsWith("\\")) ? tbStaticDataFile.Text : tbStaticDataFile.Text.Insert(0, "\\");
-                    if (!settings.sourceManage) tempEntry.source = (tbStaticDataSource.Text.StartsWith("\\")) ? tbStaticDataSource.Text : tbStaticDataSource.Text.Insert(0, "\\");
+                    tempEntry.file = tbStaticDataFile.Text.StartsWith("\\") ? tbStaticDataFile.Text : tbStaticDataFile.Text.Insert(0, "\\");
+                    if (!SourceManage.IsChecked)
+                        tempEntry.source = tbStaticDataSource.Text.StartsWith("\\") ? tbStaticDataSource.Text : tbStaticDataSource.Text.Insert(0, "\\");
 
                     tempEntry.filepath = tbStaticDataFilepath.Text;
                 }
 
                 ini.EditEntry(tempEntry);
             }
-            */
         }
 
         private void AddEntry(iniEntry.EntryType entryType)
@@ -533,37 +584,42 @@ namespace ThemeMii
             */
         }
 
-        private void SaveMym(bool exitAfter)
+        private async Task SaveMym(bool exitAfter)
         {
-            /*
-            if (lbxIniEntries.Items.Count > 0)
+            if (lbxIniEntries.ItemsSource!.Cast<string>().ToList().Count > 0)
             {
                 SaveSelected();
-
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "mym|*.mym";
-                if (!string.IsNullOrEmpty(openedMym)) sfd.FileName = openedMym;
-
-                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                
+                var fileStorage = StorageProvider;
+                var result = await fileStorage.SaveFilePickerAsync(new FilePickerSaveOptions()
                 {
-                    ReportProgress(0, "Collecting data...");
+                    DefaultExtension = "mym",
+                    FileTypeChoices = [new FilePickerFileType("mym")
+                    {
+                        Patterns = ["*.mym"]
+                    }],
+                    SuggestedFileName = !string.IsNullOrEmpty(openedMym) ? openedMym : ""
+                });
 
-                    List<object> lbEntries = new List<object>();
+                if (result == null)
+                    return;
+                
+                ReportProgress(0, "Collecting data...");
 
-                    foreach (object entry in lbxIniEntries.Items)
-                        lbEntries.Add(entry);
+                List<object> lbEntries = new List<object>();
 
-                    CreationInfo cInfo = new CreationInfo();
-                    cInfo.savePath = sfd.FileName;
-                    cInfo.lbEntries = lbEntries.ToArray();
-                    cInfo.createCsm = false;
-                    cInfo.closeAfter = exitAfter;
+                foreach (object entry in lbxIniEntries.Items)
+                    lbEntries.Add(entry);
 
-                    Thread workerThread = new Thread(new ParameterizedThreadStart(this._saveMym));
-                    workerThread.Start(cInfo);
-                }
+                CreationInfo cInfo = new CreationInfo();
+                cInfo.savePath = result.Name;
+                cInfo.lbEntries = lbEntries.ToArray();
+                cInfo.createCsm = false;
+                cInfo.closeAfter = exitAfter;
+
+                await _saveMym(cInfo);
             }
-            */
+            
         }
 
         private bool CheckEntry(iniEntry entry)
@@ -646,17 +702,20 @@ namespace ThemeMii
 
         private void DeASH(iniEntry mymC, string appOut)
         {
-            /*
-            ProcessStartInfo pInfo = new ProcessStartInfo(Application.StartupPath + "\\ASH.exe", string.Format("\"{0}\"", appOut + mymC.file));
-            pInfo.UseShellExecute = false;
-            //pInfo.RedirectStandardOutput = true;
-            pInfo.CreateNoWindow = true;
+            //TODO:  This is a major roadblock, ASH.exe relies on an actual exe.
+            //I don't even like using this weird separate file.  We probably should see if we can implement this ourselves....
+            var ashExePath = Path.Combine(Directory.GetCurrentDirectory(), "ASH.exe");
+            ProcessStartInfo pInfo = new ProcessStartInfo(ashExePath, $"\"{Path.Combine(appOut, mymC.file)}\"")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-            Process p = Process.Start(pInfo);
+            var p = Process.Start(pInfo);
+            if (p == null)
+                throw new Exception("Ash.exe did not start.  Aborting...");
+            
             p.WaitForExit();
-
-            //ErrorBox(p.StandardOutput.ReadToEnd() + "\n\n" + mymC.file);
-            */
         }
         
         private void  DeASH(string path)

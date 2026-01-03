@@ -245,14 +245,15 @@ namespace ThemeMii
             }
         }
         
-        /*
+        
 
         private void msSave_Click(object sender, EventArgs e)
         {
-            if (pbProgress.Value == 100)
+            if (ActionBar.Value == 0 || ActionBar.Value == 100)
                 SaveMym(false);
         }
 
+        /*
         private void intTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != '\b';

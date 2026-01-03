@@ -165,8 +165,143 @@
                         </Border>
                         <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
                                 <StackPanel>
-                                        <TextBlock>WORK IN PROGRESS</TextBlock>
-                                </StackPanel> 
+                                        
+                                        <StackPanel Name="ContainerStack" IsVisible="False" Spacing="10">
+                                                <TextBlock HorizontalAlignment="Center">TEST</TextBlock>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>File: </TextBlock>
+                                                        <TextBox Name="tbContainerFile" Width="300" />
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Type: </TextBlock>
+                                                        <ComboBox Name="cmbContainerFormat" Width="300">
+                                                                <ComboBoxItem>ASH|U8</ComboBoxItem>
+                                                                <ComboBoxItem>U8</ComboBoxItem>
+                                                        </ComboBox>
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                                <TextBlock HorizontalAlignment="Center" xml:space="preserve">
+        Type is obsolete for ThemeMii, as it will automatically
+         check each container for compression.
+                                                </TextBlock>
+                                        </StackPanel> 
+                                        
+                                        
+                                        <StackPanel Name="StaticImageStack" IsVisible="False" Spacing="10">
+                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>File: </TextBlock>
+                                                        <TextBox Name="tbStaticImageFile" Width="300" />
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Source: </TextBlock>
+                                                        <TextBox Name="tbStaticImageSource" Width="315" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Width: </TextBlock>
+                                                        <TextBox Name="tbStaticImageWidth" Width="320" >
+                                                                0
+                                                        </TextBox>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Height: </TextBlock>
+                                                        <TextBox Name="tbStaticImageHeight" Width="315" >
+                                                                0
+                                                        </TextBox>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Format: </TextBlock>
+                                                        <ComboBox Name="cmbStaticImageFormat" Width="310" >
+                                                                <ComboBoxItem>RGB5A3</ComboBoxItem>
+                                                                <ComboBoxItem>RGBA8</ComboBoxItem>
+                                                                <ComboBoxItem>RGB565</ComboBoxItem>
+                                                                <ComboBoxItem>I4</ComboBoxItem>
+                                                                <ComboBoxItem>I8</ComboBoxItem>
+                                                                <ComboBoxItem>IA4</ComboBoxItem>
+                                                                <ComboBoxItem>IA8</ComboBoxItem>
+                                                        </ComboBox>
+                                                </StackPanel>
+                                                
+                                                <TextBlock Margin="0 80 0 0">FilePath: </TextBlock>
+
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBox Name="tbStaticImageFilepath" Width="340" />
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Name="StackDataStack" IsVisible="False" Spacing="10">
+                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>File: </TextBlock>
+                                                        <TextBox Name="tbStaticDataFile" Width="300" />
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Source: </TextBlock>
+                                                        <TextBox Name="tbStaticDataSource" Width="315" />
+                                                </StackPanel>
+                                                
+                                                <TextBlock Margin="0 240 0 0">FilePath: </TextBlock>
+
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBox Name="tbStaticDataFilepath" Width="340" />
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Name="CustomImageStack" Spacing="10" IsVisible="False">
+                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>File: </TextBlock>
+                                                        <TextBox Name="tbCustomImageFile" Width="300" />
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Name: </TextBlock>
+                                                        <TextBox Name="tbCustomImageName" Width="318" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Width: </TextBlock>
+                                                        <TextBox Name="tbCustomImageWidth" Width="320" >
+                                                                0
+                                                        </TextBox>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Height: </TextBlock>
+                                                        <TextBox Name="tbCustomImageHeight" Width="315" >
+                                                                0
+                                                        </TextBox>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Format: </TextBlock>
+                                                        <ComboBox Name="cmbCustomImageFormat" Width="310" >
+                                                                <ComboBoxItem>RGB5A3</ComboBoxItem>
+                                                                <ComboBoxItem>RGBA8</ComboBoxItem>
+                                                                <ComboBoxItem>RGB565</ComboBoxItem>
+                                                                <ComboBoxItem>I4</ComboBoxItem>
+                                                                <ComboBoxItem>I8</ComboBoxItem>
+                                                                <ComboBoxItem>IA4</ComboBoxItem>
+                                                                <ComboBoxItem>IA8</ComboBoxItem>
+                                                        </ComboBox>
+                                                </StackPanel>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Name="CustomDataFile" Spacing="10" IsVisible="True">
+                                                <TextBlock HorizontalAlignment="Center">Test</TextBlock>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>File: </TextBlock>
+                                                        <TextBox Name="tbCustomDataFile" Width="300" />
+                                                        <Button> .. </Button>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                        <TextBlock>Name: </TextBlock>
+                                                        <TextBox Name="tbCustomDataName" Width="318" />
+                                                </StackPanel>
+                                        </StackPanel>
+                                </StackPanel>
                         </Border>
                 </Grid>
         </DockPanel>

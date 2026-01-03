@@ -23,7 +23,12 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using System.Drawing;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace ThemeMii
 {
@@ -233,15 +238,14 @@ namespace ThemeMii
             ReportProgress(100, $"Downloaded base app to:\n{destinationName}");
         }
         
-        /*
-
-        private void _createCsm(string savePath, string appPath, string mymPath)
+        
+        private async Task _createCsm(string savePath, string appPath, string mymPath)
         {
             ReportProgress(0, "Unpacking base app...");
 
-            tempDir = Path.GetTempPath() + Guid.NewGuid().ToString() + "\\";
-            string appOut = tempDir + "appOut\\";
-            string mymOut = tempDir + "mymOut\\";
+            tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            var appOut = Path.Combine(tempDir,"appOut");
+            var mymOut = Path.Combine(tempDir,"mymOut");
             List<iniEntry> editedContainers = new List<iniEntry>();
             Directory.CreateDirectory(appOut);
             int counter = 1;
@@ -251,7 +255,12 @@ namespace ThemeMii
             {
                 Wii.U8.UnpackU8(File.ReadAllBytes(appPath), appOut);
             }
-            catch (Exception ex) { SetControls(true); ErrorBox(ex.Message); return; }
+            catch (Exception ex)
+            {
+                SetControls(true); 
+                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
+                return;
+            }
 
             //Unpack .mym
             try
@@ -259,10 +268,21 @@ namespace ThemeMii
                 FastZip zFile = new FastZip();
                 zFile.ExtractZip(mymPath, mymOut, "");
             }
-            catch (Exception ex) { SetControls(true); ErrorBox(ex.Message); return; }
+            catch (Exception ex)
+            {
+                SetControls(true);
+                await MessageBoxHelper.DisplayErrorMessage(ex.Message); 
+                return;
+            }
 
             //Parse ini
-            if (!File.Exists(mymOut + "mym.ini")) { SetControls(true); ErrorBox("mym.ini wasn't found!"); return; }
+            if (!File.Exists(mymOut + "mym.ini"))
+            {
+                SetControls(true);
+                await MessageBoxHelper.DisplayErrorMessage("mym.ini wasn't found!"); 
+                return;
+            }
+            
             mymini ini = mymini.LoadIni(mymOut + "mym.ini");
 
             foreach (iniEntry tempEntry in ini.Entries)
@@ -294,7 +314,7 @@ namespace ThemeMii
                             catch
                             {
                                 SetControls(true);
-                                ErrorBox("Entry: " + tempEntry.entry + "\n\nASH.exe returned an error!\nYou may try to decompress the ASH files manually...");
+                                await MessageBoxHelper.DisplayErrorMessage("Entry: " + tempEntry.entry + "\n\nASH.exe returned an error!\nYou may try to decompress the ASH files manually...");
                                 return;
                             }
                         }
@@ -311,7 +331,7 @@ namespace ThemeMii
                             catch (Exception ex)
                             {
                                 SetControls(true);
-                                ErrorBox("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
+                                await MessageBoxHelper.DisplayErrorMessage("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
                                 return;
                             }
                         }
@@ -333,7 +353,7 @@ namespace ThemeMii
                             catch (Exception ex)
                             {
                                 SetControls(true);
-                                ErrorBox("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
+                                await MessageBoxHelper.DisplayErrorMessage("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
                                 return;
                             }
                         }
@@ -346,26 +366,29 @@ namespace ThemeMii
                 {
                     try
                     {
-                        if (File.Exists(appOut + tempEntry.file))
+                        if (File.Exists(Path.Combine(appOut,tempEntry.file)))
                         {
-                            OpenFileDialog ofd = new OpenFileDialog();
-                            ofd.Title = tempEntry.name;
-                            ofd.Filter = "PNG|*.png";
+                            //TODO:  Sigh this ALSO relies on width/height, but not sure on an equivalent.
+                            throw new Exception("Image not implemented yet.");
+                            
+                            //OpenFileDialog ofd = new OpenFileDialog();
+                            //ofd.Title = tempEntry.name;
+                            //ofd.Filter = "PNG|*.png";
 
-                            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                            {
-                                Image img = Image.FromFile(ofd.FileName);
-                                img = ResizeImage(img, tempEntry.width, tempEntry.height);
+                            //if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            //{
+                            //Image img = Image.FromFile(ofd.FileName);
+                            //img = ResizeImage(img, tempEntry.width, tempEntry.height);
 
-                                if (File.Exists(appOut + tempEntry.file)) File.Delete(appOut + tempEntry.file);
-                                Wii.TPL.ConvertToTPL(img, appOut + tempEntry.file, (int)tempEntry.format);
-                            }
+                            //if (File.Exists(appOut + tempEntry.file)) File.Delete(appOut + tempEntry.file);
+                            //Wii.TPL.ConvertToTPL(img, appOut + tempEntry.file, (int)tempEntry.format);
+                            //}
                         }
                     }
                     catch (Exception ex)
                     {
                         SetControls(true);
-                        ErrorBox("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
+                        await MessageBoxHelper.DisplayErrorMessage("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
                         return;
                     }
                 }
@@ -373,19 +396,22 @@ namespace ThemeMii
                 {
                     try
                     {
-                        if (File.Exists(mymOut + tempEntry.source))
-                        {
-                            Image img = Image.FromFile(mymOut + tempEntry.source);
-                            img = ResizeImage(img, tempEntry.width, tempEntry.height);
+                        //TODO:  Sigh this ALSO relies on width/height, but not sure on an equivalent.
+                        throw new Exception("Image not implemented yet.");
+                        
+                        //if (File.Exists(mymOut + tempEntry.source))
+                        //{
+                            //Image img = Image.FromFile(mymOut + tempEntry.source);
+                            //img = ResizeImage(img, tempEntry.width, tempEntry.height);
 
-                            if (File.Exists(appOut + tempEntry.file)) File.Delete(appOut + tempEntry.file);
-                            Wii.TPL.ConvertToTPL(img, appOut + tempEntry.file, (int)tempEntry.format);
-                        }
+                            //if (File.Exists(appOut + tempEntry.file)) File.Delete(appOut + tempEntry.file);
+                            //Wii.TPL.ConvertToTPL(img, appOut + tempEntry.file, (int)tempEntry.format);
+                        //}
                     }
                     catch (Exception ex)
                     {
                         SetControls(true);
-                        ErrorBox("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
+                        await MessageBoxHelper.DisplayErrorMessage("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
                         return;
                     }
                 }
@@ -393,21 +419,24 @@ namespace ThemeMii
                 {
                     try
                     {
-                        if (File.Exists(appOut + tempEntry.file))
+                        if (File.Exists(Path.Combine(appOut, tempEntry.file)))
                         {
-                            OpenFileDialog ofd = new OpenFileDialog();
-                            ofd.FileName = tempEntry.name;
-
-                            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            var fileStorage = StorageProvider;
+                            var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions()
                             {
-                                File.Copy(ofd.FileName, appOut + tempEntry.file, true);
+                                SuggestedFileName = tempEntry.name
+                            });
+
+                            if (result.Count > 0)
+                            {
+                                File.Copy(result[0].Name, appOut + tempEntry.file, true);
                             }
                         }
                     }
                     catch (Exception ex)
                     {
                         SetControls(true);
-                        ErrorBox("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
+                        await MessageBoxHelper.DisplayErrorMessage("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
                         return;
                     }
                 }
@@ -415,15 +444,15 @@ namespace ThemeMii
                 {
                     try
                     {
-                        if (File.Exists(mymOut + tempEntry.source))
+                        if (File.Exists(Path.Combine(mymOut, tempEntry.source)))
                         {
-                            File.Copy(mymOut + tempEntry.source, appOut + tempEntry.file, true);
+                            File.Copy(Path.Combine(mymOut, tempEntry.source), Path.Combine(appOut, tempEntry.file), true);
                         }
                     }
                     catch (Exception ex)
                     {
                         SetControls(true);
-                        ErrorBox("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
+                        await MessageBoxHelper.DisplayErrorMessage("Entry: " + tempEntry.entry + "\n\n" + ex.Message);
                         return;
                     }
                 }
@@ -432,7 +461,7 @@ namespace ThemeMii
             //Repack Containers
             foreach (iniEntry tempEntry in editedContainers)
             {
-                if (!settings.lz77Containers)
+                if (!Lz77Containers.IsChecked)
                 {
                     Wii.U8.PackU8(appOut + tempEntry.file.Replace('.', '_') + "_out", appOut + tempEntry.file);
                 }
@@ -449,39 +478,47 @@ namespace ThemeMii
             //Repack app
             Wii.U8.PackU8(appOut, savePath);
 
-            CsmFinish finish = new CsmFinish(this._csmFinish);
-            this.Invoke(finish, savePath, mymPath);
+            await _csmFinish(savePath, mymPath);
         }
-
-        private delegate void CsmFinish(string savePath, string mymPath);
-        private void _csmFinish(string savePath, string mymPath)
+        
+        private async Task _csmFinish(string savePath, string mymPath)
         {
-            if (MessageBox.Show("Saved csm to:\n" + savePath + "\n\nDo you want to save the mym file?", "Save mym?",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+            var prompt = MessageBoxManager.GetMessageBoxStandard("Save mym?", "Saved csm to:\n" + savePath + "\n\nDo you want to save the mym file?",
+                ButtonEnum.YesNo, MsBox.Avalonia.Enums.Icon.Question);
+            var questionResult = await prompt.ShowAsync();
+
+            if (questionResult == ButtonResult.Ok)
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "mym|*.mym";
+                var fileStorage = StorageProvider;
+                var result = await fileStorage.SaveFilePickerAsync(new FilePickerSaveOptions()
+                {
+                    DefaultExtension = "mym",
+                    FileTypeChoices = [new FilePickerFileType("mym")
+                    {
+                        Patterns = ["*.mym"]
+                    }],
+                });
 
-                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    File.Copy(mymPath, sfd.FileName);
-
-                InfoBox("Saved mym to:\n" + sfd.FileName);
+                if (result != null)
+                {
+                    File.Copy(mymPath, result.Name);
+                    await MessageBoxHelper.DisplayInfoBox("Saved mym to:\n" + result.Path.AbsolutePath);
+                }
             }
 
             ReportProgress(100, " ");
             SetControls(true);
         }
-
-        private void _saveMym(object _creationInfo)
+        
+        private async Task _saveMym(CreationInfo cInfo)
         {
             SetControls(false);
-            CreationInfo cInfo = (CreationInfo)_creationInfo;
-            string outDir = tempDir + "newMym\\";
-            if (Directory.Exists(outDir)) Directory.Delete(outDir, true);
+            string outDir = Path.Combine(tempDir,"newMym");
+            if (Directory.Exists(outDir)) 
+                Directory.Delete(outDir, true);
             Directory.CreateDirectory(outDir);
 
             int counter = 0;
-            int[] counters = new int[5];
 
             //Build new ini
             List<iniEntry> tempEntries = new List<iniEntry>();
@@ -497,11 +534,16 @@ namespace ThemeMii
                     iniEntry tempEntry = ini.GetEntry(tempObject.ToString());
                     if (!CheckEntry(tempEntry))
                     {
-                        if (!settings.ignoreMissing) { ReportProgress(100, " "); SetControls(true); return; }
-                        else continue;
+                        if (!IgnoreMissing.IsChecked)
+                        {
+                            ReportProgress(100, " "); SetControls(true); 
+                            return;
+                        }
+                        
+                        continue;
                     }
 
-                    if (settings.sourceManage)
+                    if (SourceManage.IsChecked)
                     {
                         //Manage source
                         if (tempEntry.entryType == iniEntry.EntryType.StaticData)
@@ -553,15 +595,14 @@ namespace ThemeMii
                             imageSources.Add(new string[] { tempEntry.source, fi.Length.ToString() });
                         }
                     }
-                    if (settings.autoImageSize)
+                    //TODO:  This was autoimage.... Where is this used
+                    if (!ImageSizeFromTpl.IsChecked)
                     {
                         if (tempEntry.entryType == iniEntry.EntryType.CustomImage ||
                             tempEntry.entryType == iniEntry.EntryType.StaticImage)
                         {
-                            //Get png width and height
-                            Image img = Image.FromFile(tempEntry.filepath);
-                            tempEntry.width = img.Width;
-                            tempEntry.height = img.Height;
+                            await MessageBoxHelper.DisplayErrorMessage(
+                                "Images with auto image are NOT Implemented yet.");
                         }
                     }
 
@@ -572,13 +613,13 @@ namespace ThemeMii
 
             if (tempEntries.Count < 1)
             {
-                ErrorBox("No entries left...");
+                await MessageBoxHelper.DisplayErrorMessage("No entries left...");
                 SetControls(true);
                 return;
             }
 
             //Manage Containers
-            if (settings.containerManage)
+            if (ContainerManage.IsChecked)
             {
                 List<string> containersToManage = new List<string>();
                 List<string> managedContainers = new List<string>();
@@ -655,13 +696,21 @@ namespace ThemeMii
             fZip.CreateZip((cInfo.createCsm) ? tempDir + "temp.mym" : cInfo.savePath, outDir, true, "");
             ReportProgress(100, " ");
 
-            if (cInfo.closeAfter) { MethodInvoker m = new MethodInvoker(this.ExitApplication); this.Invoke(m); return; }
-            if (!cInfo.createCsm) { InfoBox("Saved mym to:\n" + cInfo.savePath); SetControls(true); return; }
+            if (cInfo.closeAfter)
+            {
+                ExitApplication();
+            }
 
-            _createCsm(cInfo.savePath, cInfo.appFile, tempDir + "temp.mym");
+            if (!cInfo.createCsm)
+            {
+                MessageBoxHelper.DisplayInfoBox("Saved mym to:\n" + cInfo.savePath)
+                    ; SetControls(true)
+                    ; return;
+            }
+
+            await _createCsm(cInfo.savePath, cInfo.appFile, tempDir + "temp.mym");
         }
         
-        */
 
         private async Task _loadMym(string mymFilePath)
         {
