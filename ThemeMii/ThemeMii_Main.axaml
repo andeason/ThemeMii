@@ -289,7 +289,7 @@
                                                 </StackPanel>
                                         </StackPanel>
                                         
-                                        <StackPanel Name="CustomDataFile" Spacing="10" IsVisible="True">
+                                        <StackPanel Name="CustomDataFile" Spacing="10" IsVisible="False">
                                                 <TextBlock HorizontalAlignment="Center">Test</TextBlock>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
