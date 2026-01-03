@@ -913,8 +913,6 @@ namespace ThemeMii
                     Directory.Delete(altPath, true);
 
                 await _extractAppForBrowsing(standardApp, browsePath);
-                
-                
             }
             else
                 OpenAppBrowser(browsePath);

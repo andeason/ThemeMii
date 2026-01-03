@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
         x:Class="ThemeMii.ThemeMii_Main"
         Icon="Resources/ThemeMii_Icon.ico"
-        Title="ThemeMii by Leathl X MOD"
+        Title="ThemeMii MOD Version X"
         Width="600"
         Height="600"
         Loaded="ThemeMii_Main_Load"

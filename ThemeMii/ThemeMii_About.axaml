@@ -10,8 +10,9 @@
         Width="400" Height="300">
         <StackPanel HorizontalAlignment="Center">
                 <Image Width="128" Height="128" Source="/Resources/ThemeMiiFull.png" />
-                <TextBlock Name="VersionInfo" HorizontalAlignment="Center">Version X MOD by Leathl</TextBlock>
-                <TextBlock HorizontalAlignment="Center">Thanks</TextBlock>
+                <TextBlock Name="VersionInfo" HorizontalAlignment="Center">Version X MOD</TextBlock>
+                <TextBlock HorizontalAlignment="Center"> Forked from Leathl's ThemeMii Mod </TextBlock>
+                <TextBlock HorizontalAlignment="Center">Original Thanks</TextBlock>
                 <TextBlock HorizontalAlignment="Center">icefire/ Xuzz for the original Mymenu</TextBlock>
                 <TextBlock HorizontalAlignment="Center">(and everything related)</TextBlock>
                 <TextBlock HorizontalAlignment="Center">ic#code for #ziplib</TextBlock>
