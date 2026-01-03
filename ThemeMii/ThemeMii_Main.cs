@@ -265,14 +265,7 @@ namespace ThemeMii
             if (ActionBar.Value == 0 || ActionBar.Value == 100)
                 SaveMym(false);
         }
-
-        /*
-        private void intTextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.KeyChar) && e.KeyChar != '\b';
-        }
-
-        */
+        
         private void SwapEntryUp(object? sender, RoutedEventArgs e)
         {
             SwapEntries(lbxIniEntries.SelectedIndex, true);
@@ -757,55 +750,83 @@ namespace ThemeMii
             helpWindow.ShowDialog(windowOwner);
         }
         
-        private void msInstallToNandBackup_Click(object sender, RoutedEventArgs e)
+        private async void msInstallToNandBackup_Click(object sender, RoutedEventArgs e)
         {
             if (lbxIniEntries.Items.Count > 0 && (ActionBar.Value == 0 || ActionBar.Value == 100))
             {
-                /*
-                string sysMenuPath = settings.nandBackupPath + "\\title\\00000001\\00000002\\content\\";
+                string sysMenuPath = Path.Combine(settings.NandBackupPath,"\\title\\00000001\\00000002\\content\\");
 
-                if (!Directory.Exists(sysMenuPath) || !settings.saveNandPath)
+                if (!Directory.Exists(sysMenuPath) || !settings.SaveNandPath)
                 {
-                    FolderBrowserDialog fbd = new FolderBrowserDialog();
-                    fbd.Description = "Choose the drive or directory where the 8 folders of the NAND backup are (ticket, title, shared1, ...)";
-
-                    if (fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-
-                    settings.nandBackupPath = fbd.SelectedPath;
-                    sysMenuPath = fbd.SelectedPath + "\\title\\00000001\\00000002\\content\\";
+                    var fileStorage = StorageProvider;
+                    var result = await fileStorage.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+                    {
+                        Title =
+                            "Choose the drive or directory where the 8 folders of the NAND backup are (ticket, title, shared1, ...)",
+                        SuggestedStartLocation = await fileStorage.TryGetFolderFromPathAsync(settings!.NandBackupPath ?? Directory.GetCurrentDirectory())
+                    });
+                    
+                    if (result.Count == 0)
+                        return;
+                    
+                    settings.NandBackupPath = result[0].Path.AbsolutePath;
+                    sysMenuPath = Path.Combine(settings.NandBackupPath,"\\title\\00000001\\00000002\\content\\");
 
                     if (!Directory.Exists(sysMenuPath))
-                    { ErrorBox("Directory wasn't found:\n" + sysMenuPath); return; }
+                    {
+                        await MessageBoxHelper.DisplayErrorMessage("Directory wasn't found:\n" + sysMenuPath); 
+                        return;
+                    }
                 }
 
-                if (!File.Exists(sysMenuPath + "title.tmd"))
-                { ErrorBox("File wasn't found:\n" + sysMenuPath + "title.tmd"); return; }
+                if (!File.Exists(Path.Combine(sysMenuPath,"title.tmd")))
+                {
+                    await MessageBoxHelper.DisplayErrorMessage("File wasn't found:\n" + sysMenuPath + "title.tmd");
+                    return;
+                }
 
                 BaseApp bApp = GetBaseAppFromTitleVersion(Wii.WadInfo.GetTitleVersion(sysMenuPath + "title.tmd"));
 
                 if ((int)bApp == 0)
-                { ErrorBox("Incompatible System Menu found. You must either have 3.2, 4.0, 4.1 or 4.2 (J/U/E)!"); return; }
+                { 
+                    await MessageBoxHelper.DisplayErrorMessage("Incompatible System Menu found!"); 
+                    return; 
+                }
 
-                string baseAppFile = sysMenuPath + ((int)bApp).ToString("x8") + ".app";
+                string baseAppFile = Path.Combine(sysMenuPath, $"{((int)bApp).ToString("x8")}.app");
 
                 if (!File.Exists(baseAppFile))
-                { ErrorBox("Base app file wasn't found:\n" + baseAppFile); return; }
+                {
+                    await MessageBoxHelper.DisplayErrorMessage("Base app file wasn't found:\n" + baseAppFile); 
+                    return;
+                }
 
                 BaseApp standardApp = GetBaseApp();
-                string baseApp = Application.StartupPath + "\\" + ((int)standardApp).ToString("x8") + ".app";
+                string baseApp = Path.Combine(Directory.GetCurrentDirectory(), $"{((int)standardApp).ToString("x8")}.app");
+                
                 if (!File.Exists(baseApp) || (int)standardApp == 0 || standardApp != bApp)
                 {
-                    OpenFileDialog ofd = new OpenFileDialog();
-                    if ((int)standardApp > 0) ofd.Title = "Standard System Menu base app wasn't found";
-                    ofd.Filter = "app|*.app";
-                    ofd.FileName = ((int)standardApp).ToString("x8") + ".app";
+                    var fileStorage = StorageProvider;
+                    var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions
+                    {
+                        Title = (int)standardApp > 0 ? "Standard System Menu base app wasn't found" : string.Empty,
+                        FileTypeFilter =
+                        [
+                            new FilePickerFileType("app files")
+                            {
+                                Patterns = ["*.app"]
+                            }
+                        ]
+                    });
 
-                    if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) baseApp = ofd.FileName;
-                    else return;
+                    if (result.Count == 0)
+                        return;
+
+                    baseApp = result[0].Name;
                 }
-                */
+                
 
-                //CreateCsm(baseApp, baseAppFile);
+                CreateCsm(baseApp, baseAppFile);
             }
         }
 
