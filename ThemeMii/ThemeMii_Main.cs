@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -807,26 +808,6 @@ namespace ThemeMii
                 //CreateCsm(baseApp, baseAppFile);
             }
         }
-
-
-        /*
-         
-        private void ThemeMii_Main_LocationChanged(object sender, EventArgs e)
-        {
-            if (settings.saveWindowChanges && this.WindowState != FormWindowState.Maximized)
-                Properties.Settings.Default.windowLocation = this.Location;
-        }
-
-        private void ThemeMii_Main_ResizeEnd(object sender, EventArgs e)
-        {
-            if (settings.saveWindowChanges)
-            {
-                Properties.Settings.Default.windowLocation = this.Location;
-                Properties.Settings.Default.windowSize = this.Size;
-            }
-        }
-        
-        */
 
         private void msSaveNandPath_Click(object? sender, RoutedEventArgs e)
         {

@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
@@ -162,6 +163,9 @@ namespace ThemeMii
             ImageSizeFromTpl.IsChecked = settings.ImageSizeFromTpl;
             SaveNandPath.IsChecked = settings.SaveNandPath;
             ChangeNandPath.IsVisible = SaveNandPath.IsChecked;
+            Position = new PixelPoint(settings.LastLocationX, settings.LastLocationY);
+            WindowState = settings.LastWindowState;
+
 
             //TODO:  Another one I don't have an idea yet....
             //lastExtracted = (BaseApp)Properties.Settings.Default.lastExtracted;
@@ -196,6 +200,7 @@ namespace ThemeMii
 
         private void SaveSettings()
         {
+            
             var settingsToSave = new ThemeMiiSettings
             {
                 SavePrompt = SavePrompt.IsChecked,
@@ -207,7 +212,10 @@ namespace ThemeMii
                 ImageSizeFromTpl = ImageSizeFromTpl.IsChecked,
                 SaveNandPath = SaveNandPath.IsChecked,
                 //I don't really like this, but for now we will assume settings has a purpose JUST for this.
-                NandBackupPath = settings?.NandBackupPath ?? ""
+                NandBackupPath = settings?.NandBackupPath ?? "",
+                LastLocationX = Position.X,
+                LastLocationY =  Position.Y,
+                LastWindowState = WindowState
             };
             
             using var writer = new StreamWriter("Settings.json");

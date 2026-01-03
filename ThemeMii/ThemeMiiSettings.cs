@@ -1,3 +1,6 @@
+using Avalonia;
+using Avalonia.Controls;
+
 namespace ThemeMii;
 public class ThemeMiiSettings
 {
@@ -14,6 +17,10 @@ public class ThemeMiiSettings
     public bool SavePrompt {get; init; } = true;
     public string? NandBackupPath { get; set; }
     public bool SaveNandPath {get; init; } = true;
-    public bool SaveWindowChanges {get; init; } = true;
     public bool ImageSizeFromTpl {get; init; }= true;
+
+    //There was a serialization issue when doing x and y, so I am just opting for the direct x/y coordinates.
+    public int LastLocationX { get; set; }
+    public int LastLocationY { get; set; }
+    public WindowState LastWindowState { get; set; } = WindowState.Normal;
 }
