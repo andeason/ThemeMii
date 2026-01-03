@@ -325,8 +325,7 @@ namespace ThemeMii
             {
                 tempEntry.file = (tbCustomImageFile.Text.StartsWith("\\")) ? tbCustomImageFile.Text : tbCustomImageFile.Text.Insert(0, "\\");
                 tempEntry.name = tbCustomImageName.Text;
-                //TODO:  Again WTF IS AUTO IMAGE SIZE
-                if (!ImageSizeFromTpl.IsChecked)
+                if (ImageSizeFromTpl.IsChecked)
                 {
                     tempEntry.width = int.Parse(tbCustomImageWidth.Text);
                     tempEntry.height = int.Parse(tbCustomImageHeight.Text);
@@ -410,8 +409,7 @@ namespace ThemeMii
                 {
                     tempEntry.file = (tbCustomImageFile.Text.StartsWith("\\")) ? tbCustomImageFile.Text : tbCustomImageFile.Text.Insert(0, "\\");
                     tempEntry.name = tbCustomImageName.Text;
-                    //TODO:  Again WTF IS AUTO IMAGE SIZE
-                    if (!ImageSizeFromTpl.IsChecked)
+                    if (ImageSizeFromTpl.IsChecked)
                     {
                         tempEntry.width = int.Parse(tbCustomImageWidth.Text);
                         tempEntry.height = int.Parse(tbCustomImageHeight.Text);

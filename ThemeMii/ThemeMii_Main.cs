@@ -150,7 +150,6 @@ namespace ThemeMii
                     lbCimg.Text = tempEntry.entry;
                     tbCustomImageFile.Text = tempEntry.file;
                     tbCustomImageName.Text = tempEntry.name;
-                    //TODO:  I really need to figure out what this was linked to....
                     if (!ImageSizeFromTpl.IsChecked)
                     {
                         tbCustomImageWidth.Text = tempEntry.width.ToString();
@@ -184,8 +183,7 @@ namespace ThemeMii
                     tbStaticImageFile.Text = tempEntry.file;
                     if (!SourceManage.IsChecked) 
                         tbStaticImageSource.Text = tempEntry.source;
-                    //TODO:  I really need to figure out what this was linked to....
-                    if (!ImageSizeFromTpl.IsChecked)
+                    if (ImageSizeFromTpl.IsChecked)
                     {
                         tbCustomImageWidth.Text = tempEntry.width.ToString();
                         tbCustomImageHeight.Text = tempEntry.height.ToString();
@@ -417,53 +415,54 @@ namespace ThemeMii
                 tbStaticImageSource.Enabled = false;
             }
         }
+        
+        */
 
-        private void msImageSizeFromPng_Click(object sender, EventArgs e)
+        private async void msImageSizeFromPng_Click(object? sender, RoutedEventArgs e)
         {
-            if (!msImageSizeFromPng.Checked)
+            if (!ImageSizeFromPNG.IsChecked)
             {
-                settings.autoImageSize = false;
-
-                if (panStaticImage.Visible)
+                if (StaticImageStack.IsVisible)
                 {
-                    iniEntry tempEntry = ini.GetEntry(lbxIniEntries.SelectedItem.ToString());
+                    iniEntry tempEntry = ini.GetEntry(lbxIniEntries.SelectedItem!.ToString()!);
                     tbStaticImageWidth.Text = tempEntry.width.ToString();
                     tbStaticImageHeight.Text = tempEntry.height.ToString();
                 }
-                else if (panCustomImage.Visible)
+                else if (CustomImageStack.IsVisible)
                 {
-                    iniEntry tempEntry = ini.GetEntry(lbxIniEntries.SelectedItem.ToString());
+                    iniEntry tempEntry = ini.GetEntry(lbxIniEntries.SelectedItem!.ToString()!);
                     tbCustomImageWidth.Text = tempEntry.width.ToString();
                     tbCustomImageHeight.Text = tempEntry.height.ToString();
                 }
 
-                tbStaticImageWidth.Enabled = true;
-                tbStaticImageHeight.Enabled = true;
-                tbCustomImageWidth.Enabled = true;
-                tbCustomImageHeight.Enabled = true;
+                tbStaticImageWidth.IsEnabled = true;
+                tbStaticImageHeight.IsEnabled= true;
+                tbCustomImageWidth.IsEnabled = true;
+                tbCustomImageHeight.IsEnabled = true;
             }
             else
             {
-                settings.autoImageSize = true;
                 tbStaticImageWidth.Text = string.Empty;
                 tbStaticImageHeight.Text = string.Empty;
                 tbCustomImageWidth.Text = string.Empty;
                 tbCustomImageHeight.Text = string.Empty;
-                tbStaticImageWidth.Enabled = false;
-                tbStaticImageHeight.Enabled = false;
-                tbCustomImageWidth.Enabled = false;
-                tbCustomImageHeight.Enabled = false;
+                tbStaticImageWidth.IsEnabled = false;
+                tbStaticImageHeight.IsEnabled = false;
+                tbCustomImageWidth.IsEnabled = false;
+                tbCustomImageHeight.IsEnabled = false;
 
-                if (msImageSizeFromTpl.Checked)
+                if (ImageSizeFromTpl.IsChecked)
                 {
-                    msImageSizeFromTpl.Checked = false;
-                    settings.imageSizeFromTpl = false;
+                    ImageSizeFromTpl.IsChecked = false;
                 }
 
-                MessageBox.Show("Be sure that your PNG images have the same size as the original TPLs they will replace," +
-                                " else you might get a brick!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                await MessageBoxHelper.DisplayWarningBox(
+                    "Be sure that your PNG images have the same size as the original TPLs they will replace," +
+                    " else you might get a brick!");
             }
         }
+        
+        /*
 
         private void StandardSysMenu_Click(object sender, EventArgs e)
         {
@@ -849,18 +848,13 @@ namespace ThemeMii
             helpWindow.ShowDialog(windowOwner);
         }
         
-        /*
-
-        private void msImageSizeFromTpl_Click(object sender, EventArgs e)
+        private async void msImageSizeFromTpl_Click(object? sender, RoutedEventArgs e)
         {
-            settings.imageSizeFromTpl = msImageSizeFromTpl.Checked;
-
-            if (msImageSizeFromPng.Checked)
+            if (ImageSizeFromPNG.IsChecked)
             {
-                msImageSizeFromPng.Checked = false;
+                ImageSizeFromPNG.IsChecked = false;
                 msImageSizeFromPng_Click(null, null);
             }
         }
-        */
     }
 }

@@ -41,8 +41,8 @@
                                 <MenuItem ToggleType="CheckBox"  Name="ContainerManage"  IsChecked="True" Header="Auto-Container-Manage" />
                                 <MenuItem ToggleType="CheckBox"  Name="IgnoreMissing" IsChecked="True" Header="Ignore Missing Entries" />
                                 <Separator />
-                                <MenuItem ToggleType="CheckBox"  Name="ImageSizeFromTpl" IsChecked="True" Header="Image Size from TPL" />
-                                <MenuItem ToggleType="CheckBox"  IsChecked="False" Header="Image Size from PNG" />
+                                <MenuItem ToggleType="CheckBox"  Name="ImageSizeFromTpl" Click="msImageSizeFromTpl_Click" IsChecked="True" Header="Image Size from TPL" />
+                                <MenuItem ToggleType="CheckBox"  Name="ImageSizeFromPNG" Click="msImageSizeFromPng_Click" IsChecked="False" Header="Image Size from PNG" />
                                 <Separator />
                                 <MenuItem ToggleType="CheckBox"  Name="Lz77Containers" IsChecked="True" Header="Lz77 Compress Containers" />
                                 <MenuItem ToggleType="CheckBox"  Name="SaveNandPath" IsChecked="True" Header="Save NAND Backup Path" />

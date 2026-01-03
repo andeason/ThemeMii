@@ -20,4 +20,11 @@ public class MessageBoxHelper
         await infoMessage.ShowAsync();
     }
 
+    public static async Task DisplayWarningBox(string message)
+    {
+        var infoMessage =
+            MessageBoxManager.GetMessageBoxStandard("Warning", message, ButtonEnum.Ok, MsBox.Avalonia.Enums.Icon.Warning);
+        await infoMessage.ShowAsync();
+    }
+
 }

@@ -595,8 +595,7 @@ namespace ThemeMii
                             imageSources.Add(new string[] { tempEntry.source, fi.Length.ToString() });
                         }
                     }
-                    //TODO:  This was autoimage.... Where is this used
-                    if (!ImageSizeFromTpl.IsChecked)
+                    if (ImageSizeFromTpl.IsChecked)
                     {
                         if (tempEntry.entryType == iniEntry.EntryType.CustomImage ||
                             tempEntry.entryType == iniEntry.EntryType.StaticImage)
