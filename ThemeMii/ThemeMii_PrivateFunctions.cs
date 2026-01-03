@@ -205,7 +205,9 @@ namespace ThemeMii
                 SourceManage = SourceManage.IsChecked,
                 IgnoreMissing = IgnoreMissing.IsChecked,
                 ImageSizeFromTpl = ImageSizeFromTpl.IsChecked,
-                SaveNandPath = SaveNandPath.IsChecked
+                SaveNandPath = SaveNandPath.IsChecked,
+                //I don't really like this, but for now we will assume settings has a purpose JUST for this.
+                NandBackupPath = settings?.NandBackupPath ?? ""
             };
             
             using var writer = new StreamWriter("Settings.json");

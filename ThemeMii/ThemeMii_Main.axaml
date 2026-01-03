@@ -45,7 +45,7 @@
                                 <MenuItem ToggleType="CheckBox"  Name="ImageSizeFromPNG" Click="msImageSizeFromPng_Click" IsChecked="False" Header="Image Size from PNG" />
                                 <Separator />
                                 <MenuItem ToggleType="CheckBox"  Name="Lz77Containers" IsChecked="True" Header="Lz77 Compress Containers" />
-                                <MenuItem ToggleType="CheckBox"  Name="SaveNandPath" IsChecked="True" Header="Save NAND Backup Path" />
+                                <MenuItem ToggleType="CheckBox"  Name="SaveNandPath" Click="msSaveNandPath_Click" IsChecked="True" Header="Save NAND Backup Path" />
                                 <MenuItem ToggleType="CheckBox" Name="KeepExtractedApp" IsChecked="True" Header="Keep Extracted Base App" />
                                 <MenuItem ToggleType="CheckBox" Name="SavePrompt" IsChecked="True" Header="Save Prompt when Exiting" />
                                 <Separator />
@@ -77,12 +77,12 @@
                                                 <MenuItem ToggleType="CheckBox" Name="ms43K" Header="Korea" />
                                         </MenuItem>
                                 </MenuItem>
-                                <MenuItem IsVisible="True" Name="ChangeNandPath" Header="Change NAND Backup Path" />
+                                <MenuItem IsVisible="True" Name="ChangeNandPath" Click="msChangeNandPath_Click" Header="Change NAND Backup Path" />
                         </MenuItem>
                         <MenuItem Header="Tools">
                                 <MenuItem Header="csm to mym" Click="msCsmToMym_Click"/>
                                 <MenuItem Name="msBrowseBaseApp" Click="btnBrowseFile_Click" Header="Browse Base App" />
-                                <MenuItem Name="msInstallToNandBackup" Header="Install Theme to Nand Backup" />
+                                <MenuItem Name="msInstallToNandBackup" Click="msInstallToNandBackup_Click" Header="Install Theme to Nand Backup" />
                                 <Separator />
                                 <MenuItem Header="Download Base App" Click="DownloadBaseApp_Click">
                                         <MenuItem Header="3.2" >

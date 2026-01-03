@@ -12,7 +12,7 @@ public class ThemeMiiSettings
     public bool KeepExtractedApp {get; init; } = true;
     public bool Lz77Containers {get; init; } = true;
     public bool SavePrompt {get; init; } = true;
-    public string? NandBackupPath {get; init; }
+    public string? NandBackupPath { get; set; }
     public bool SaveNandPath {get; init; } = true;
     public bool SaveWindowChanges {get; init; } = true;
     public bool ImageSizeFromTpl {get; init; }= true;

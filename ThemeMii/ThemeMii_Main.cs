@@ -755,13 +755,12 @@ namespace ThemeMii
             var helpWindow = new ThemeMii_Help();
             helpWindow.ShowDialog(windowOwner);
         }
-
-        /*
-        private void msInstallToNandBackup_Click(object sender, EventArgs e)
+        
+        private void msInstallToNandBackup_Click(object sender, RoutedEventArgs e)
         {
-            if (lbxIniEntries.Items.Count > 0 && pbProgress.Value == 100)
+            if (lbxIniEntries.Items.Count > 0 && (ActionBar.Value == 0 || ActionBar.Value == 100))
             {
-
+                /*
                 string sysMenuPath = settings.nandBackupPath + "\\title\\00000001\\00000002\\content\\";
 
                 if (!Directory.Exists(sysMenuPath) || !settings.saveNandPath)
@@ -803,12 +802,15 @@ namespace ThemeMii
                     if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) baseApp = ofd.FileName;
                     else return;
                 }
+                */
 
-                CreateCsm(baseApp, baseAppFile);
+                //CreateCsm(baseApp, baseAppFile);
             }
         }
 
 
+        /*
+         
         private void ThemeMii_Main_LocationChanged(object sender, EventArgs e)
         {
             if (settings.saveWindowChanges && this.WindowState != FormWindowState.Maximized)
@@ -823,48 +825,55 @@ namespace ThemeMii
                 Properties.Settings.Default.windowSize = this.Size;
             }
         }
-
-        private void msSaveNandPath_Click(object sender, EventArgs e)
-        {
-            settings.saveNandPath = msSaveNandPath.Checked;
-            msChangeNandPath.Visible = msSaveNandPath.Checked;
-        }
-
-        private void msChangeNandPath_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.Description = "Choose the drive or directory where the 8 folders of the NAND backup are (ticket, title, shared1, ...)";
-            fbd.SelectedPath = settings.nandBackupPath;
-
-            if (fbd.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-
-            settings.nandBackupPath = fbd.SelectedPath;
-        }
-
-        private void ThemeMii_Main_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop) && pbProgress.Value == 100)
-            {
-                string[] drop = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                if (drop.Length == 1 && drop[0].ToLower().EndsWith(".mym"))
-                    e.Effect = DragDropEffects.Copy;
-            }
-        }
-
-        private void ThemeMii_Main_DragDrop(object sender, DragEventArgs e)
-        {
-            if (pbProgress.Value == 100)
-            {
-                string[] drop = (string[])e.Data.GetData(DataFormats.FileDrop);
-                Initialize();
-
-                Thread workThread = new Thread(new ParameterizedThreadStart(this._loadMym));
-                workThread.Start(drop[0]);
-            }
-        }
-
+        
         */
+
+        private void msSaveNandPath_Click(object? sender, RoutedEventArgs e)
+        {
+            ChangeNandPath.IsVisible = SaveNandPath.IsChecked;
+        }
+
+        private async void msChangeNandPath_Click(object sender, RoutedEventArgs e)
+        {
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+            {
+                Title =
+                    "Choose the drive or directory where the 8 folders of the NAND backup are (ticket, title, shared1, ...)",
+                SuggestedStartLocation = await fileStorage.TryGetFolderFromPathAsync(settings!.NandBackupPath ?? Directory.GetCurrentDirectory())
+            });
+
+            if (result.Count == 0)
+                return;
+            
+            settings!.NandBackupPath = result[0].Path.AbsolutePath;
+        }
+
+        /*
+            private void ThemeMii_Main_DragEnter(object sender, DragEventArgs e)
+            {
+                if (e.Data.GetDataPresent(DataFormats.FileDrop) && pbProgress.Value == 100)
+                {
+                    string[] drop = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                    if (drop.Length == 1 && drop[0].ToLower().EndsWith(".mym"))
+                        e.Effect = DragDropEffects.Copy;
+                }
+            }
+
+            private void ThemeMii_Main_DragDrop(object sender, DragEventArgs e)
+            {
+                if (pbProgress.Value == 100)
+                {
+                    string[] drop = (string[])e.Data.GetData(DataFormats.FileDrop);
+                    Initialize();
+
+                    Thread workThread = new Thread(new ParameterizedThreadStart(this._loadMym));
+                    workThread.Start(drop[0]);
+                }
+            }
+        */
+        
         private void msHealthTutorial_Click(object? sender, RoutedEventArgs e)
         {
             var windowOwner = this;
