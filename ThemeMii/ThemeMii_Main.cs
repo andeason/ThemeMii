@@ -261,7 +261,7 @@ namespace ThemeMii
         
         
 
-        private void msSave_Click(object sender, EventArgs e)
+        private void msSave_Click(object? sender, RoutedEventArgs e)
         {
             if (ActionBar.Value == 0 || ActionBar.Value == 100)
                 SaveMym(false);
@@ -545,27 +545,38 @@ namespace ThemeMii
             }
         }
 
-        private void btnCreateCsm_Click(object sender, EventArgs e)
+        */
+        private async void btnCreateCsm_Click(object? sender, RoutedEventArgs e)
         {
-            if (lbxIniEntries.Items.Count > 0 && pbProgress.Value == 100)
+            if (lbxIniEntries.Items.Count > 0 && (ActionBar.Value == 0 || ActionBar.Value == 100))
             {
                 BaseApp bApp = GetBaseApp();
-                string baseApp = Application.StartupPath + "\\" + ((int)bApp).ToString("x8") + ".app";
+                string baseApp = Path.Combine(Directory.GetCurrentDirectory(), $"{((int)bApp).ToString("x8")}.app");
                 if (!File.Exists(baseApp) || (int)bApp == 0)
                 {
-                    OpenFileDialog ofd = new OpenFileDialog();
-                    if ((int)bApp > 0) ofd.Title = "Standard System Menu base app wasn't found";
-                    ofd.Filter = "app|*.app";
+                    var fileStorage = StorageProvider;
+                    var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions
+                    {
+                        Title = "Standard System Menu base app wasn't found",
+                        FileTypeFilter =
+                        [
+                            new FilePickerFileType("app files")
+                            {
+                                Patterns = ["*.app"]
+                            }
+                        ]
+                    });
 
-                    if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK) baseApp = ofd.FileName;
-                    else return;
+                    if (result.Count == 0)
+                        return;
+                    
+                    baseApp = result[0].Name;
                 }
 
                 CreateCsm(baseApp, string.Empty);
             }
         }
-
-        */
+        
         private void msAbout_Click(object sender, RoutedEventArgs e)
         {
             var windowOwner = this;

@@ -217,22 +217,32 @@ namespace ThemeMii
 
         private BaseApp GetBaseApp()
         {
-            return BaseApp.E32;
-            /*
-            if (ms32E.Checked) return BaseApp.E32;
-            else if (ms32J.Checked) return BaseApp.J32;
-            else if (ms32U.Checked) return BaseApp.U32;
-            else if (ms40E.Checked) return BaseApp.E40;
-            else if (ms40J.Checked) return BaseApp.J40;
-            else if (ms40U.Checked) return BaseApp.U40;
-            else if (ms41E.Checked) return BaseApp.E41;
-            else if (ms41J.Checked) return BaseApp.J41;
-            else if (ms41U.Checked) return BaseApp.U41;
-            else if (ms42E.Checked) return BaseApp.E42;
-            else if (ms42J.Checked) return BaseApp.J42;
-            else if (ms42U.Checked) return BaseApp.U42;
-            else return (BaseApp)0;
-            */
+            if (ms32E.IsChecked) 
+                return BaseApp.E32;
+            if (ms32J.IsChecked) 
+                return BaseApp.J32;
+            if (ms32U.IsChecked) 
+                return BaseApp.U32;
+            if  (ms40E.IsChecked)
+                return BaseApp.E40;
+            if (ms40J.IsChecked) 
+                return BaseApp.J40;
+            if (ms40U.IsChecked) 
+                return BaseApp.U40;
+            if (ms41E.IsChecked) 
+                return BaseApp.E41;
+            if (ms41J.IsChecked) 
+                return BaseApp.J41;
+            if (ms41U.IsChecked) 
+                return BaseApp.U41;
+            if (ms42E.IsChecked) 
+                return BaseApp.E42;
+            if (ms42J.IsChecked) 
+                return BaseApp.J42;
+            if (ms42U.IsChecked) 
+                return BaseApp.U42;
+            
+            return 0;
         }
 
         private void UncheckSysMenus()
@@ -526,36 +536,37 @@ namespace ThemeMii
             return highestIndex;
         }
 
-        private void CreateCsm(string appFile, string nandBackupAppPath)
+        private async void CreateCsm(string appFile, string nandBackupAppPath)
         {
-            /*
             SaveSelected();
             
             if (string.IsNullOrEmpty(nandBackupAppPath))
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "csm|*.csm";
-                if (!string.IsNullOrEmpty(openedMym)) sfd.FileName = openedMym;
-
-                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                var fileStorage = StorageProvider;
+                var result = await fileStorage.SaveFilePickerAsync(new FilePickerSaveOptions()
                 {
-                    ReportProgress(0, "Collecting data...");
+                    DefaultExtension = "csm",
+                    FileTypeChoices = [new FilePickerFileType("csm")
+                    {
+                        Patterns = ["*.csm"]
+                    }],
+                    SuggestedFileName = !string.IsNullOrEmpty(openedMym) ? openedMym : string.Empty
+                });
 
-                    List<object> lbEntries = new List<object>();
+                if (result == null)
+                    return;
+                
+                ReportProgress(0, "Collecting data...");
 
-                    foreach (object entry in lbxIniEntries.Items)
-                        lbEntries.Add(entry);
-
-                    CreationInfo cInfo = new CreationInfo();
-                    cInfo.savePath = sfd.FileName;
-                    cInfo.lbEntries = lbEntries.ToArray();
-                    cInfo.createCsm = true;
-                    cInfo.appFile = appFile;
-                    cInfo.closeAfter = false;
-
-                    Thread workerThread = new Thread(new ParameterizedThreadStart(this._saveMym));
-                    workerThread.Start(cInfo);
-                }
+                var cInfo = new CreationInfo()
+                {
+                    savePath = result.Name,
+                    lbEntries = lbxIniEntries.Items.Select(entry => entry!).ToArray(),
+                    createCsm = true,
+                    appFile = appFile,
+                    closeAfter = false
+                };
+                await _saveMym(cInfo);
             }
             else
             {
@@ -563,20 +574,19 @@ namespace ThemeMii
 
                 List<object> lbEntries = new List<object>();
 
-                foreach (object entry in lbxIniEntries.Items)
-                    lbEntries.Add(entry);
+                foreach (var entry in lbxIniEntries.Items)
+                    lbEntries.Add(entry!);
 
-                CreationInfo cInfo = new CreationInfo();
-                cInfo.savePath = nandBackupAppPath;
-                cInfo.lbEntries = lbEntries.ToArray();
-                cInfo.createCsm = true;
-                cInfo.appFile = appFile;
-                cInfo.closeAfter = false;
-
-                Thread workerThread = new Thread(new ParameterizedThreadStart(this._saveMym));
-                workerThread.Start(cInfo);
+                var cInfo = new CreationInfo()
+                {
+                    savePath = nandBackupAppPath,
+                    lbEntries =  lbxIniEntries.Items.Select(entry => entry!).ToArray(),
+                    createCsm = true,
+                    appFile = appFile,
+                    closeAfter = false
+                };
+                await _saveMym(cInfo);
             }
-            */
         }
 
         private async Task SaveMym(bool exitAfter)

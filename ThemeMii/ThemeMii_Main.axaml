@@ -16,7 +16,7 @@
                         <MenuItem Header="File" >
                                 <MenuItem Header="New Ctrl+N" Click="msNew_Click"/>
                                 <MenuItem Header="Open Ctrl+O" Click="msOpen_Click" />
-                                <MenuItem Name="msSave" Header="Save Ctrl+S" />
+                                <MenuItem Name="msSave" Click="msSave_Click" Header="Save Ctrl+S" />
                                 <Separator />
                                 <MenuItem Header="Exit" Click="msExit_Click"/>
                         </MenuItem>
@@ -150,7 +150,7 @@
                                         Save mym
                                 </Button>
                                 
-                                <Button IsEnabled="False" Width="100" Name="btnCreateCsm">
+                                <Button IsEnabled="False" Width="100" Click="btnCreateCsm_Click" Name="btnCreateCsm">
                                         Create csm
                                 </Button>
                         </StackPanel>
