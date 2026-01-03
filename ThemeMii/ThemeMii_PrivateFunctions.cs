@@ -417,12 +417,12 @@ namespace ThemeMii
 
                 if (tempEntry.entryType == iniEntry.EntryType.Container)
                 {
-                    tempEntry.file = (tbContainerFile.Text.StartsWith("\\")) ? tbContainerFile.Text : tbContainerFile.Text.Insert(0, "\\");
+                    tempEntry.file = (tbContainerFile.Text?.StartsWith("\\") ?? false) ? tbContainerFile.Text : tbContainerFile.Text?.Insert(0, "\\") ?? "";
                     tempEntry.type = (cmbContainerFormat.SelectedIndex == 0) ? iniEntry.ContainerType.ASH : iniEntry.ContainerType.U8;
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.CustomImage)
                 {
-                    tempEntry.file = (tbCustomImageFile.Text.StartsWith("\\")) ? tbCustomImageFile.Text : tbCustomImageFile.Text.Insert(0, "\\");
+                    tempEntry.file = (tbCustomImageFile.Text?.StartsWith("\\") ?? false) ? tbCustomImageFile.Text : tbCustomImageFile.Text?.Insert(0, "\\") ?? "";
                     tempEntry.name = tbCustomImageName.Text;
                     if (ImageSizeFromTpl.IsChecked)
                     {
@@ -447,9 +447,9 @@ namespace ThemeMii
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.StaticImage)
                 {
-                    tempEntry.file = tbStaticImageFile.Text.StartsWith("\\") ? tbStaticImageFile.Text : tbStaticImageFile.Text.Insert(0, "\\");
+                    tempEntry.file = tbStaticImageFile.Text?.StartsWith("\\") ?? false ? tbStaticImageFile.Text : tbStaticImageFile.Text?.Insert(0, "\\") ?? "";
                     if (!SourceManage.IsChecked) 
-                        tempEntry.source = tbStaticImageSource.Text.StartsWith("\\") ? tbStaticImageSource.Text : tbStaticImageSource.Text.Insert(0, "\\");
+                        tempEntry.source = tbStaticImageSource.Text?.StartsWith("\\") ?? false ? tbStaticImageSource.Text : tbStaticImageSource.Text?.Insert(0, "\\") ?? "";
                     if (!ImageSizeFromTpl.IsChecked)
                     {
                         tempEntry.width = int.Parse(tbStaticImageWidth.Text);
@@ -475,14 +475,14 @@ namespace ThemeMii
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.CustomData)
                 {
-                    tempEntry.file = tbCustomDataFile.Text.StartsWith("\\") ? tbCustomDataFile.Text : tbCustomDataFile.Text.Insert(0, "\\");
+                    tempEntry.file = tbCustomDataFile.Text?.StartsWith("\\") ?? false ? tbCustomDataFile.Text : tbCustomDataFile.Text?.Insert(0, "\\") ?? "";
                     tempEntry.name = tbCustomDataName.Text;
                 }
                 else if (tempEntry.entryType == iniEntry.EntryType.StaticData)
                 {
-                    tempEntry.file = tbStaticDataFile.Text.StartsWith("\\") ? tbStaticDataFile.Text : tbStaticDataFile.Text.Insert(0, "\\");
+                    tempEntry.file = tbStaticDataFile.Text?.StartsWith("\\") ?? false ? tbStaticDataFile.Text : tbStaticDataFile.Text?.Insert(0, "\\") ?? "";
                     if (!SourceManage.IsChecked)
-                        tempEntry.source = tbStaticDataSource.Text.StartsWith("\\") ? tbStaticDataSource.Text : tbStaticDataSource.Text.Insert(0, "\\");
+                        tempEntry.source = tbStaticDataSource.Text?.StartsWith("\\") ?? false ? tbStaticDataSource.Text : tbStaticDataSource.Text?.Insert(0, "\\") ?? "";
 
                     tempEntry.filepath = tbStaticDataFilepath.Text;
                 }
