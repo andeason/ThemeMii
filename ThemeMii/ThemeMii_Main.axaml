@@ -75,7 +75,6 @@
                                                 <MenuItem ToggleType="CheckBox" Name="ms43E" Header="Europe" />
                                                 <MenuItem ToggleType="CheckBox" Name="ms43U" Header="USA" />
                                                 <MenuItem ToggleType="CheckBox" Name="ms43K" Header="Korea" />
-
                                         </MenuItem>
                                 </MenuItem>
                                 <MenuItem IsVisible="True" Name="ChangeNandPath" Header="Change NAND Backup Path" />
@@ -171,7 +170,7 @@
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbContainerFile" Width="300" />
-                                                        <Button> .. </Button>
+                                                        <Button Click="btnBrowseFile_Click" Name="btnContainerBrowseFile"> .. </Button>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>Type: </TextBlock>
@@ -179,7 +178,6 @@
                                                                 <ComboBoxItem>ASH|U8</ComboBoxItem>
                                                                 <ComboBoxItem>U8</ComboBoxItem>
                                                         </ComboBox>
-                                                        <Button> .. </Button>
                                                 </StackPanel>
                                                 <TextBlock HorizontalAlignment="Center" xml:space="preserve">
         Type is obsolete for ThemeMii, as it will automatically
@@ -193,7 +191,7 @@
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbStaticImageFile" Width="300" />
-                                                        <Button> .. </Button>
+                                                        <Button Click="btnBrowseFile_Click" Name="btnStaticImageBrowseFile"> .. </Button>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>Source: </TextBlock>
@@ -228,7 +226,7 @@
 
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBox Name="tbStaticImageFilepath" Width="340" />
-                                                        <Button> .. </Button>
+                                                        <Button Name="btnStaticImageBrowse" Click="btnStaticImageBrowse_Click"> ... </Button>
                                                 </StackPanel>
                                         </StackPanel>
                                         
@@ -237,7 +235,7 @@
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbStaticDataFile" Width="300" />
-                                                        <Button> .. </Button>
+                                                        <Button Click="btnBrowseFile_Click" Name="btnStaticDataBrowseFile"> .. </Button>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>Source: </TextBlock>
@@ -248,7 +246,7 @@
 
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBox Name="tbStaticDataFilepath" Width="340" />
-                                                        <Button> .. </Button>
+                                                        <Button Name="btnStaticDataBrowse" Click="btnStaticDataBrowse_Click"> ... </Button>
                                                 </StackPanel>
                                         </StackPanel>
                                         
@@ -257,7 +255,7 @@
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbCustomImageFile" Width="300" />
-                                                        <Button> .. </Button>
+                                                        <Button Click="btnBrowseFile_Click" Name="btnCustomImageBrowseFile"> .. </Button>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>Name: </TextBlock>
@@ -294,7 +292,7 @@
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>File: </TextBlock>
                                                         <TextBox Name="tbCustomDataFile" Width="300" />
-                                                        <Button> .. </Button>
+                                                        <Button Click="btnBrowseFile_Click" Name="btnCustomDataBrowseFile"> .. </Button>
                                                 </StackPanel>
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBlock>Name: </TextBlock>

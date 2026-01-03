@@ -349,32 +349,40 @@ namespace ThemeMii
             AddEntry(iniEntry.EntryType.CustomData);
         }
         
-        /*
-
-        private void btnStaticDataBrowse_Click(object sender, EventArgs e)
+        private async void btnStaticDataBrowse_Click(object? sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (File.Exists(tbStaticDataFilepath.Text)) ofd.InitialDirectory = Path.GetDirectoryName(tbStaticDataFilepath.Text);
-
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                tbStaticDataFilepath.Text = ofd.FileName;
-            }
+                SuggestedStartLocation = await fileStorage.TryGetFolderFromPathAsync(tbStaticImageFilepath.Text ?? "")
+            });
+            
+            if (result.Count > 0)
+                return;
+            
+            tbStaticDataFilepath.Text = result[0].Name;
         }
 
-        private void btnStaticImageBrowse_Click(object sender, EventArgs e)
+        private async void btnStaticImageBrowse_Click(object? sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "PNG|*.png";
-            if (File.Exists(tbStaticImageFilepath.Text)) ofd.InitialDirectory = Path.GetDirectoryName(tbStaticImageFilepath.Text);
-
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                tbStaticImageFilepath.Text = ofd.FileName;
-            }
+                FileTypeFilter =
+                [
+                    new FilePickerFileType("png files")
+                    {
+                        Patterns = ["*.png","*.PNG"]
+                    }
+                ],
+                SuggestedStartLocation = await fileStorage.TryGetFolderFromPathAsync(tbStaticImageFilepath.Text ?? "")
+            });
+
+            if (result.Count > 0)
+                return;
+            
+            tbStaticImageFilepath.Text = result[0].Name;
         }
-        
-        */
 
         private async void msRemoveMissingStatics_Click(object sender, RoutedEventArgs e)
         {
@@ -705,32 +713,27 @@ namespace ThemeMii
                 return;
 
             browseInfo.viewOnly = sender!.Equals(msBrowseBaseApp);
-            //browseInfo.containerBrowse = (menuItemSender.Name == btnContainerBrowseFile);
-
-            /*
-             * TODO:  Investigate what this logic was for.  
-            if (sender != msBrowseBaseApp)
+            browseInfo.containerBrowse = sender.Equals(btnContainerBrowseFile);
+            
+            if (!sender.Equals(msBrowseBaseApp))
             {
-                if (panContainer.Visible) 
-                    browseInfo.selectedNode = tbContainerFile.Text;
-                else if (panCustomImage.Visible) 
-                    browseInfo.selectedNode = tbCustomImageFile.Text;
-                else if (panCustomData.Visible)
-                    browseInfo.selectedNode = tbCustomDataFile.Text;
-                else if (panStaticImage.Visible) 
-                    browseInfo.selectedNode = tbStaticImageFile.Text;
-                else if (panStaticData.Visible)
-                    browseInfo.selectedNode = tbStaticDataFile.Text;
-                else browseInfo.selectedNode = string.Empty;
+                if (ContainerStack.IsVisible) 
+                    browseInfo.selectedNode = tbContainerFile.Text!;
+                else if (CustomImageStack.IsVisible) 
+                    browseInfo.selectedNode = tbCustomImageFile.Text!;
+                else if (CustomDataStack.IsVisible)
+                    browseInfo.selectedNode = tbCustomDataFile.Text!;
+                else if (StaticImageStack.IsVisible) 
+                    browseInfo.selectedNode = tbStaticImageFile.Text!;
+                else if (StaticDataStack.IsVisible)
+                    browseInfo.selectedNode = tbStaticDataFile.Text!;
+                else
+                    browseInfo.selectedNode = string.Empty;
 
-                if (panStaticImage.Visible || panCustomImage.Visible) 
-                    browseInfo.onlyTpls = true;
-                else 
-                    browseInfo.onlyTpls = false;
+                browseInfo.onlyTpls = StaticImageStack.IsVisible || CustomImageStack.IsVisible;
             }
             else
                 browseInfo.selectedNode = string.Empty;
-            */
 
             await AppBrowse();
         }
