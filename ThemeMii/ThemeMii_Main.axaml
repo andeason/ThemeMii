@@ -242,7 +242,7 @@
                                                         <TextBox Name="tbStaticDataSource" Width="315" />
                                                 </StackPanel>
                                                 
-                                                <TextBlock Margin="0 240 0 0">FilePath: </TextBlock>
+                                                <TextBlock Margin="0 220 0 0">FilePath: </TextBlock>
 
                                                 <StackPanel Orientation="Horizontal" Spacing="10">
                                                         <TextBox Name="tbStaticDataFilepath" Width="340" />
