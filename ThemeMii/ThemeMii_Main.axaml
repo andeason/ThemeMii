@@ -49,7 +49,7 @@
                                 <MenuItem ToggleType="CheckBox" Name="KeepExtractedApp" IsChecked="True" Header="Keep Extracted Base App" />
                                 <MenuItem ToggleType="CheckBox" Name="SavePrompt" IsChecked="True" Header="Save Prompt when Exiting" />
                                 <Separator />
-                                <MenuItem Header="Standard System Menu" >
+                                <MenuItem Header="Standard System Menu" Click="StandardSysMenu_Click">
                                         <MenuItem Header="3.2" >
                                                 <MenuItem ToggleType="CheckBox" Name="ms32J" Header="Japan" />
                                                 <MenuItem ToggleType="CheckBox" Name="ms32E" Header="Europe" />

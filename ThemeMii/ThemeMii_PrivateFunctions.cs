@@ -247,23 +247,26 @@ namespace ThemeMii
 
         private void UncheckSysMenus()
         {
-            /*
-            ms32E.Checked = false;
-            ms32J.Checked = false;
-            ms32U.Checked = false;
+            ms32E.IsChecked = false;
+            ms32J.IsChecked = false;
+            ms32U.IsChecked = false;
 
-            ms40E.Checked = false;
-            ms40J.Checked = false;
-            ms40U.Checked = false;
+            ms40E.IsChecked = false;
+            ms40J.IsChecked = false;
+            ms40U.IsChecked = false;
 
-            ms41E.Checked = false;
-            ms41J.Checked = false;
-            ms41U.Checked = false;
+            ms41E.IsChecked = false;
+            ms41J.IsChecked = false;
+            ms41U.IsChecked = false;
 
-            ms42E.Checked = false;
-            ms42J.Checked = false;
-            ms42U.Checked = false;
-            */
+            ms42E.IsChecked = false;
+            ms42J.IsChecked = false;
+            ms42U.IsChecked = false;
+            
+            ms43E.IsChecked = false;
+            ms43U.IsChecked = false;
+            ms43J.IsChecked = false;
+            ms43K.IsChecked = false;
         }
 
         private void ReportProgress(int progressPercentage, string statusText)
@@ -885,7 +888,6 @@ namespace ThemeMii
 
         private async Task AppBrowse()
         {
-            
             BaseApp standardApp = GetStandardBaseApp();
             if (standardApp == 0)
             {

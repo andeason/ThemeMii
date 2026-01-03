@@ -470,21 +470,16 @@ namespace ThemeMii
             }
         }
         
-        /*
-
-        private void StandardSysMenu_Click(object sender, EventArgs e)
+        private async void StandardSysMenu_Click(object? sender, RoutedEventArgs e)
         {
-            bool state = ((ToolStripMenuItem)sender).Checked;
-
-            if (state)
+            var menuItem = e.Source as MenuItem;
+            if (menuItem != null && menuItem.IsChecked)
             {
                 UncheckSysMenus();
-
-                ToolStripMenuItem cmSender = sender as ToolStripMenuItem;
                 BaseApp bApp;
                 string titleVersion;
 
-                switch (cmSender.Name)
+                switch (menuItem.Name)
                 {
                     case "ms32J":
                         bApp = BaseApp.J32;
@@ -534,26 +529,49 @@ namespace ThemeMii
                         bApp = BaseApp.E42;
                         titleVersion = "482";
                         break;
-                    default: return;
+                    case "ms43J":
+                        bApp = BaseApp.J43;
+                        titleVersion = "512";
+                        break;
+                    case "ms43E":
+                        bApp = BaseApp.E43;
+                        titleVersion = "513";
+                        break;
+                    case "ms43U":
+                        bApp = BaseApp.U43;
+                        titleVersion = "514";
+                        break;
+                    case "ms43K":
+                        bApp = BaseApp.K43;
+                        titleVersion = "518";
+                        break;
+                    default: 
+                        return;
                 }
 
-                if (!File.Exists(Application.StartupPath + "\\" + ((int)bApp).ToString("x8") + ".app"))
+                if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),$"{((int)bApp).ToString("x8")}.app")))
                 {
-                    if (MessageBox.Show(string.Format("{0}.app wasn't found in the application directory.\nDo you want to download it?", ((int)bApp).ToString("x8")),
-                        "Download Base App?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes) return;
+                    var baseAppQuestion = MessageBoxManager.GetMessageBoxStandard("Download Base App", 
+                        $"{((int)bApp).ToString("x8")}.app wasn't found in the application directory.\nDo you want to download it?", 
+                        ButtonEnum.YesNo,
+                        MsBox.Avalonia.Enums.Icon.Question);
+                    var result = await baseAppQuestion.ShowAsync();
 
-                    if (CommonKeyCheck())
+                    if (result != ButtonResult.Yes)
+                        return; 
+                    
+                    var commonKeyExistsOrMade = await CommonKeyCheck(this);
+                    if (commonKeyExistsOrMade)
                     {
-                        Thread workerThread = new Thread(new ParameterizedThreadStart(this._downloadBaseApp));
-                        workerThread.Start(new string[] { ((int)bApp).ToString("x8"), titleVersion, Application.StartupPath + "\\" + ((int)bApp).ToString("x8") + ".app" });
+                        await DownloadBaseApp(((int)bApp).ToString("x8"), titleVersion,
+                            Path.Combine(Directory.GetCurrentDirectory(), $"{((int)bApp).ToString("x8")}.app"));
                     }
                 }
 
-                ((ToolStripMenuItem)sender).Checked = state;
+                menuItem.IsChecked = true;
             }
         }
-
-        */
+        
         private async void btnCreateCsm_Click(object? sender, RoutedEventArgs e)
         {
             if (lbxIniEntries.Items.Count > 0 && (ActionBar.Value == 0 || ActionBar.Value == 100))
