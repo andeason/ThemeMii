@@ -96,14 +96,7 @@ namespace ThemeMii
             }
 
         }
-        /*
-
-        void ini_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        {
-            ReportProgress(e.ProgressPercentage, (string)e.UserState);
-        }
-
-        */
+        
         private async void msOpen_Click(object? sender, RoutedEventArgs e)
         {
             if (ActionBar.Value == 0 || ActionBar.Value == 100)
@@ -400,11 +393,6 @@ namespace ThemeMii
         }
         
         /*
-
-        private void msIgnoreMissingEntries_Click(object sender, EventArgs e)
-        {
-            settings.ignoreMissing = msIgnoreMissingEntries.Checked;
-        }
 
         private void msAutoManage_Click(object sender, EventArgs e)
         {
@@ -736,25 +724,6 @@ namespace ThemeMii
 
             await AppBrowse();
         }
-        
-        /*
-
-        private void msContainerManage_Click(object sender, EventArgs e)
-        {
-            settings.containerManage = msContainerManage.Checked;
-        }
-
-        private void msKeepExtractedApp_Click(object sender, EventArgs e)
-        {
-            settings.keepExtractedApp = msKeepExtractedApp.Checked;
-        }
-
-        private void msLz77Containers_Click(object sender, EventArgs e)
-        {
-            settings.lz77Containers = msLz77Containers.Checked;
-        }
-        
-        */
 
         private void msHelp_Click(object? sender, RoutedEventArgs e)
         {
@@ -815,10 +784,6 @@ namespace ThemeMii
             }
         }
 
-        private void msSavePrompt_Click(object sender, EventArgs e)
-        {
-            settings.savePrompt = msSavePrompt.Checked;
-        }
 
         private void ThemeMii_Main_LocationChanged(object sender, EventArgs e)
         {

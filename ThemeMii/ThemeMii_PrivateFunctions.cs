@@ -158,7 +158,6 @@ namespace ThemeMii
             KeepExtractedApp.IsChecked = settings.KeepExtractedApp;
             ContainerManage.IsChecked = settings.ContainerManage;
             SourceManage.IsChecked = settings.SourceManage;
-            //TODO:  Where does this exactly go?
             IgnoreMissing.IsChecked = settings.IgnoreMissing;
             ImageSizeFromTpl.IsChecked = settings.ImageSizeFromTpl;
             SaveNandPath.IsChecked = settings.SaveNandPath;
@@ -625,47 +624,95 @@ namespace ThemeMii
             if (entry.entryType == iniEntry.EntryType.Container)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                { 
+                    if (!IgnoreMissing.IsChecked) 
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"file\"..."); 
+                    return false; 
+                }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                {
+                    if (!IgnoreMissing.IsChecked) 
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"file\"..."); 
+                    return false;
+                }
+
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                {
+                    if (!IgnoreMissing.IsChecked)
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"name\"..."); 
+                    return false;
+                }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticImage)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
-                if (!settings.SourceManage)
+                {
+                    if (!IgnoreMissing.IsChecked)
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"file\"..."); 
+                    return false;
+                }
+                if (!SourceManage.IsChecked)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    {
+                        if (!IgnoreMissing.IsChecked) 
+                            MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"source\"...");
+                        return false;
+                    }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                {
+                    if (!IgnoreMissing.IsChecked)
+                        MessageBoxHelper.DisplayErrorMessage(
+                            $"Entry: {entry.entry}\nFile not found...\n\n{entry.filepath}");
+                    return false;
+                }
             }
             else if (entry.entryType == iniEntry.EntryType.CustomData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
+                {
+                    if (!IgnoreMissing.IsChecked)
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"file\"..."); 
+                    return false;
+                }
+
                 if (string.IsNullOrEmpty(entry.name))
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"name\"...", entry.entry)); return false; }
+                {
+                    if (!IgnoreMissing.IsChecked)
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"name\"..."); 
+                    return false;
+                }
             }
             else if (entry.entryType == iniEntry.EntryType.StaticData)
             {
                 if (string.IsNullOrEmpty(entry.file) || entry.file.Length < 2)
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"file\"...", entry.entry)); return false; }
-                if (!settings.SourceManage)
+                {
+                    if (!IgnoreMissing.IsChecked) 
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"file\"..."); 
+                    return false;
+                }
+                if (!SourceManage.IsChecked)
                 {
                     if (string.IsNullOrEmpty(entry.source))
-                    { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nInvalid argument \"source\"...", entry.entry)); return false; }
+                    { 
+                        if (!SourceManage.IsChecked) 
+                            MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nInvalid argument \"source\"...");
+                        return false;
+                        
+                    }
                 }
 
                 if (!File.Exists(entry.filepath))
-                { if (!settings.IgnoreMissing) MessageBoxHelper.DisplayErrorMessage(string.Format("Entry: {0}\nFile not found...\n\n{1}", entry.entry, entry.filepath)); return false; }
+                {
+                    if (!IgnoreMissing.IsChecked)
+                        MessageBoxHelper.DisplayErrorMessage($"Entry: {entry.entry}\nFile not found...\n\n{entry.filepath}");
+                    return false;
+                }
             }
 
             return true;
