@@ -16,11 +16,12 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
-//using System.Windows.Forms;
-using System.Drawing;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 
 
 namespace ThemeMii
@@ -69,153 +70,155 @@ namespace ThemeMii
             InitializeComponent();
         }
 
-        private void ThemeMii_AppBrowse_Load(object sender, EventArgs e)
+        private void ThemeMii_AppBrowse_Load(object? sender, RoutedEventArgs e)
         {
             if (viewOnly) 
                 SwitchToViewOnly();
             FillTreeView();
 
-            /*
-            if (!string.IsNullOrEmpty(this.selectedPath))
+            
+            if (!string.IsNullOrEmpty(selectedPath))
             {
                 try
                 {
-                    string[] nodePath = selectedPath.Remove(0, 1).Split('\\');
-                    TreeNode node = tvBrowse.Nodes["Root"];
+                    var nodePath = selectedPath.Remove(0, 1).Split('\\');
+                    TreeNode node = tvBrowse.ItemsSource!.Cast<TreeNode>().First(x => x.Name == "Root");
 
-                    foreach (string thisPath in nodePath)
-                        node = node.Nodes[thisPath];
+                    //What is this for!?!?!?
+                    //foreach (string thisPath in nodePath)
+                    //    node = node.Nodes[thisPath];
 
-                    tvBrowse.SelectedNode = node;
+                    tvBrowse.SelectedItem = node;
                 }
                 catch { }
             }
-            */
+            
         }
 
         private void SwitchToViewOnly()
         {
-            /*
-            btnOK.Visible = false;
-            this.AcceptButton = null;
+            
+            btnOK.IsVisible = false;
 
-            btnCancel.Text = "Close";
-            btnCancel.Location = new System.Drawing.Point(0, btnCancel.Location.Y);
-            btnCancel.Size = new System.Drawing.Size(446, btnCancel.Size.Height);
-            */
+            //btnCancel. = "Close";
+            //btnCancel.Location = new System.Drawing.Point(0, btnCancel.Location.Y);
+            //btnCancel.Size = new System.Drawing.Size(446, btnCancel.Size.Height);
+            
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object? sender, RoutedEventArgs e)
         {
-            //this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            //this.Close();
+            Close();
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private async void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            if (tvBrowse.SelectedNode.Nodes.Count > 0) { tvBrowse.Select(); return; }
 
-            if (onlyTpls && !tvBrowse.SelectedNode.Name.ToLower().EndsWith(".tpl"))
+            if (((TreeNode)tvBrowse.SelectedItem).Children.Count > 0)
             {
-                MessageBox.Show("Only TPLs are allowed for Static or Custom Images!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                tvBrowse.Select(); return;
+                return;
             }
 
-            if (tvBrowse.SelectedNode == null) selectedPath = string.Empty;
-            else selectedPath = tvBrowse.SelectedNode.FullPath.Remove(0, 4);
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Close();
-            */
+            if (onlyTpls && !((TreeNode)tvBrowse.SelectedItem).Name.ToLower().EndsWith(".tpl"))
+            {
+                await MessageBoxHelper.DisplayErrorMessage("Only TPLs are allowed for Static or Custom Images!");
+                return;
+            }
+
+            if (tvBrowse.SelectedItem == null) 
+                selectedPath = string.Empty;
+            else 
+                selectedPath = ((TreeNode)tvBrowse.SelectedItem).Name.Remove(0, 4);
+            
+            Close();
+            
         }
 
         private void FillTreeView()
         {
-            /*
             TreeNode rootNode = new TreeNode("Root");
-            rootNode.ImageIndex = 0; rootNode.SelectedImageIndex = 0;
-            rootNode.Name = rootNode.Text;
-
             FillRecursive(rootPath, rootNode);
-            rootNode.Expand();
-
-            tvBrowse.Nodes.Add(rootNode);
-            */
+            tvBrowse.ItemsSource = new List<TreeNode>() { rootNode };
         }
 
-        private void FillRecursive(string path, object node)
+        private void FillRecursive(string path, TreeNode rootNode)
         {
-            /*
+            if (string.IsNullOrEmpty(path))
+                return;
+            
             DirectoryInfo dInfo = new DirectoryInfo(path);
 
             foreach (DirectoryInfo thisInfo in dInfo.GetDirectories())
             {
-                if (containerBrowse && thisInfo.Name.ToLower().Contains("_out")) continue;
+                if (containerBrowse && thisInfo.Name.ToLower().Contains("_out"))
+                    continue;
 
                 TreeNode newNode = new TreeNode(thisInfo.Name);
-                newNode.ImageIndex = 0; newNode.SelectedImageIndex = 0;
-                newNode.Name = newNode.Text;
-
                 FillRecursive(thisInfo.FullName, newNode);
 
-                node.Nodes.Add(newNode);
+                rootNode.Children.Add(newNode);
             }
 
             foreach (FileInfo thisInfo in dInfo.GetFiles())
             {
-                if (!containerBrowse && Directory.Exists(Path.GetDirectoryName(thisInfo.FullName) + "\\" + Path.GetFileName(thisInfo.FullName).Replace(".", "_") + "_out")) continue;
+                if (!containerBrowse && 
+                    Directory.Exists(
+                        Path.Combine(
+                            Path.GetDirectoryName(thisInfo.FullName) ?? string.Empty,
+                            Path.GetFileName(thisInfo.FullName).Replace(".", "_") + "_out")
+                        )
+                    ) 
+                    continue;
 
                 TreeNode newNode = new TreeNode(thisInfo.Name);
-                newNode.ImageIndex = 1; newNode.SelectedImageIndex = 1;
-                newNode.Name = newNode.Text;
 
-                node.Nodes.Add(newNode);
+                rootNode.Children.Add(newNode);
             }
-            */
+            
         }
 
-        private void tvBrowse_AfterSelect(object sender, RoutedEventArgs e)
+        private void tvBrowse_AfterSelect(object sender, SelectionChangedEventArgs e)
         {
-            /*
-            if (tvBrowse.SelectedNode.ImageIndex == 1)
+            //This support to represent just one, maybe?
+            if (((TreeNode)tvBrowse.SelectedItem).Children.Count == 0)
             {
-                btnExtract.Enabled = true;
+                btnExtract.IsEnabled = true;
 
-                if (tvBrowse.SelectedNode.Text.ToLower().EndsWith(".tpl") ||
-                    tvBrowse.SelectedNode.Text.ToLower().EndsWith(".jpg") ||
-                    tvBrowse.SelectedNode.Text.ToLower().EndsWith(".png") ||
-                    tvBrowse.SelectedNode.Text.ToLower().EndsWith(".gif"))
-                    btnPreview.Enabled = true;
-                else btnPreview.Enabled = false;
+                btnPreview.IsEnabled = ((TreeNode)tvBrowse.SelectedItem).Name.ToLower().EndsWith(".tpl") ||
+                                       ((TreeNode)tvBrowse.SelectedItem).Name.ToLower().EndsWith(".jpg") ||
+                                       ((TreeNode)tvBrowse.SelectedItem).Name.ToLower().EndsWith(".png") ||
+                                       ((TreeNode)tvBrowse.SelectedItem).Name.ToLower().EndsWith(".gif");
             }
             else
             {
-                btnExtract.Enabled = false;
-                btnPreview.Enabled = false;
+                btnExtract.IsEnabled = false;
+                btnPreview.IsEnabled = false;
             }
-            */
         }
 
-        private void btnExtract_Click(object sender, EventArgs e)
+        private async void btnExtract_Click(object? sender, RoutedEventArgs e)
         {
-            /*
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.FileName = tvBrowse.SelectedNode.Text;
-
-            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
-                File.Copy(rootPath + "\\" + tvBrowse.SelectedNode.FullPath.Remove(0, 4), sfd.FileName, true);
-                MessageBox.Show("Extracted file to:\n" + sfd.FileName, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SuggestedFileName = ((TreeNode)tvBrowse.SelectedItem).Name
+            });
+
+            if (result != null)
+            {
+                File.Copy(Path.Combine(rootPath, ((TreeNode)tvBrowse.SelectedItem).Name.Remove(0, 4)), 
+                    result.Path.AbsolutePath, true);
+                await MessageBoxHelper.DisplayInfoBox($"Extracted file to:\n{result.Path.AbsolutePath}");
             }
-            */
+            
         }
 
-        private void btnPreview_Click(object sender, EventArgs e)
+        private async void btnPreview_Click(object? sender, RoutedEventArgs e)
         {
-            /*
             try
             {
-                string nodePath = rootPath + "\\" + tvBrowse.SelectedNode.FullPath.Remove(0, 4);
+                /*
+                string nodePath = Path.Combine(rootPath, ((TreeNode)tvBrowse.SelectedItem).Name.Remove(0, 4));
                 Image img;
 
                 if (nodePath.ToLower().EndsWith(".tpl"))
@@ -249,12 +252,25 @@ namespace ThemeMii
                     preview.Text = string.Format("{0} ({1} x {2})", Path.GetFileName(nodePath), img.Width, img.Height);
 
                 preview.ShowDialog();
+                */
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await MessageBoxHelper.DisplayErrorMessage(ex.Message);
             }
-            */
         }
+    }
+    
+    public class TreeNode
+    {
+        public TreeNode(string name)
+        {
+            Name = name;
+            Children = new List<TreeNode>();
+        }
+        
+        public string Name { get; set; }
+        
+        public List<TreeNode> Children { get; set; }
     }
 }

@@ -2,9 +2,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
         x:Class="ThemeMii.ThemeMii_AppBrowse"
         Icon="Resources/ThemeMii_Icon.ico"
-        Title="ThemeMii_AppBrowse">
-    Welcome to Avalonia!
+        Width="400" Height="400"
+        Title="ThemeMii_AppBrowse"
+        Loaded="ThemeMii_AppBrowse_Load">
+        <StackPanel>
+            <TreeView Name="tvBrowse" MinHeight="300" SelectionChanged="tvBrowse_AfterSelect"/>
+            <Grid RowDefinitions="50,50" ColumnDefinitions="50*,50*">
+                <Button Name="btnExtract" Click="btnExtract_Click" MinWidth="200" HorizontalContentAlignment="Center">
+                    Extract
+                </Button>
+                <Button Name="btnPreview" Click="btnPreview_Click" Grid.Column="1" MinWidth="200" HorizontalContentAlignment="Center">
+                    Preview
+                </Button>
+                <Button Name="btnOK" Click="btnOK_Click" Grid.Row="1" MinWidth="200" HorizontalContentAlignment="Center">
+                    OK
+                </Button>
+                <Button Grid.Row="1" Grid.Column="1" Name="btnCancel" Click="btnCancel_Click" MinWidth="200" HorizontalContentAlignment="Center">
+                    Cancel
+                </Button>
+            </Grid>
+        </StackPanel>
 </Window>
