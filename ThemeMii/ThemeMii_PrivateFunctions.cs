@@ -948,53 +948,54 @@ namespace ThemeMii
                 return;
             }
             
-            ThemeMii_AppBrowse appBrowser = new ThemeMii_AppBrowse();
-            appBrowser.RootPath = browsePath;
-            appBrowser.ViewOnly = browseInfo.viewOnly;
-            appBrowser.ContainerBrowse = browseInfo.containerBrowse;
-            appBrowser.SelectedPath = browseInfo.selectedNode;
-            appBrowser.OnlyTpls = browseInfo.onlyTpls;
-
-            var result = await appBrowser.ShowDialog<string>(this);
-            if (result != null)
+            ThemeMii_AppBrowse appBrowser = new ThemeMii_AppBrowse
             {
-                if (StaticDataStack.IsVisible) 
-                    tbStaticDataFile.Text = appBrowser.SelectedPath;
-                else if (StaticImageStack.IsVisible)
-                {
-                    tbStaticImageFile.Text = appBrowser.SelectedPath;
+                RootPath = browsePath,
+                ViewOnly = browseInfo.viewOnly,
+                ContainerBrowse = browseInfo.containerBrowse,
+                SelectedPath = browseInfo.selectedNode,
+                OnlyTpls = browseInfo.onlyTpls,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
 
-                    if (ImageSizeFromTpl.IsChecked)
-                    {
-                        try
-                        {
-                            byte[] tempTpl = Wii.Tools.LoadFileToByteArray(appBrowser.FullPath, 0, 500);
-                            tbStaticImageWidth.Text = Wii.TPL.GetTextureWidth(tempTpl).ToString();
-                            tbStaticImageHeight.Text = Wii.TPL.GetTextureHeight(tempTpl).ToString();
-                        }
-                        catch { }
-                    }
-                }
-                else if (CustomDataStack.IsVisible) 
-                    tbCustomDataFile.Text = appBrowser.SelectedPath;
-                else if (CustomImageStack.IsVisible)
-                {
-                    tbCustomImageFile.Text = appBrowser.SelectedPath;
+            await appBrowser.ShowDialog<string>(this);
 
-                    if (ImageSizeFromTpl.IsChecked)
+            if (StaticDataStack.IsVisible) 
+                tbStaticDataFile.Text = appBrowser.SelectedPath;
+            else if (StaticImageStack.IsVisible)
+            {
+                tbStaticImageFile.Text = appBrowser.SelectedPath;
+
+                if (ImageSizeFromTpl.IsChecked)
+                {
+                    try
                     {
-                        try
-                        {
-                            byte[] tempTpl = Wii.Tools.LoadFileToByteArray(appBrowser.FullPath, 0, 500);
-                            tbCustomImageWidth.Text = Wii.TPL.GetTextureWidth(tempTpl).ToString();
-                            tbCustomImageHeight.Text = Wii.TPL.GetTextureHeight(tempTpl).ToString();
-                        }
-                        catch { }
+                        byte[] tempTpl = Wii.Tools.LoadFileToByteArray(appBrowser.FullPath, 0, 500);
+                        tbStaticImageWidth.Text = Wii.TPL.GetTextureWidth(tempTpl).ToString();
+                        tbStaticImageHeight.Text = Wii.TPL.GetTextureHeight(tempTpl).ToString();
                     }
+                    catch { }
                 }
-                else if (ContainerStack.IsVisible) 
-                    tbContainerFile.Text = appBrowser.SelectedPath;
             }
+            else if (CustomDataStack.IsVisible) 
+                tbCustomDataFile.Text = appBrowser.SelectedPath;
+            else if (CustomImageStack.IsVisible)
+            {
+                tbCustomImageFile.Text = appBrowser.SelectedPath;
+
+                if (ImageSizeFromTpl.IsChecked)
+                {
+                    try
+                    {
+                        byte[] tempTpl = Wii.Tools.LoadFileToByteArray(appBrowser.FullPath, 0, 500);
+                        tbCustomImageWidth.Text = Wii.TPL.GetTextureWidth(tempTpl).ToString();
+                        tbCustomImageHeight.Text = Wii.TPL.GetTextureHeight(tempTpl).ToString();
+                    }
+                    catch { }
+                }
+            }
+            else if (ContainerStack.IsVisible) 
+                tbContainerFile.Text = appBrowser.SelectedPath;
         }
 
         private bool StringExistsInStringArray(string theString, string[] theStringArray)

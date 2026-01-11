@@ -97,13 +97,8 @@ namespace ThemeMii
 
         private void SwitchToViewOnly()
         {
-            
             btnOK.IsVisible = false;
-
-            //btnCancel. = "Close";
-            //btnCancel.Location = new System.Drawing.Point(0, btnCancel.Location.Y);
-            //btnCancel.Size = new System.Drawing.Size(446, btnCancel.Size.Height);
-            
+            btnText.Text = "Cancel";
         }
 
         private void btnCancel_Click(object? sender, RoutedEventArgs e)
