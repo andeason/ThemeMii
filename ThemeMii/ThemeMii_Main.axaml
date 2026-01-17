@@ -153,7 +153,7 @@
                                         Create csm
                                 </Button>
                         </StackPanel>
-                        <ProgressBar  DockPanel.Dock="Bottom" Minimum="0" Maximum ="100" ShowProgressText="True" Name="ActionBar"/>
+                        <ProgressBar  DockPanel.Dock="Bottom" Minimum="0" Maximum ="100" ShowProgressText="True" Name="ActionBar" IsVisible="False"/>
                 </StackPanel>
                 <Grid RowDefinitions="100*" ColumnDefinitions="150,400" Margin="10">
                         <Border  BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5"> 

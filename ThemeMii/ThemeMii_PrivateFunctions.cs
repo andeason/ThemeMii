@@ -28,6 +28,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel.__Internals;
@@ -288,6 +289,8 @@ namespace ThemeMii
         {
             ActionBar.ProgressTextFormat = statusText;
             ActionBar.Value = progressPercentage;
+            ActionBar.IsVisible = ActionBar.Value != 0;
+            ActionBar.Foreground = ActionBar.Value == 100 ? Brushes.Green : Brushes.Aqua;
         }
 
         private async Task AddEntries()
