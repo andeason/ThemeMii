@@ -131,9 +131,9 @@ public static class U8Extractor
                 }
             }
         }
-        catch
+        catch(Exception e)
         {
-            
+            await MessageBoxHelper.DisplayErrorMessage($"Unable to convert U8 pack: {e.Message}");
         }
     }
 
