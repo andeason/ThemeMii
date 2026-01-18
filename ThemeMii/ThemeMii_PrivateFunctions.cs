@@ -774,24 +774,7 @@ namespace ThemeMii
             }
             
         }
-
-        private void DeASH(iniEntry mymC, string appOut)
-        {
-            //TODO:  This is a major roadblock, ASH.exe relies on an actual exe.
-            //I don't even like using this weird separate file.  We probably should see if we can implement this ourselves....
-            var ashExePath = Path.Combine(Directory.GetCurrentDirectory(), "ASH.exe");
-            ProcessStartInfo pInfo = new ProcessStartInfo(ashExePath, $"\"{Path.Combine(appOut, mymC.file)}\"")
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            var p = Process.Start(pInfo);
-            if (p == null)
-                throw new Exception("Ash.exe did not start.  Aborting...");
-            
-            p.WaitForExit();
-        }
+        
         
         private void DeASH(string inputPath)
         {

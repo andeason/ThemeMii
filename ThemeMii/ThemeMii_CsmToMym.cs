@@ -166,7 +166,7 @@ namespace ThemeMii
                         {
                             try
                             {
-                                DeASH(csmFiles[i].Replace(csmDir, appDir));
+                                ASH0Extractor.DeASH(csmFiles[i].Replace(csmDir, appDir));
 
                                 File.Delete(csmFiles[i].Replace(csmDir, appDir));
                                 FileInfo fi = new FileInfo(csmFiles[i].Replace(csmDir, appDir) + ".arc");
@@ -231,7 +231,7 @@ namespace ThemeMii
                         {
                             try
                             {
-                                DeASH(csmFiles[i]);
+                                ASH0Extractor.DeASH(csmFiles[i]);
 
                                 File.Delete(csmFiles[i]);
                                 FileInfo fi = new FileInfo(csmFiles[i] + ".arc");
@@ -391,25 +391,6 @@ namespace ThemeMii
 
             ReportProgress(100);
             await MessageBoxHelper.DisplayInfoBox("Saved mym to:\n" + saveFile);
-        }
-
-        //This also just appears to be duplicated?
-        private void DeASH(string file)
-        {
-            //TODO:  This is a major roadblock, ASH.exe relies on an actual exe.
-            //I don't even like using this weird separate file.  We probably should see if we can implement this ourselves....
-            var ashExePath = Path.Combine(Directory.GetCurrentDirectory(), "ASH.exe");
-            ProcessStartInfo pInfo = new ProcessStartInfo(ashExePath, $"\"{file}\"")
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            var p = Process.Start(pInfo);
-            if (p == null)
-                throw new Exception("Ash.exe did not start.  Aborting...");
-            
-            p.WaitForExit();
         }
 
         private bool StringExistsInStringArray(string theString, string[] theStringArray)

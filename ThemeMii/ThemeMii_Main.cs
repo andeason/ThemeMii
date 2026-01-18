@@ -772,10 +772,9 @@ namespace ThemeMii
             if (result.Count <= 0) 
                 return;
             
-            
             var path = result[0].Path.AbsolutePath;
             ReportProgress(10,"Converting ASH File...");
-            DeASH(path);
+            ASH0Extractor.DeASH(path);
             ReportProgress(100, 
                 $"Ash File converted and saved to directory: {Path.GetDirectoryName(path)}");
         }
@@ -819,6 +818,8 @@ namespace ThemeMii
 
             ReportProgress(100, 
                 $"U8 File converted and saved to directory: {outputFile}");
+            
+            
         }
         
         private async void msInstallToNandBackup_Click(object sender, RoutedEventArgs e)

@@ -97,7 +97,7 @@ namespace ThemeMii
                             if (!File.Exists("ash.exe"))
                                 throw new Exception("Ash.exe does not exist.  Unable to extract.");
                             
-                            DeASH(thisFile);
+                            ASH0Extractor.DeASH(thisFile);
 
                             File.Delete(thisFile);
                             FileInfo fi = new FileInfo(thisFile + ".arc");
@@ -307,7 +307,7 @@ namespace ThemeMii
                         {
                             try
                             {
-                                DeASH(tempEntry, appOut);
+                                ASH0Extractor.DeASH(tempEntry, appOut);
 
                                 File.Delete(appOut + tempEntry.file);
                                 FileInfo fi = new FileInfo(appOut + tempEntry.file + ".arc");

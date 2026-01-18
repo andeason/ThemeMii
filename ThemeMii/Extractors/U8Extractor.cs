@@ -6,6 +6,8 @@ using Wii;
 
 namespace ThemeMii.Extractors;
 
+// The majority of this was converted from what we had before and referenced with:
+// https://www.wiibrew.org/wiki/U8_archive
 public static class U8Extractor
 {
     /// <summary>
@@ -133,11 +135,10 @@ public static class U8Extractor
         }
         catch(Exception e)
         {
-            await MessageBoxHelper.DisplayErrorMessage($"Unable to convert U8 pack: {e.Message}");
+            await Console.Error.WriteLineAsync(e.Message);
         }
     }
 
-    //Taken from https://www.wiibrew.org/wiki/U8_archive
     public struct U8Node
     {
         public ushort Type { get; set; }
