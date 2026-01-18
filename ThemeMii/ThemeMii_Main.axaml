@@ -80,7 +80,9 @@
                                 <MenuItem IsVisible="True" Name="ChangeNandPath" Click="msChangeNandPath_Click" Header="Change NAND Backup Path" />
                         </MenuItem>
                         <MenuItem Header="Tools">
-                                <MenuItem Header="csm to mym" Click="msCsmToMym_Click"/>
+                                <MenuItem Header="ASH0 Converter" Click="Ash0Converter_Click" />
+                                <MenuItem Header="U8 Converter" Click="U8Converter_Click" />
+                                <MenuItem Header="csm to mym Converter" Click="msCsmToMym_Click"/>
                                 <MenuItem Name="msBrowseBaseApp" Click="btnBrowseFile_Click" Header="Browse Base App" />
                                 <MenuItem Name="msInstallToNandBackup" Click="msInstallToNandBackup_Click" Header="Install Theme to Nand Backup" />
                                 <Separator />

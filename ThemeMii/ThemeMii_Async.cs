@@ -29,6 +29,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using ThemeMii.Extractors;
 
 namespace ThemeMii
 {
@@ -69,10 +70,11 @@ namespace ThemeMii
         {
             Directory.CreateDirectory(browsePath);
 
-            Wii.U8.UnpackU8(
-                Path.Combine(Directory.GetCurrentDirectory(), $"{((int)standardApp).ToString("x8")}.app"),
-                browsePath
-                );
+            await U8Extractor
+                .UnpackU8(
+                    Directory.GetCurrentDirectory(), 
+                    $"{((int)standardApp).ToString("x8")}.app"
+                    );
 
             var allFiles = Directory.GetFiles(browsePath, "*", SearchOption.AllDirectories);
             var counter = 0;
@@ -138,7 +140,7 @@ namespace ThemeMii
                         {
                             var unpackPath = Path.Combine(Directory.GetCurrentDirectory(),
                                 Path.GetFileName(thisFile).Replace(".", "_") + "_out");
-                            Wii.U8.UnpackU8(thisFile, unpackPath);
+                            await U8Extractor.UnpackU8(thisFile, unpackPath);
                             extracted = true;
                         }
                         catch (Exception ex)
@@ -253,7 +255,7 @@ namespace ThemeMii
             //Unpack .app
             try
             {
-                Wii.U8.UnpackU8(File.ReadAllBytes(appPath), appOut);
+                await U8Extractor.UnpackU8(appPath, mymOut);
             }
             catch (Exception ex)
             {
@@ -346,7 +348,10 @@ namespace ThemeMii
                         {
                             try
                             {
-                                Wii.U8.UnpackU8(appOut + tempEntry.file, appOut + tempEntry.file.Replace('.', '_') + "_out");
+                                await U8Extractor.UnpackU8(
+                                    Path.Combine(appOut, tempEntry.file),
+                                    Path.Combine(appOut, $"{tempEntry.file.Replace('.', '_')}_out")
+                                    );
                                 File.Delete(appOut + tempEntry.file);
                                 extracted = true;
                             }

@@ -23,6 +23,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -792,22 +793,16 @@ namespace ThemeMii
             p.WaitForExit();
         }
         
-        private void  DeASH(string path)
+        private void DeASH(string inputPath)
         {
-            //TODO:  This is a major roadblock, ASH.exe relies on an actual exe.
-            //I don't even like using this weird separate file.  We probably should see if we can implement this ourselves....
-            var ashExePath = Path.Combine(Directory.GetCurrentDirectory(), "ASH.exe");
-            ProcessStartInfo pInfo = new ProcessStartInfo(ashExePath, $"\"{path}\"")
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+            //Taken directly from https://github.com/NinjaCheetah/ASH0-tools and copied to C#
+            var byteArray = File.ReadAllBytes(inputPath);
+            if (Encoding.ASCII.GetString(byteArray, 0, 4) != "ASH0")
+                throw new Exception("File is not an ASH file!");
 
-            var p = Process.Start(pInfo);
-            if (p == null)
-                throw new Exception("Ash.exe did not start.  Aborting...");
+            var uncompressedSize = BitConverter.ToUInt32(byteArray, 4);
             
-            p.WaitForExit();
+            //An immediate observation is that the ash0 also has U8.  Crazy.
         }
 
         private Image ResizeImage(Image img, int x, int y)

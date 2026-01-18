@@ -29,6 +29,7 @@ using Avalonia.Platform.Storage;
 using ICSharpCode.SharpZipLib.Zip;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using ThemeMii.Extractors;
 
 
 namespace ThemeMii
@@ -136,8 +137,11 @@ namespace ThemeMii
 
             List<iniEntry> entryList = new List<iniEntry>();
 
-            Wii.U8.UnpackU8(CsmPath.Text, csmDir);
-            Wii.U8.UnpackU8(AppPath.Text, appDir);
+            if (CsmPath.Text == null || AppPath.Text == null)
+                throw new Exception("App/Csm path are empty!");
+            
+            await U8Extractor.UnpackU8(CsmPath.Text, csmDir);
+            await U8Extractor.UnpackU8(AppPath.Text, appDir);
 
             string[] csmFiles = Directory.GetFiles(csmDir, "*", SearchOption.AllDirectories);
 
@@ -201,7 +205,9 @@ namespace ThemeMii
                         {
                             try
                             {
-                                Wii.U8.UnpackU8(csmFiles[i].Replace(csmDir, appDir), csmFiles[i].Replace(csmDir, appDir).Replace(".", "_") + "_out");
+                                await U8Extractor.UnpackU8(
+                                    csmFiles[i].Replace(csmDir, appDir),
+                                    $"{csmFiles[i].Replace(csmDir, appDir).Replace(".", "_")}_out");
                                 File.Delete(csmFiles[i].Replace(csmDir, appDir));
                                 extracted = true;
                             }
@@ -264,7 +270,8 @@ namespace ThemeMii
                         {
                             try
                             {
-                                Wii.U8.UnpackU8(csmFiles[i], csmFiles[i].Replace(".", "_") + "_out");
+                                await U8Extractor.UnpackU8(csmFiles[i], 
+                                    $"{csmFiles[i].Replace(".", "_")}_out");
                                 File.Delete(csmFiles[i]);
                                 extracted = true;
                             }

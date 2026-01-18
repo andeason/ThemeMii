@@ -27,6 +27,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using ThemeMii.Extractors;
 
 
 namespace ThemeMii
@@ -751,6 +752,73 @@ namespace ThemeMii
             var helpWindow = new ThemeMii_Help();
             helpWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             helpWindow.ShowDialog(windowOwner);
+        }
+
+        private async void Ash0Converter_Click(object? sender, RoutedEventArgs e)
+        {
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions()
+            {
+                FileTypeFilter =
+                [
+                    new FilePickerFileType("ash")
+                    {
+                        Patterns = ["*.ash"]
+                    }
+                ]
+            });
+
+
+            if (result.Count <= 0) 
+                return;
+            
+            
+            var path = result[0].Path.AbsolutePath;
+            ReportProgress(10,"Converting ASH File...");
+            DeASH(path);
+            ReportProgress(100, 
+                $"Ash File converted and saved to directory: {Path.GetDirectoryName(path)}");
+        }
+
+        private async void U8Converter_Click(object? sender, RoutedEventArgs e)
+        {
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions()
+            {
+                FileTypeFilter =
+                [
+                    new FilePickerFileType("arc")
+                    {
+                        Patterns = ["*.arc"],
+                    },
+                    new FilePickerFileType("carc")
+                    {
+                        Patterns = ["*.carc"],
+                    },                    
+                    new FilePickerFileType(".szs")
+                    {
+                        Patterns = ["*.szs"],
+                    },
+                ]
+            });
+
+            if (result.Count <= 0)
+                return;
+            
+            var filePath = result[0].Path.AbsolutePath;
+            var outputFile = Path.Combine(Path.GetDirectoryName(filePath)!, "testu8out");
+            ReportProgress(10,"Converting U8 File...");
+            try
+            {
+                await U8Extractor.UnpackU8(filePath, outputFile);
+            }
+            catch (Exception exception)
+            {
+                await MessageBoxHelper.DisplayErrorMessage(exception.Message);
+            }
+
+            ReportProgress(100, 
+                $"U8 File converted and saved to directory: {outputFile}");
         }
         
         private async void msInstallToNandBackup_Click(object sender, RoutedEventArgs e)
