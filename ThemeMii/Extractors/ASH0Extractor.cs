@@ -2,6 +2,7 @@ using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ThemeMii.Extractors;
@@ -19,12 +20,11 @@ public class ASH0Extractor
     {
         var byteArray = await File.ReadAllBytesAsync(fileName);
         
-        if (BitConverter.ToString(byteArray, 0, 4) != "ASH0")
+        if (byteArray[0] != 0x41 || byteArray[1] != 0x53 || byteArray[2] != 0x48 || byteArray[3] != 0x30)
             throw new Exception("File is not ASH0!");
         
         var uncompressedSize = BinaryPrimitives.ReadUInt32BigEndian(
             byteArray.AsSpan(4, 4)) & 0x00FFFFFF;
-        var outputSize = uncompressedSize;
         var outputBuffer = new byte[uncompressedSize];
         var outputPosition = 0;
 
@@ -45,9 +45,9 @@ public class ASH0Extractor
         var distanceRightTree = new uint[2 * DistanceMax - 1];
         
         
-        var systemRoot = reader1.ReadTree(SystemBits,systemLeftTree, systemRightTree);
-        var distanceRoot = reader2.ReadTree(DistanceBits,distanceLeftTree,distanceRightTree);
-
+        var systemRoot = reader2.ReadTree(SystemBits,systemLeftTree, systemRightTree);
+        var distanceRoot = reader1.ReadTree(DistanceBits,distanceLeftTree,distanceRightTree);
+        
         do
         {
             var sym = systemRoot;
@@ -66,25 +66,24 @@ public class ASH0Extractor
             {
                 var distSystem = distanceRoot;
                 while (distSystem >= DistanceMax)
-                    sym = reader2.ReadBit() == 0 
-                        ? systemLeftTree[sym] 
-                        : systemRightTree[sym];
+                {
+                    distSystem = reader1.ReadBit() == 0 
+                        ? distanceLeftTree[distSystem] 
+                        : distanceRightTree[distSystem];
+                }
 
-                var copyLength = (sym - 0x100) + 3;
+                var copyLength = sym - 0x100 + 3;
                 var sourcePosition = outputPosition - distSystem - 1;
 
                 uncompressedSize -= copyLength;
-                while (copyLength != 0)
-                {
-                    outputBuffer[outputPosition++] = byteArray[sourcePosition++];
-                    copyLength -= 1;
-                }
+                while (copyLength-- != 0)
+                    outputBuffer[outputPosition++] = outputBuffer[sourcePosition++];
             }
         } while (uncompressedSize > 0);
 
         //This assumes we just write as an arc, so we will do that.
         //Perhaps it is possible to be non u8?
-        await using var fs = new FileStream($"{fileName}_arc", FileMode.Open);
+        await using var fs = new FileStream($"{fileName}_arc", FileMode.Create);
         await fs.WriteAsync(outputBuffer);
     }
 
@@ -96,16 +95,16 @@ public class ASH0Extractor
 
 public struct BitReader
 {
-    public byte[] ByteArray { get; set; }
+    private byte[] ByteArray { get; set; }
     public uint Size { get; set; }
-    public uint SourcePos { get; set; }
-    public uint Word { get; set; }
-    public uint BitCapacity { get; set; }
-    
-    public uint TreeRight => 0x80000000;
-    public uint TreeLeft => 0x40000000;
+    private uint SourcePos { get; set; }
+    private uint Word { get; set; }
+    private uint BitCapacity { get; set; }
 
-    public uint TreeValMask => 0x3FFFFFFF;
+    private uint TreeRight => 0x80000000;
+    private uint TreeLeft => 0x40000000;
+
+    private uint TreeValMask => 0x3FFFFFFF;
 
 
     public BitReader(byte[] byteArray, uint size, uint startPos)
@@ -116,7 +115,7 @@ public struct BitReader
         FeedWord();
     }
 
-    public void FeedWord()
+    private void FeedWord()
     {
         Word = BinaryPrimitives.ReadUInt32BigEndian(ByteArray.AsSpan((int)SourcePos, 4));
         BitCapacity = 0;
@@ -138,9 +137,9 @@ public struct BitReader
         return bit;
     }
 
-    public uint ReadBits(uint numberOfBits)
+    private uint ReadBits(uint numberOfBits)
     {
-        uint bitsToReturn = 0;
+        uint bitsToReturn;
         var next = BitCapacity + numberOfBits;
         if (next <= 32)
         {
@@ -168,12 +167,11 @@ public struct BitReader
     }
     public uint ReadTree(uint width, uint[] leftTree, uint[] rightTree)
     {
-        uint[] work = new uint[2 * (1 << (int)width)];
-        uint r23 = (uint)(1 << (int)width);
+        var work = new uint[2 * (1 << (int)width)];
+        var r23 = (uint)(1 << (int)width);
         uint numberOfNodes = 0;
-        int workPosition = 0;
-        uint symRoot = ReadBits(width);
-
+        var workPosition = 0;
+        uint symRoot = 0;
         
         do
         {
@@ -189,7 +187,7 @@ public struct BitReader
                 symRoot = ReadBits(width);
                 do
                 {
-                    var nodeVal = work[workPosition--];
+                    var nodeVal = work[--workPosition];
                     var idx = nodeVal & TreeValMask;
                     numberOfNodes -= 1;
                     if ((nodeVal & TreeRight) != 0)
@@ -200,6 +198,7 @@ public struct BitReader
                     else
                     {
                         leftTree[idx] = symRoot;
+                        break;
                     }
                 } while (numberOfNodes > 0);
             }

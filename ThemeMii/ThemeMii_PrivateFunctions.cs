@@ -286,9 +286,9 @@ namespace ThemeMii
             ms43K.IsChecked = false;
         }
 
-        private void ReportProgress(int progressPercentage, string statusText)
+        private void ReportProgress(int progressPercentage, string? statusText = null)
         {
-            ActionBar.ProgressTextFormat = statusText;
+            ActionBar.ProgressTextFormat = statusText!;
             ActionBar.Value = progressPercentage;
             ActionBar.IsVisible = ActionBar.Value != 0;
             ActionBar.Foreground = ActionBar.Value == 100 ? Brushes.Green : Brushes.Aqua;

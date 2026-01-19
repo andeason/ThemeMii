@@ -774,7 +774,15 @@ namespace ThemeMii
             
             var path = result[0].Path.AbsolutePath;
             ReportProgress(10,"Converting ASH File...");
-            ASH0Extractor.DeASH(path);
+            try
+            {
+                await ASH0Extractor.DeASH(path);
+            }
+            catch (Exception exception)
+            {
+                ReportProgress(0);
+                await MessageBoxHelper.DisplayErrorMessage($"ASH Could not convert: {exception.Message}");
+            }
             ReportProgress(100, 
                 $"Ash File converted and saved to directory: {Path.GetDirectoryName(path)}");
         }
