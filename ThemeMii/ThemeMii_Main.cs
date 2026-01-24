@@ -829,6 +829,39 @@ namespace ThemeMii
             
             
         }
+
+        private async void TPLConverter_Click(object? sender, RoutedEventArgs e)
+        {
+            var fileStorage = StorageProvider;
+            var result = await fileStorage.OpenFilePickerAsync(new FilePickerOpenOptions()
+            {
+                FileTypeFilter =
+                [
+                    new FilePickerFileType("tpl")
+                    {
+                        Patterns = ["*.tpl"],
+                    }
+                ]
+            });
+
+            if (result.Count <= 0)
+                return;
+            
+            var filePath = result[0].Path.AbsolutePath;
+            var outputFile = Path.Combine(Path.GetDirectoryName(filePath)!, "testtplOut");
+            ReportProgress(10,"Converting TPL File...");
+            try
+            {
+                await TPLExtractor.ExtractTPLFile(filePath, outputFile);
+            }
+            catch (Exception exception)
+            {
+                await MessageBoxHelper.DisplayErrorMessage(exception.Message);
+            }
+
+            ReportProgress(100, 
+                $"TPL File converted and saved to directory: {outputFile}");
+        }
         
         private async void msInstallToNandBackup_Click(object sender, RoutedEventArgs e)
         {

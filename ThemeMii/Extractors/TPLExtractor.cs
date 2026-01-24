@@ -3,13 +3,14 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ThemeMii.Extractors;
 
 //Most of the info I have taken from https://wiki.tockdom.com/wiki/TPL_(File_Format)
 public class TPLExtractor
 {
-    public void ExtractTPLFile(string fileName)
+    public async static Task ExtractTPLFile(string fileName, string outputPath)
     {
         var byteArray = File.ReadAllBytes(fileName);
 
