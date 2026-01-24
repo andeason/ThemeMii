@@ -16,10 +16,12 @@ public static class U8Extractor
     /// </summary>
     /// <param name="u8archive"></param>
     /// <param name="unpackpath"></param>
-    public static async Task UnpackU8(string u8archive, string unpackpath)
+    public static async Task UnpackU8(string u8archive, string unpackPath)
     {
-        byte[] u8 = await File.ReadAllBytesAsync(u8archive);
-        UnpackU8(u8, unpackpath);
+        byte[] u8 = await File.ReadAllBytesAsync(
+            Path.Combine(unpackPath,u8archive)
+            );
+        await UnpackU8(u8, unpackPath);
     }
     
     
@@ -29,7 +31,7 @@ public static class U8Extractor
     /// </summary>
     /// <param name="u8archive"></param>
     /// <param name="unpackpath"></param>
-    public static async void UnpackU8(byte[] u8archive, string unpackpath)
+    public static async Task UnpackU8(byte[] u8archive, string unpackpath)
     {
         int lz77Offset = Lz77.GetLz77Offset(u8archive);
         if (lz77Offset != -1) 

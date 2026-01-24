@@ -72,8 +72,8 @@ namespace ThemeMii
 
             await U8Extractor
                 .UnpackU8(
-                    Directory.GetCurrentDirectory(), 
-                    $"{((int)standardApp).ToString("x8")}.app"
+                    Path.Combine(Directory.GetCurrentDirectory(),$"{((int)standardApp).ToString("x8")}.app"),
+                    browsePath
                     );
 
             var allFiles = Directory.GetFiles(browsePath, "*", SearchOption.AllDirectories);
@@ -94,10 +94,7 @@ namespace ThemeMii
                     {
                         try
                         {
-                            if (!File.Exists("ash.exe"))
-                                throw new Exception("Ash.exe does not exist.  Unable to extract.");
-                            
-                            ASH0Extractor.DeASH(thisFile);
+                            await ASH0Extractor.DeASH(thisFile);
 
                             File.Delete(thisFile);
                             FileInfo fi = new FileInfo(thisFile + ".arc");
@@ -118,7 +115,7 @@ namespace ThemeMii
                             byte[] decompressedFile = Wii.Lz77.Decompress(File.ReadAllBytes(thisFile), 0);
 
                             File.Delete(thisFile);
-                            File.WriteAllBytes(thisFile, decompressedFile);
+                            await File.WriteAllBytesAsync(thisFile, decompressedFile);
                         }
                         catch (Exception ex)
                         {

@@ -18,6 +18,8 @@ public class ASH0Extractor
     
     public static async Task DeASH(string fileName)
     {
+        Console.WriteLine($"Running deash for {fileName}");
+        
         var byteArray = await File.ReadAllBytesAsync(fileName);
         
         if (byteArray[0] != 0x41 || byteArray[1] != 0x53 || byteArray[2] != 0x48 || byteArray[3] != 0x30)
@@ -83,7 +85,7 @@ public class ASH0Extractor
 
         //This assumes we just write as an arc, so we will do that.
         //Perhaps it is possible to be non u8?
-        await using var fs = new FileStream($"{fileName}_arc", FileMode.Create);
+        await using var fs = new FileStream($"{fileName}.arc", FileMode.Create);
         await fs.WriteAsync(outputBuffer);
     }
 
