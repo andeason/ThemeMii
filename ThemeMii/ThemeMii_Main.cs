@@ -848,11 +848,11 @@ namespace ThemeMii
                 return;
             
             var filePath = result[0].Path.AbsolutePath;
-            var outputFile = Path.Combine(Path.GetDirectoryName(filePath)!, "testtplOut");
+            var outputPath = Path.Combine(Path.GetDirectoryName(filePath)!, "");
             ReportProgress(10,"Converting TPL File...");
             try
             {
-                await TPLExtractor.ExtractTPLFile(filePath, outputFile);
+                await TPLExtractor.ExtractTPLFile(filePath, outputPath);
             }
             catch (Exception exception)
             {
@@ -860,7 +860,7 @@ namespace ThemeMii
             }
 
             ReportProgress(100, 
-                $"TPL File converted and saved to directory: {outputFile}");
+                $"TPL File converted and saved to directory: {outputPath}");
         }
         
         private async void msInstallToNandBackup_Click(object sender, RoutedEventArgs e)

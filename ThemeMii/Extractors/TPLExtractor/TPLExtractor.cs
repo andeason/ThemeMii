@@ -3,6 +3,8 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using ThemeMii.Extractors.FormatEncoding;
 
 namespace ThemeMii.Extractors;
@@ -32,7 +34,7 @@ public class TPLExtractor
         }
 
         foreach (var tplImage in Images)
-            tplImage.DecodeImage(byteArray);
+            tplImage.DecodeImage(byteArray,outputPath);
     }
 
     private class ImageOffsetElement
@@ -149,7 +151,7 @@ public class TPLExtractor
          * We will essentially need to figure out the row and columns for this and jump in the array for those positions
          * Rather than reading 1 by 1
          */
-        public void DecodeImage(byte[] byteArray)
+        public void DecodeImage(byte[] byteArray, string outputPath)
         {
 
             var maximumImageSize = ImageHeader.Width * ImageHeader.Height * (ImageHeader.EncodedFormat.BitsPerPixel / 8);
@@ -178,6 +180,8 @@ public class TPLExtractor
             }
             
             Console.WriteLine("Finished writing output array");
+            using var image = Image.LoadPixelData<Rgba32>(imageOutputArray,ImageHeader.Width, ImageHeader.Height);
+            image.Save(Path.Combine(outputPath,"testImage.png"));
         }
         
     }
