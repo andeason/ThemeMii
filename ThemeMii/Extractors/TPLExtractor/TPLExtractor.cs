@@ -154,6 +154,7 @@ public class TPLExtractor
 
             var maximumImageSize = ImageHeader.Width * ImageHeader.Height * (ImageHeader.EncodedFormat.BitsPerPixel / 8);
             var imageOutputArray = new byte[maximumImageSize];
+            int currentImageOutputPosition = 0;
             
             
             if (ImageHeader.Width % ImageHeader.EncodedFormat.BlockWidth != 0)
@@ -165,7 +166,11 @@ public class TPLExtractor
             var currentOffsetPosition = ImageHeader.ImageDataAddress;
             while (currentOffsetPosition < maximumImageSize)
             {
-                imageOutputArray[currentOffsetPosition - ImageHeader.ImageDataAddress] = byteArray[currentOffsetPosition];
+                ImageHeader.EncodedFormat.ConvertAndStoreToByteArray(
+                    byteArray,
+                    imageOutputArray,
+                    (int)(currentOffsetPosition - ImageHeader.ImageDataAddress),
+                    currentImageOutputPosition);
                 currentOffsetPosition++;
             }
             
