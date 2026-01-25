@@ -3,6 +3,8 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using ThemeMii.Extractors.FormatEncoding;
+
 namespace ThemeMii.Extractors;
 
 //Most of the info I have taken from https://wiki.tockdom.com/wiki/TPL_(File_Format)
@@ -60,7 +62,7 @@ public class TPLExtractor
         
         public ImageFormats Format { get; set; }
         
-        public ImageFormatTranscoding TranscodedFormat { get; set; }
+        public IEncodedFormat EncodedFormat { get; set; }
         
         public uint ImageDataAddress { get; set; }
         
@@ -81,25 +83,6 @@ public class TPLExtractor
         public byte MaxLOD { get; set; }
 
         public byte UnPacked { get; set; }
-
-        public enum ImageFormats
-        {
-            I4 = 0x0,
-            I8 = 0x1,
-            IA4 = 0x2,
-            IA8 = 0x3,
-            RGB565 = 0x4,
-            RGB5A3 = 0x5,
-            //Also known as RGBA8
-            RGBA32 = 0x6,
-            //Also known as CI4
-            C4 = 0x8,
-            //Also known as CI8
-            C8 = 0x9,
-            //Also known as CI14x2
-            C14X2 = 0xA,
-            CMPR = 0x0E
-        }
     }
 
     private class TplImage
@@ -133,7 +116,9 @@ public class TPLExtractor
                         .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.PaletteOffset + 8, 4))
                 };
             }
-            
+
+            var imageFormat = (ImageFormats)BinaryPrimitives
+                .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 4, 4));
             ImageHeader = new ImageHeader
             {
                 Height =
@@ -141,12 +126,8 @@ public class TPLExtractor
                         ReadUInt16BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset, 2)),
                 Width = BinaryPrimitives
                     .ReadUInt16BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 2, 2)),
-                
-                Format = (ImageHeader.ImageFormats)BinaryPrimitives
-                    .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 4, 4)),
-                TranscodedFormat = new ImageFormatTranscoding((ImageHeader.ImageFormats)BinaryPrimitives
-                    .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 4, 4))),
-                
+                Format = imageFormat,
+                EncodedFormat = FormatEncodingCreator.CreateFormatEncoder(imageFormat),
                 ImageDataAddress = BinaryPrimitives
                     .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 8, 4)),
                 WrapS = BinaryPrimitives
@@ -171,13 +152,13 @@ public class TPLExtractor
         public void DecodeImage(byte[] byteArray)
         {
 
-            var maximumImageSize = ImageHeader.Width * ImageHeader.Height * (ImageHeader.TranscodedFormat.BitsPerPixel / 8);
+            var maximumImageSize = ImageHeader.Width * ImageHeader.Height * (ImageHeader.EncodedFormat.BitsPerPixel / 8);
             var imageOutputArray = new byte[maximumImageSize];
             
             
-            if (ImageHeader.Width % ImageHeader.TranscodedFormat.BlockWidth != 0)
+            if (ImageHeader.Width % ImageHeader.EncodedFormat.BlockWidth != 0)
                 throw new Exception("Width is not divisible by the block width.  Verify this file is a correct tpl.");
-            if (ImageHeader.Height % ImageHeader.TranscodedFormat.BlockHeight != 0)
+            if (ImageHeader.Height % ImageHeader.EncodedFormat.BlockHeight != 0)
                 throw new Exception("Height is not divisible by the block height.  Verify this file is a correct tpl.");
             
             
@@ -190,109 +171,6 @@ public class TPLExtractor
             
             Console.WriteLine("Finished writing output array");
         }
-    }
-
-    public class ImageFormatTranscoding
-    {
-        public int BitsPerPixel { get; set; }
         
-        public int BlockWidth { get; set; }
-        
-        public int BlockHeight { get; set; }
-
-        private void SetBitsPerPixel(ImageHeader.ImageFormats imageFormat)
-        {
-            int valueToGet;
-            switch (imageFormat)
-            {
-                case ImageHeader.ImageFormats.I4:
-                case ImageHeader.ImageFormats.C4:
-                case ImageHeader.ImageFormats.CMPR:
-                    valueToGet = 4;
-                    break;
-                case ImageHeader.ImageFormats.I8:
-                case ImageHeader.ImageFormats.C8:
-                case ImageHeader.ImageFormats.IA4:
-                    valueToGet = 8;
-                    break;
-                case ImageHeader.ImageFormats.IA8:
-                case ImageHeader.ImageFormats.RGB565:
-                case ImageHeader.ImageFormats.RGB5A3:
-                case ImageHeader.ImageFormats.C14X2:
-                    valueToGet = 16;
-                    break;
-                case ImageHeader.ImageFormats.RGBA32:
-                    valueToGet = 32;
-                    break;
-                default:
-                    throw new NotImplementedException();
-                    
-            }
-            
-            BitsPerPixel = valueToGet;
-        }
-
-        private void SetBlockWidth(ImageHeader.ImageFormats imageFormat)
-        {
-            int valueToGet;
-            switch (imageFormat)
-            {
-                case ImageHeader.ImageFormats.IA8:
-                case ImageHeader.ImageFormats.RGB565:
-                case ImageHeader.ImageFormats.RGB5A3:
-                case ImageHeader.ImageFormats.RGBA32:
-                case ImageHeader.ImageFormats.C14X2:
-                    valueToGet = 4;
-                    break;
-                case ImageHeader.ImageFormats.I4:
-                case ImageHeader.ImageFormats.I8:
-                case ImageHeader.ImageFormats.IA4:
-                case ImageHeader.ImageFormats.C4:
-                case ImageHeader.ImageFormats.C8:
-                case ImageHeader.ImageFormats.CMPR:
-                    valueToGet = 8;
-                    break;
-                default:
-                    throw new NotImplementedException();
-                    
-            }
-            
-            BlockWidth = valueToGet;
-        }
-
-        private void SetBlockHeight(ImageHeader.ImageFormats imageFormat)
-        {
-            int valueToGet;
-            switch (imageFormat)
-            {
-                case ImageHeader.ImageFormats.IA8:
-                case ImageHeader.ImageFormats.RGB565:
-                case ImageHeader.ImageFormats.RGB5A3:
-                case ImageHeader.ImageFormats.RGBA32:
-                case ImageHeader.ImageFormats.C14X2:
-                case ImageHeader.ImageFormats.I8:
-                case ImageHeader.ImageFormats.IA4:
-                case ImageHeader.ImageFormats.C8:
-                    valueToGet = 4;
-                    break;
-                case ImageHeader.ImageFormats.I4:
-                case ImageHeader.ImageFormats.C4:
-                case ImageHeader.ImageFormats.CMPR:
-                    valueToGet = 8;
-                    break;
-                default:
-                    throw new NotImplementedException();
-                    
-            }
-            
-            BlockHeight = valueToGet;
-        }
-
-        public ImageFormatTranscoding(ImageHeader.ImageFormats imageFormat)
-        {
-            SetBitsPerPixel(imageFormat);
-            SetBlockWidth(imageFormat);
-            SetBlockHeight(imageFormat);
-        }
     }
 }
