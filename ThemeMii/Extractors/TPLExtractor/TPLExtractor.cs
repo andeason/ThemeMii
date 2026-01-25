@@ -153,7 +153,8 @@ public class TPLExtractor
         {
 
             var maximumImageSize = ImageHeader.Width * ImageHeader.Height * (ImageHeader.EncodedFormat.BitsPerPixel / 8);
-            var imageOutputArray = new byte[maximumImageSize];
+            //The output in this case will be 32 bits.
+            var imageOutputArray = new byte[ImageHeader.Width * ImageHeader.Height * 32];
             int currentImageOutputPosition = 0;
             
             
@@ -171,7 +172,9 @@ public class TPLExtractor
                     imageOutputArray,
                     (int)(currentOffsetPosition - ImageHeader.ImageDataAddress),
                     currentImageOutputPosition);
-                currentOffsetPosition++;
+                
+                currentOffsetPosition += (uint)Math.Max(ImageHeader.EncodedFormat.BitsPerPixel / 8, 1);
+                currentImageOutputPosition += 4;
             }
             
             Console.WriteLine("Finished writing output array");
