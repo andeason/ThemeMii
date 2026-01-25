@@ -2,9 +2,7 @@ using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-
 namespace ThemeMii.Extractors;
 
 //Most of the info I have taken from https://wiki.tockdom.com/wiki/TPL_(File_Format)
@@ -172,29 +170,25 @@ public class TPLExtractor
          */
         public void DecodeImage(byte[] byteArray)
         {
-            var currentByteOffset = ImageHeader.ImageDataAddress;
+
+            var maximumImageSize = ImageHeader.Width * ImageHeader.Height * (ImageHeader.TranscodedFormat.BitsPerPixel / 8);
+            var imageOutputArray = new byte[maximumImageSize];
+            
+            
             if (ImageHeader.Width % ImageHeader.TranscodedFormat.BlockWidth != 0)
                 throw new Exception("Width is not divisible by the block width.  Verify this file is a correct tpl.");
             if (ImageHeader.Height % ImageHeader.TranscodedFormat.BlockHeight != 0)
                 throw new Exception("Height is not divisible by the block height.  Verify this file is a correct tpl.");
             
             
-            var totalBlockRows = ImageHeader.Width / ImageHeader.TranscodedFormat.BlockWidth;
-            var totalBlockColumns = ImageHeader.Height / ImageHeader.TranscodedFormat.BlockHeight;
-
-            for (var currentBlockRow = 0; currentBlockRow < totalBlockRows; currentBlockRow++)
+            var currentOffsetPosition = ImageHeader.ImageDataAddress;
+            while (currentOffsetPosition < maximumImageSize)
             {
-                for (var currentBlockColumn = 0; currentBlockColumn < totalBlockColumns; currentBlockColumn++)
-                {
-                    Console.WriteLine($"At row {currentBlockRow} column {currentBlockColumn}");
-                }
+                imageOutputArray[currentOffsetPosition - ImageHeader.ImageDataAddress] = byteArray[currentOffsetPosition];
+                currentOffsetPosition++;
             }
-        }
-
-
-        private void DecodeBlock()
-        {
             
+            Console.WriteLine("Finished writing output array");
         }
     }
 
