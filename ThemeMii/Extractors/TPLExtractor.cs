@@ -25,16 +25,14 @@ public class TPLExtractor
         var Images = new List<TplImage>();
         
         
-        while (currentImageOffset < currentImageOffset + calculatedTableSize)
+        while (currentImageOffset < imageTableOffset + calculatedTableSize)
         {
             Images.Add(new TplImage((int)currentImageOffset, byteArray));
             currentImageOffset += 8;
         }
 
         foreach (var tplImage in Images)
-        {
-            tplImage.DecodeImage();
-        }
+            tplImage.DecodeImage(byteArray);
     }
 
     private class ImageOffsetElement
@@ -56,13 +54,15 @@ public class TPLExtractor
         public uint PaletteDataAddress { get; set; }
     }
 
-    protected struct ImageHeader
+    public struct ImageHeader
     {
         public ushort Height { get; set; }
         
         public ushort Width { get; set; }
         
-        public uint Format { get; set; }
+        public ImageFormats Format { get; set; }
+        
+        public ImageFormatTranscoding TranscodedFormat { get; set; }
         
         public uint ImageDataAddress { get; set; }
         
@@ -83,6 +83,25 @@ public class TPLExtractor
         public byte MaxLOD { get; set; }
 
         public byte UnPacked { get; set; }
+
+        public enum ImageFormats
+        {
+            I4 = 0x0,
+            I8 = 0x1,
+            IA4 = 0x2,
+            IA8 = 0x3,
+            RGB565 = 0x4,
+            RGB5A3 = 0x5,
+            //Also known as RGBA8
+            RGBA32 = 0x6,
+            //Also known as CI4
+            C4 = 0x8,
+            //Also known as CI8
+            C8 = 0x9,
+            //Also known as CI14x2
+            C14X2 = 0xA,
+            CMPR = 0x0E
+        }
     }
 
     private class TplImage
@@ -124,8 +143,12 @@ public class TPLExtractor
                         ReadUInt16BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset, 2)),
                 Width = BinaryPrimitives
                     .ReadUInt16BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 2, 2)),
-                Format = BinaryPrimitives
+                
+                Format = (ImageHeader.ImageFormats)BinaryPrimitives
                     .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 4, 4)),
+                TranscodedFormat = new ImageFormatTranscoding((ImageHeader.ImageFormats)BinaryPrimitives
+                    .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 4, 4))),
+                
                 ImageDataAddress = BinaryPrimitives
                     .ReadUInt32BigEndian(byteArray.AsSpan((int)OffsetElement.ImageOffset + 8, 4)),
                 WrapS = BinaryPrimitives
@@ -141,9 +164,141 @@ public class TPLExtractor
             };
         }
 
-        public void DecodeImage()
+        /*
+         * https://wiki.tockdom.com/wiki/Image_Formats#RGBA32_(RGBA8)
+         * Pretty critical to this, I think, is that we decode in terms of blocks for tpl files.
+         * We will essentially need to figure out the row and columns for this and jump in the array for those positions
+         * Rather than reading 1 by 1
+         */
+        public void DecodeImage(byte[] byteArray)
+        {
+            var currentByteOffset = ImageHeader.ImageDataAddress;
+            if (ImageHeader.Width % ImageHeader.TranscodedFormat.BlockWidth != 0)
+                throw new Exception("Width is not divisible by the block width.  Verify this file is a correct tpl.");
+            if (ImageHeader.Height % ImageHeader.TranscodedFormat.BlockHeight != 0)
+                throw new Exception("Height is not divisible by the block height.  Verify this file is a correct tpl.");
+            
+            
+            var totalBlockRows = ImageHeader.Width / ImageHeader.TranscodedFormat.BlockWidth;
+            var totalBlockColumns = ImageHeader.Height / ImageHeader.TranscodedFormat.BlockHeight;
+
+            for (var currentBlockRow = 0; currentBlockRow < totalBlockRows; currentBlockRow++)
+            {
+                for (var currentBlockColumn = 0; currentBlockColumn < totalBlockColumns; currentBlockColumn++)
+                {
+                    Console.WriteLine($"At row {currentBlockRow} column {currentBlockColumn}");
+                }
+            }
+        }
+
+
+        private void DecodeBlock()
         {
             
+        }
+    }
+
+    public class ImageFormatTranscoding
+    {
+        public int BitsPerPixel { get; set; }
+        
+        public int BlockWidth { get; set; }
+        
+        public int BlockHeight { get; set; }
+
+        private void SetBitsPerPixel(ImageHeader.ImageFormats imageFormat)
+        {
+            int valueToGet;
+            switch (imageFormat)
+            {
+                case ImageHeader.ImageFormats.I4:
+                case ImageHeader.ImageFormats.C4:
+                case ImageHeader.ImageFormats.CMPR:
+                    valueToGet = 4;
+                    break;
+                case ImageHeader.ImageFormats.I8:
+                case ImageHeader.ImageFormats.C8:
+                case ImageHeader.ImageFormats.IA4:
+                    valueToGet = 8;
+                    break;
+                case ImageHeader.ImageFormats.IA8:
+                case ImageHeader.ImageFormats.RGB565:
+                case ImageHeader.ImageFormats.RGB5A3:
+                case ImageHeader.ImageFormats.C14X2:
+                    valueToGet = 16;
+                    break;
+                case ImageHeader.ImageFormats.RGBA32:
+                    valueToGet = 32;
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    
+            }
+            
+            BitsPerPixel = valueToGet;
+        }
+
+        private void SetBlockWidth(ImageHeader.ImageFormats imageFormat)
+        {
+            int valueToGet;
+            switch (imageFormat)
+            {
+                case ImageHeader.ImageFormats.IA8:
+                case ImageHeader.ImageFormats.RGB565:
+                case ImageHeader.ImageFormats.RGB5A3:
+                case ImageHeader.ImageFormats.RGBA32:
+                case ImageHeader.ImageFormats.C14X2:
+                    valueToGet = 4;
+                    break;
+                case ImageHeader.ImageFormats.I4:
+                case ImageHeader.ImageFormats.I8:
+                case ImageHeader.ImageFormats.IA4:
+                case ImageHeader.ImageFormats.C4:
+                case ImageHeader.ImageFormats.C8:
+                case ImageHeader.ImageFormats.CMPR:
+                    valueToGet = 8;
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    
+            }
+            
+            BlockWidth = valueToGet;
+        }
+
+        private void SetBlockHeight(ImageHeader.ImageFormats imageFormat)
+        {
+            int valueToGet;
+            switch (imageFormat)
+            {
+                case ImageHeader.ImageFormats.IA8:
+                case ImageHeader.ImageFormats.RGB565:
+                case ImageHeader.ImageFormats.RGB5A3:
+                case ImageHeader.ImageFormats.RGBA32:
+                case ImageHeader.ImageFormats.C14X2:
+                case ImageHeader.ImageFormats.I8:
+                case ImageHeader.ImageFormats.IA4:
+                case ImageHeader.ImageFormats.C8:
+                    valueToGet = 4;
+                    break;
+                case ImageHeader.ImageFormats.I4:
+                case ImageHeader.ImageFormats.C4:
+                case ImageHeader.ImageFormats.CMPR:
+                    valueToGet = 8;
+                    break;
+                default:
+                    throw new NotImplementedException();
+                    
+            }
+            
+            BlockHeight = valueToGet;
+        }
+
+        public ImageFormatTranscoding(ImageHeader.ImageFormats imageFormat)
+        {
+            SetBitsPerPixel(imageFormat);
+            SetBlockWidth(imageFormat);
+            SetBlockHeight(imageFormat);
         }
     }
 }
