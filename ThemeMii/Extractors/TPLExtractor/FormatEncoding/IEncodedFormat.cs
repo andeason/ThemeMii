@@ -1,3 +1,5 @@
+using SixLabors.ImageSharp.PixelFormats;
+
 namespace ThemeMii.Extractors.FormatEncoding;
 
 public interface IEncodedFormat
@@ -10,6 +12,10 @@ public interface IEncodedFormat
 
     public void ConvertAndStoreToByteArray(
         byte[] inputArray, byte[] outputArray,
+        int currentInputPosition, int currentOutputPosition);
+    
+    public void ConvertAndStoreToByteArray(
+        byte[] inputArray, Rgba32[] outputArray,
         int currentInputPosition, int currentOutputPosition);
 }
 

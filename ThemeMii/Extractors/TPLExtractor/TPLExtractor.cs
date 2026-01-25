@@ -156,7 +156,7 @@ public class TPLExtractor
 
             var maximumImageSize = ImageHeader.Width * ImageHeader.Height * (ImageHeader.EncodedFormat.BitsPerPixel / 8);
             //The output in this case will be 32 bits.
-            var imageOutputArray = new byte[ImageHeader.Width * ImageHeader.Height * 32];
+            var imageOutputArray = new Rgba32[ImageHeader.Width * ImageHeader.Height];
             int currentImageOutputPosition = 0;
             
             
@@ -165,8 +165,12 @@ public class TPLExtractor
             if (ImageHeader.Height % ImageHeader.EncodedFormat.BlockHeight != 0)
                 throw new Exception("Height is not divisible by the block height.  Verify this file is a correct tpl.");
             
-            
+            var totalBlockColumns = ImageHeader.Height / ImageHeader.EncodedFormat.BlockHeight;
+
             var currentOffsetPosition = ImageHeader.ImageDataAddress;
+            var blockStartOffset = ImageHeader.ImageDataAddress;
+            int currentRow = 0;
+            int currentColumnBlock = 0;
             while (currentOffsetPosition < maximumImageSize)
             {
                 ImageHeader.EncodedFormat.ConvertAndStoreToByteArray(
@@ -174,15 +178,38 @@ public class TPLExtractor
                     imageOutputArray,
                     (int)(currentOffsetPosition - ImageHeader.ImageDataAddress),
                     currentImageOutputPosition);
-                
-                currentOffsetPosition += (uint)Math.Max(ImageHeader.EncodedFormat.BitsPerPixel / 8, 1);
-                currentImageOutputPosition += 4;
+
+                 currentOffsetPosition += (uint)Math.Max(ImageHeader.EncodedFormat.BitsPerPixel / 8, 1);
+                 //Need to account for jumping blocks...
+                 if (currentOffsetPosition %
+                     (ImageHeader.EncodedFormat.BlockWidth * (ImageHeader.EncodedFormat.BitsPerPixel / 8)) == 0)
+                 {
+                     currentColumnBlock++;
+                     if (currentColumnBlock == totalBlockColumns)
+                     {
+                         currentColumnBlock = 0;
+                         currentRow++;
+                         currentOffsetPosition = (uint)(ImageHeader.ImageDataAddress
+                                                        + ImageHeader.Width *
+                                                        (ImageHeader.EncodedFormat.BitsPerPixel / 8) * currentRow);
+                     }
+                     else
+                     {
+                         currentOffsetPosition = blockStartOffset + 32;
+                     }
+
+                     blockStartOffset = currentOffsetPosition;
+                 }
+                 
+                 
+                currentImageOutputPosition++;
             }
             
             Console.WriteLine("Finished writing output array");
             using var image = Image.LoadPixelData<Rgba32>(imageOutputArray,ImageHeader.Width, ImageHeader.Height);
-            image.Save(Path.Combine(outputPath,"testImage.png"));
+            image.Save(Path.Combine(outputPath,"testImage1.jpg"));
+            image.Save(Path.Combine(outputPath,"testImage1.png"));
+
         }
-        
     }
 }
