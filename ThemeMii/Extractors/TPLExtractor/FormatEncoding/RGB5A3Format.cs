@@ -37,12 +37,14 @@ public class RGB5A3Format : IEncodedFormat
         var rawInput = BinaryPrimitives
             .ReadUInt16LittleEndian(inputArray.AsSpan(currentInputPosition, 2));
 
-        //Fuck it, this probably isn't the best, but fairly certain it will work...
         var isUsingAlphaChannel = (rawInput & 0x8000) == 0;
         var alphaValue = (byte)(isUsingAlphaChannel ? (rawInput >>> 12 & 0x07) << 5 : 255);
         var redValue = (byte)(isUsingAlphaChannel ? (rawInput >>> 8 & 0x0F) << 4 : (rawInput >> 10 & 0x1F) << 3);
         var greenValue = (byte)(isUsingAlphaChannel ? (rawInput >>> 4 & 0x0F) << 4 : (rawInput >> 5 & 0x1F) << 3);
         var blueValue = (byte)(isUsingAlphaChannel ? (rawInput & 0x0F) << 4 : (rawInput & 0x1F) << 3);
+        
+        if(redValue == 239 || blueValue == 239 || greenValue == 239 || alphaValue == 239)
+            Console.WriteLine("Here");
         outputArray[currentOutputPosition] = new Rgba32(redValue, greenValue, blueValue, alphaValue);
     }
 }

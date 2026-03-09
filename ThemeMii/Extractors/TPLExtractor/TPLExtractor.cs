@@ -172,6 +172,7 @@ public class TPLExtractor
             
             while (currentImageOutputPosition < ImageHeader.Width * ImageHeader.Height)
             {
+                
                 Console.WriteLine($"Row {currentRow} Col {currentColumnBlock}");
                 ImageHeader.EncodedFormat.ConvertAndStoreToByteArray(
                     byteArray,

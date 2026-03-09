@@ -102,9 +102,10 @@ namespace ThemeMii
                         }
                         catch (Exception ex)
                         {
-                            SetControls(true);
-                            await MessageBoxHelper.DisplayErrorMessage(ex.Message);
-                            return;
+                            Console.WriteLine(ex);
+                            //SetControls(true);
+                            //await MessageBoxHelper.DisplayErrorMessage(ex.Message);
+                            //return;
                         }
                     }
                     else if (fourBytes[0] == 'L' && fourBytes[1] == 'Z' &&
